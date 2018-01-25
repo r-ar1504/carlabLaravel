@@ -1,0 +1,105 @@
+
+
+CREATE TABLE Service (
+  [id] INT NOT NULL IDENTITY,
+  [name] VARCHAR(60) NOT NULL,
+  [image] VARCHAR(50) NOT NULL,
+  [description] VARCHAR(200) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+
+CREATE TABLE Category (
+  [id] INT NOT NULL IDENTITY,
+  [name] VARCHAR(60) NOT NULL,
+  [price] FLOAT NOT NULL,
+  [duration] INT NOT NULL,
+  [image] VARCHAR(50) NOT NULL,
+  [service_id] INT NOT NULL,
+  [sub_cat] SMALLINT NOT NULL,
+  PRIMARY KEY ([id])
+ ,
+  CONSTRAINT [category_service_id_8b1c5fbb_fk_service_id]
+    FOREIGN KEY ([service_id])
+    REFERENCES Service ([id]))
+;
+
+
+CREATE TABLE Order (
+  [id] INT NOT NULL IDENTITY,
+  [service] VARCHAR(100) NOT NULL,
+  [cat_name] VARCHAR(100) NOT NULL,
+  [worker] VARCHAR(100) NOT NULL,
+  [user] VARCHAR(100) NOT NULL,
+  [status] VARCHAR(100) NOT NULL,
+  [latitude] VARCHAR(100) NOT NULL,
+  [longitude] VARCHAR(100) NOT NULL,
+  [rating] VARCHAR(100) NOT NULL,
+  [comments] VARCHAR(max) NOT NULL,
+  [ammount] VARCHAR(30) NOT NULL,
+  [car_plate] VARCHAR(20) NOT NULL,
+  [created_at] DATETIME2(6) NOT NULL,
+  [service_date] DATETIME2(6) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+CREATE TABLE Schedule (
+  [id] INT NOT NULL IDENTITY,
+  [order_id] VARCHAR(100) NOT NULL,
+  [reserved_date] DATETIME2(6) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+CREATE TABLE Subcategory (
+  [id] INT NOT NULL IDENTITY,
+  [name] VARCHAR(60) NOT NULL,
+  [price] VARCHAR(60) NOT NULL,
+  [category_id] INT NOT NULL,
+  PRIMARY KEY ([id])
+;
+
+
+CREATE TABLE User (
+  [id] INT NOT NULL IDENTITY,
+  [fireID] VARCHAR(100) NOT NULL,
+  [name] VARCHAR(50) NOT NULL,
+  [last_name] VARCHAR(50) NOT NULL,
+  [email] VARCHAR(70) NOT NULL,
+  [status] VARCHAR(20) NOT NULL,
+  [created_at] DATETIME2(6) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+
+CREATE TABLE UserBilling (
+  [id] INT NOT NULL IDENTITY,
+  [user_id] VARCHAR(100) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+
+CREATE TABLE UserPlate (
+  [id] INT NOT NULL IDENTITY,
+  [user_id] VARCHAR(100) NOT NULL,
+  [number] VARCHAR(50) NOT NULL,
+  PRIMARY KEY ([id]))
+;
+
+
+CREATE TABLE Worker (
+  [id] INT NOT NULL IDENTITY,
+  [fireID] VARCHAR(100) NOT NULL,
+  [name] VARCHAR(50) NOT NULL,
+  [last_name] VARCHAR(50) NOT NULL,
+  [email] VARCHAR(70) NOT NULL,
+  [status] VARCHAR(20) NOT NULL,
+  [role] VARCHAR(20) NOT NULL,
+  [phone] VARCHAR(30) NOT NULL,
+  [created_at] DATETIME2(6) NOT NULL,
+  PRIMARY KEY ([id]))
+;
