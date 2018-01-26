@@ -163,7 +163,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Vinkla\Pusher\PusherServiceProvider::class,
+        Pusher\Laravel\PusherServiceProvider::class,
 
         /*
          * Package Service Providers...
