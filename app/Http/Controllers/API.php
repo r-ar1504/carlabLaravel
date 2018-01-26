@@ -2,10 +2,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Pusher\Laravel\PusherServiceProvider;
 use App\Service;
+use Pusher\Laravel\Facades\Pusher;
 
-$pusher = new Pusher\Pusher("1f8d9c19abfb2a61a064"."d143b896c5f8715af3c0"."457719". array('cluster' => 'us2'));
+// $pusher = new Pusher\Pusher("1f8d9c19abfb2a61a064"."d143b896c5f8715af3c0"."457719". array('cluster' => 'us2'));
 
 
 class API extends Controller
@@ -16,7 +16,7 @@ class API extends Controller
 
     $services = DB::select('select * from Service');
     return response()->json(['services' => $services]);
-
+    Pusher::trigger('my-channel', 'my-event', ['message' => $message]);
   }
 
 
