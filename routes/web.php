@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 
 //<!--[Get Services]-->//
-Route::get('/api/get_services', "API@services");
+Route::get('get_services', "API@services");
 
 
 //<!--[Get Service ==> Categories]-->//
-Route::get('/get_categories/{service_id}', 'API@get_categories');
+Route::get('get_categories/{service_id}', 'API@get_categories');
