@@ -54,7 +54,7 @@ class API extends Controller
       'role' => $req->role
     ]);
 
-    return "200, OK";
+      return response()->json(['status' => "200"]);
 
   }
 
