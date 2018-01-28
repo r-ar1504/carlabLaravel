@@ -43,7 +43,6 @@ class API extends Controller
 
   //<!--[Create New Worker]-->//
   function createWorker(Request $req){
-    echo $req;
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,
     //   'status' => 'off_duty',
@@ -54,7 +53,7 @@ class API extends Controller
     //   'role' => $req->role
     // ]);
 
-      return response()->json(['status' => "200"]);
+      return response()->json([ $req->name]);
 
   }
 
@@ -67,9 +66,9 @@ class API extends Controller
     $worker_id = $worker->fireID;
     $worker_role = $worker->role;
 
-    $orders = getWorkerOrders($worker_id, $worker_role);
+    // $orders = getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['worker' => $worker, 'orders' => $orders]);
+    return response()->json(['worker' => $worker, 'orders' => "null"]);
 
   }
 
