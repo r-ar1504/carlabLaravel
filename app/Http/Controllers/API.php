@@ -60,7 +60,7 @@ class API extends Controller
 
 
   //<!--[Get Worker & Orders]-->//
-  function getWorker(Request $req){
+  function  (Request $req){
 
     $worker = DB::table('Worker')->where('fireID', $req->fireID)->first();
 

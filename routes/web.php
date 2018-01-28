@@ -22,4 +22,7 @@ Route::get('get_categories/{service_id}', 'API@get_categories');
 
 
 //<!--[Get Worker Data]-->//
-Route::get('get_worker/{fireID}', 'API@ggetWorker');
+Route::get('get_worker/{fireID}', 'API@getWorker');
+
+//<!--[Create Worker]-->//
+Route::get('create_worker', 'API@createWorker');
