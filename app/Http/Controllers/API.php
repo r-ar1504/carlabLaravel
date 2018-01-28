@@ -43,16 +43,16 @@ class API extends Controller
 
   //<!--[Create New Worker]-->//
   function createWorker(Request $req){
-
-    $worker = DB::table('Worker')->insert([
-      'last_name' => $req->last_name,
-      'status' => 'off_duty',
-      'fireID' => $req->fireID,
-      'email' => $req->email,
-      'phone' => $req->phone,
-      'name' => $req->name,
-      'role' => $req->role
-    ]);
+    echo $req;
+    // $worker = DB::table('Worker')->insert([
+    //   'last_name' => $req->last_name,
+    //   'status' => 'off_duty',
+    //   'fireID' => $req->fireID,
+    //   'email' => $req->email,
+    //   'phone' => $req->phone,
+    //   'name' => $req->name,
+    //   'role' => $req->role
+    // ]);
 
       return response()->json(['status' => "200"]);
 
