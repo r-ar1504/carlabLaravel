@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('welcome'); });
 
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
@@ -21,3 +19,7 @@ Route::get('get_services', "API@services");
 
 //<!--[Get Service ==> Categories]-->//
 Route::get('get_categories/{service_id}', 'API@get_categories');
+
+
+//<!--[Get Worker Data]-->//
+Route::get('get_worker/{fireID}', 'API@ggetWorker');
