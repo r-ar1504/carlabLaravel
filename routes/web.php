@@ -16,7 +16,6 @@ Route::get('/', function () { return view('welcome'); });
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
 
-
 //<!--[Get Service ==> Categories]-->//
 Route::get('get_categories/{service_id}', 'API@get_categories');
 
@@ -31,3 +30,6 @@ Route::post('create_user', 'API@createUser');
 
 //<!--[Change Worker Status]-->//
 Route::get('change_status/{fireID}', 'API@workerStatus');
+
+//<!--[Update Worker]-->//
+Route::post('update_worker/{fireID}', 'API@updateWorker');

@@ -105,9 +105,17 @@ class API extends Controller
       return response()->json(['data' => "OK", 'status' => "200"]);
   }
 
-  function generateOrder(Request $req) {
 
-  }
+  //<!--[Change Worker Status]-->//
+  function updateWorker(Request $req, $fireID){
+
+    $data = $req->all();
+
+    $worker = DB:table('Worker')->where('fireID',$fireID)->update(['email'=> $data['email'],
+    'phone' => $data['phone']])
+
+    return response()->json(['status' => '200']);
+  })
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
