@@ -87,6 +87,18 @@ class API extends Controller
    return response()->json(['data' => $worker->status]);
   }
 
+  //<!--[Create New User]-->//
+  function createUser(Request $req){
+
+    $worker = DB::table('Worker')->insert([
+      'last_name' => $req->last_name,
+      'fireID' => $req->fireID,
+      'email' => $req->email,
+      'name' => $req->name,
+    ]);
+
+      return response()->json([ $req->name]);
+  }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
 

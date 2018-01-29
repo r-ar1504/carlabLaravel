@@ -20,9 +20,11 @@ Route::get('get_services', "API@services");
 //<!--[Get Service ==> Categories]-->//
 Route::get('get_categories/{service_id}', 'API@get_categories');
 
-
 //<!--[Get Worker Data]-->//
 Route::get('get_worker/{fireID}', 'API@getWorker');
 
 //<!--[Create Worker]-->//
 Route::post('create_worker', 'API@createWorker');
+
+//<!--[Create Worker]-->//
+Route::post('create_user', 'API@createUser');
