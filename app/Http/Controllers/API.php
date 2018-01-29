@@ -80,12 +80,15 @@ class API extends Controller
    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
    if ($worker->status != 'on_dutty') {
-     $worker->update(['status' => 'on_dutty']);
+     DB::table('Worker')->where('fireID', $fireID)->update(['status' => 'on_dutty']);
    }else {
-     $worker->update(['status' => 'off_dutty']);
+     DB::table('Worker')->where('fireID', $fireID)->update(['status' => 'off_dutty']);
    }
 
-   return response()->json(['data' => $worker->status]);
+    $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+
+
+   return response()->json(['data' => $nworker->status]);
   }
 
   //<!--[Create New User]-->//
