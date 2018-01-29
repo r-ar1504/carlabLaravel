@@ -99,7 +99,7 @@ class API extends Controller
     //   'name' => $req->name,
     // ]);
 
-      return response()->json($data);
+      return response()->json(['data'] => $data);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
