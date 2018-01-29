@@ -112,7 +112,7 @@ class API extends Controller
     $data = $req->all();
 
     $worker = DB::table('Worker')->where('fireID',$fireID)->update(['email'=> $data['email'],
-    'phone' => $data['phone']])
+    'phone' => $data['phone']]);
 
     return response()->json(['status' => '200']);
   })
