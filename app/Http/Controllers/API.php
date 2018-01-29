@@ -90,7 +90,7 @@ class API extends Controller
   //<!--[Create New User]-->//
   function createUser(Request $req, $user){
 
-    $data = json_decode($user);
+    $data = $user->name;
 
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,
