@@ -118,7 +118,7 @@ class API extends Controller
   }
 
   //<!--[Change User Data]-->//
-  function updateWorker(Request $req, $fireID){
+  function updateUser(Request $req, $fireID){
 
     $data = $req->all();
 
