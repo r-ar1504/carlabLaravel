@@ -90,14 +90,14 @@ class API extends Controller
   //<!--[Create New User]-->//
   function createUser(Request $req){
 
-    $worker = DB::table('Worker')->insert([
-      'last_name' => $req->last_name,
-      'fireID' => $req->fireID,
-      'email' => $req->email,
-      'name' => $req->name,
-    ]);
+    // $worker = DB::table('Worker')->insert([
+    //   'last_name' => $req->last_name,
+    //   'fireID' => $req->fireID,
+    //   'email' => $req->email,
+    //   'name' => $req->name,
+    // ]);
 
-      return response()->json([ $req->name]);
+      return response()->json([ $req]);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
