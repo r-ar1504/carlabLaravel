@@ -77,7 +77,7 @@ class API extends Controller
 
   //<!--[Change Worker Status]-->//
   function workerStatus(Request $req, $fireID){
-   $worker = Worker::where('id', '=', $fireId)->first();
+   $worker = DB::table('Worker')->where('fireID', fireID)->first();
 
    if ($worker->status != 'on_dutty') {
      $worker->status = 'on_dutty';
