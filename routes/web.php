@@ -28,3 +28,6 @@ Route::post('create_worker', 'API@createWorker');
 
 //<!--[Create User]-->//
 Route::post('create_user', 'API@createUser');
+
+//<!--[Change Worker Status]-->//
+Route::get('change_status/{fireID}', 'API@workerStatus');

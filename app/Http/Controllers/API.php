@@ -76,8 +76,8 @@ class API extends Controller
   }
 
   //<!--[Change Worker Status]-->//
-  function workerStatus(Request $req){
-   $worker = Worker::where('id', '=', $req->fireId)->first();
+  function workerStatus(Request $req, $fireID){
+   $worker = Worker::where('id', '=', $fireId)->first();
 
    if ($worker->status != 'on_dutty') {
      $worker->status = 'on_dutty';
@@ -102,6 +102,10 @@ class API extends Controller
     ]);
 
       return response()->json(['data' => "OK", 'status' => "200"]);
+  }
+
+  function generateOrder(Request $req) {
+
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
