@@ -98,7 +98,7 @@ class API extends Controller
       'name' => $data['name'],
     ]);
 
-      return response()->json(['data' => $data, 'status' => "200"]);
+      return response()->json(['data' => "OK", 'status' => "200"]);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
