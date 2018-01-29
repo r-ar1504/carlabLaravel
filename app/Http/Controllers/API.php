@@ -91,6 +91,7 @@ class API extends Controller
   function createUser(Request $req){
 
     $data = json_encode($req->all());
+    $test = $data->name;
 
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,
@@ -99,7 +100,7 @@ class API extends Controller
     //   'name' => $req->name,
     // ]);
 
-      return response()->json(['data' => $data]);
+      return response()->json(['data' => $data, 'test' => $test]);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
