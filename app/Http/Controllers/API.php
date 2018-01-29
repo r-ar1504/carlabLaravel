@@ -115,7 +115,7 @@ class API extends Controller
     'phone' => $data['phone']]);
 
     return response()->json(['status' => '200']);
-  })
+  }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
