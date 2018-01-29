@@ -47,7 +47,7 @@ class API extends Controller
     $worker = DB::table('Worker')->insert([
 
       'last_name' => $data['last_name'],
-      'status' => 'off_duty',
+      'status' => '0',
       'fireID' => $data['fireID'],
       'email' => $data['email'],
       'phone' => $data['phone'],
@@ -79,10 +79,10 @@ class API extends Controller
   function workerStatus(Request $req, $fireID){
    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
-   if ($worker->status != 'on_dutty') {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => 'on_dutty']);
+   if ($worker->status != '0') {
+     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
    }else {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => 'off_dutty']);
+     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
    }
 
     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
