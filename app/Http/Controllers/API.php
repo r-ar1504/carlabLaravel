@@ -90,8 +90,8 @@ class API extends Controller
   //<!--[Create New User]-->//
   function createUser(Request $req){
 
-    $data = json_decode($req->all());
-    $test = $data->name;
+    $data = $req->all();
+    $test = $data['name'];
 
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,
