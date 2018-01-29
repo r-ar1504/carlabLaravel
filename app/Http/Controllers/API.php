@@ -19,7 +19,6 @@ class API extends Controller
     Pusher::trigger('my-channel', 'my-event', ['message' => $message]);
   }
 
-
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
     // return $service_id;
@@ -40,20 +39,24 @@ class API extends Controller
 
   }
 
-
   //<!--[Create New Worker]-->//
   function createWorker(Request $req){
-    // $worker = DB::table('Worker')->insert([
-    //   'last_name' => $req->last_name,
-    //   'status' => 'off_duty',
-    //   'fireID' => $req->fireID,
-    //   'email' => $req->email,
-    //   'phone' => $req->phone,
-    //   'name' => $req->name,
-    //   'role' => $req->role
-    // ]);
 
-      return response()->json([ $req->name]);
+    $data = $req->all();
+
+    $worker = DB::table('Worker')->insert([
+
+      'last_name' => $data['last_name'],
+      'status' => 'off_duty',
+      'fireID' => $data['fireID'],
+      'email' => $data['email'],
+      'phone' => $data['phone'],
+      'name' => $data['name'],
+      'role' => $data['role']
+
+    ]);
+
+      return response()->json(['status' => '200']);
 
   }
 
