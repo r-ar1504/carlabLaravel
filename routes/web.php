@@ -33,3 +33,9 @@ Route::get('change_status/{fireID}', 'API@workerStatus');
 
 //<!--[Update Worker]-->//
 Route::post('update_worker/{fireID}', 'API@updateWorker');
+
+//<!--[Get User Data]-->//
+Route::get('get_user/{fireID}', 'API@getUser');
+
+//<!--[Update user]-->//
+Route::post('update_user/{fireID}', 'API@updateUser');

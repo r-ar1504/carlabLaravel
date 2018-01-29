@@ -75,6 +75,18 @@ class API extends Controller
 
   }
 
+  //<!--[Get User]-->//
+  function getUser(Request $req, $fireID){
+    $user = DB::table('User')->where('fireID', $req->fireID)->first();
+
+    $user_id = $user->fireID;
+
+    // $orders = getWorkerOrders($worker_id, $worker_role);
+
+    return response()->json(['user' => $user]);
+
+  }
+
   //<!--[Change Worker Status]-->//
   function workerStatus(Request $req, $fireID){
    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
@@ -103,6 +115,17 @@ class API extends Controller
     ]);
 
       return response()->json(['data' => "OK", 'status' => "200"]);
+  }
+
+  //<!--[Change User Data]-->//
+  function updateWorker(Request $req, $fireID){
+
+    $data = $req->all();
+
+    $user = DB::table('User')->where('fireID',$fireID)->update(['email'=> $data['email'],
+    'phone' => $data['phone']]);
+
+    return response()->json(['status' => '200']);
   }
 
 
