@@ -90,6 +90,8 @@ class API extends Controller
   //<!--[Create New User]-->//
   function createUser(Request $req){
 
+    $data = $req->json->all();
+
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,
     //   'fireID' => $req->fireID,
@@ -97,7 +99,7 @@ class API extends Controller
     //   'name' => $req->name,
     // ]);
 
-      return response()->json([ $req]);
+      return response()->json([$data]);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
