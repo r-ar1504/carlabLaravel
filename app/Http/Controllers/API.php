@@ -88,9 +88,9 @@ class API extends Controller
   }
 
   //<!--[Create New User]-->//
-  function createUser(Request $req){
+  function createUser(Request $req, $user){
 
-    $data = $req->all();
+    $data = $user;
 
     // $worker = DB::table('Worker')->insert([
     //   'last_name' => $req->last_name,

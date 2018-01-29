@@ -27,4 +27,4 @@ Route::get('get_worker/{fireID}', 'API@getWorker');
 Route::post('create_worker', 'API@createWorker');
 
 //<!--[Create User]-->//
-Route::post('create_user', 'API@createUser');
+Route::get('create_user/{user}', 'API@createUser');
