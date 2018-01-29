@@ -128,7 +128,6 @@ class API extends Controller
     return response()->json(['status' => '200']);
   }
 
-
   //<!--[Change Worker Status]-->//
   function updateWorker(Request $req, $fireID){
 
