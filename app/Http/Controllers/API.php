@@ -140,7 +140,7 @@ class API extends Controller
     return response()->json(['status' => '200']);
   }
 
-  function createOrder(Request $re1){
+  function createOrder(Request $req){
     $data = $req->all();
 
     $pusher->trigger('new-orders', 'new-order', $data);
