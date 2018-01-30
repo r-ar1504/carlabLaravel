@@ -144,6 +144,7 @@ class API extends Controller
 
     Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
+    return response()->json(['status' => '200']);
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
