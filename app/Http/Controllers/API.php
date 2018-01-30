@@ -115,6 +115,7 @@ class API extends Controller
     ]);
 
       return response()->json(['data' => "OK", 'status' => "200"]);
+
   }
 
   //<!--[Change User Data]-->//
@@ -139,6 +140,12 @@ class API extends Controller
     return response()->json(['status' => '200']);
   }
 
+  function createOrder(Request $re1){
+    $data = $req->all();
+
+    $pusher->trigger('new-orders', 'new-order', $data);
+
+  }
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
