@@ -16,7 +16,6 @@ class API extends Controller
 
     $services = DB::select('select * from Service');
     return response()->json(['services' => $services]);
-    Pusher::trigger('my-channel', 'my-event', ['message' => $message]);
   }
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
@@ -143,7 +142,7 @@ class API extends Controller
   function createOrder(Request $req){
     $data = $req->all();
 
-    $pusher->trigger('new-orders', 'new-order', $data);
+    Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
