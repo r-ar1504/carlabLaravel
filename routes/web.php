@@ -41,3 +41,5 @@ Route::get('get_user/{fireID}', 'API@getUser');
 Route::post('update_user/{fireID}', 'API@updateUser');
 
 Route::post('create_order', 'API@createOrder');
+
+Route::post('end_order', "API@endOrder");

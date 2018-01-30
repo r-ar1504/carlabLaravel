@@ -144,6 +144,22 @@ class API extends Controller
 
     Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
+    $order = DB::table('Order')->insert([
+      'last_name' => $data['last_name'],
+      'fireID' => $data['fireID'],
+      'email' => $data['email'],
+      'name' => $data['name'],
+    ]);
+
+    return response()->json(['status' => '200']);
+  }
+
+
+  function endOrder(Request $req){
+    $data = $req->all();
+
+    Pusher::trigger('orders', 'end-order',  ['order_object' => $data]);
+
     return response()->json(['status' => '200']);
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
