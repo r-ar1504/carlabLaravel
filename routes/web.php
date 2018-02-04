@@ -47,4 +47,4 @@ Route::post('create_order', 'API@createOrder');
 Route::post('end_order', "API@endOrder");
 
 //<!--[Fetch Orders By User]-->//
-Route::post('get_orders/{fireID}' 'API@getOrders');
+Route::post('get_orders/{fireID}', 'API@getOrders');
