@@ -139,6 +139,7 @@ class API extends Controller
     return response()->json(['status' => '200']);
   }
 
+  //<!--[Create Order]-->//
   function createOrder(Request $req){
     $data = $req->all();
 
@@ -154,7 +155,7 @@ class API extends Controller
     return response()->json(['status' => '200']);
   }
 
-
+  //<!--[Terminate Order]-->//
   function endOrder(Request $req){
     $data = $req->all();
 
@@ -162,6 +163,14 @@ class API extends Controller
 
     return response()->json(['status' => '200']);
   }
+
+  //<!--[Fetch Orders]-->//
+  function getOrders(Request $req, $fireID){
+    $orders = DB::table('Order')->where('user_id', $fireID);
+
+    return response()->json(['orders' => $orders, 'code' => "200"])
+  }
+
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
