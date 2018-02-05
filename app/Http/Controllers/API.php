@@ -174,7 +174,7 @@ class API extends Controller
 
     Pusher::trigger('test-channel', 'test-message', [ 'test_data' => "such testing  much probes "]);
 
-    return response();
+    return response()->json(['code' => "200"]);
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
