@@ -59,7 +59,6 @@ class API extends Controller
 
   }
 
-
   //<!--[Get Worker & Orders]-->//
   function getWorker(Request $req){
 
@@ -145,12 +144,12 @@ class API extends Controller
 
     Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
-    $order = DB::table('Order')->insert([
-      'last_name' => $data['last_name'],
-      'fireID' => $data['fireID'],
-      'email' => $data['email'],
-      'name' => $data['name'],
-    ]);
+    // $order = DB::table('Order')->insert([
+    //   'last_name' => $data['last_name'],
+    //   'fireID' => $data['fireID'],
+    //   'email' => $data['email'],
+    //   'name' => $data['name'],
+    // ]);
 
     return response()->json(['status' => '200']);
   }
@@ -168,7 +167,14 @@ class API extends Controller
   function getOrders(Request $req, $fireID){
     $orders = DB::table('Order')->where('user_id', $fireID);
 
-    return response()->json(['orders' => $orders, 'code' => "200"])
+    return response()->json(['orders' => $orders, 'code' => "200"]);
+  }
+
+  function testPusher(Request $req){
+
+    Pusher::trigger('test-channel', 'test-message', [ 'test_data' => "such testing  much probes "]);
+
+    return response();
   }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
