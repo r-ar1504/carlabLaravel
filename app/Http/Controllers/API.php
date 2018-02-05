@@ -172,7 +172,7 @@ class API extends Controller
 
   function testPusher(Request $req){
 
-    Pusher::trigger('test-channel', 'test-message', [ 'test_data' => "such testing  much probes "]);
+    LaravelPusher::trigger('test-channel', 'test-message', [ 'test_data' => "such testing  much probes "]);
 
     return response()->json(['code' => "200"]);
   }
