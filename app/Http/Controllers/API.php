@@ -146,8 +146,8 @@ class API extends Controller
     //Register unasigned Order.
     $order = DB::table('Order')->insertGetId([
       'status' => $data['status'],
-      'lat' => $data['lat'],
-      'lng' => $data['lng'],
+      'latitude' => $data['lat'],
+      'longitude' => $data['lng'],
       'ammount' => $data['ammount'],
       'car_plate' => $data['car_plate'],
       'user_id' => $data['user'],
