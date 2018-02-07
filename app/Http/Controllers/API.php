@@ -157,8 +157,11 @@ class API extends Controller
       'category_id' => $data['category_id']
     ]);
 
+    $order = getOrderDetails($order_id);
 
-    return response()->json(['status' => '200', 'order_id' => $order_id]);
+    $worker = findWorker($order);
+
+    return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
   }
 
   //<!--[Terminate Order]-->//
@@ -192,6 +195,21 @@ class API extends Controller
     $orders = DB::table('Order')->where('worker', $worker_id)->where('status','active')->where('service', $worker_role)->get();
 
     return $orders;
+  }
+
+  // #<!-- Fetch Orders By ID -->
+  function getOrderDetails($order_id){
+
+    $order = DB::table('Order')->where('id', $order_id)->first();
+
+    return $order;
+  }
+
+  function findWorker($order_data){
+
+    $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data->service_name)->get();
+
+    return $worker_list;
   }
 
   //<!--[Fetch SubCategory By Category ID]-->//
