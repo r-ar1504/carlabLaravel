@@ -210,8 +210,6 @@ class API extends Controller
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data->service_name)->get();
 
-    return $worker_list;
-
     if ($worker_list != null) {
 
       foreach ($worker_list as $worker) {
