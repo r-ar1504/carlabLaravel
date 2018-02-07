@@ -157,9 +157,9 @@ class API extends Controller
       'category_id' => $data['category_id']
     ]);
 
-    $order = getOrderDetails($order_id);
+    $order = $this->getOrderDetails($order_id);
 
-    $worker = findWorker($order);
+    $worker = $this->findWorker($order);
 
     return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
   }
@@ -205,6 +205,7 @@ class API extends Controller
     return $order;
   }
 
+  // #<!-- Fetch Workers By Status -->
   function findWorker($order_data){
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data->service_name)->get();
