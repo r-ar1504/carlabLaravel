@@ -3,14 +3,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service;
-use Pusher\Laravel\Facades\LaravelPusher;
+use Pusher\Laravel\Facades\Pusher;
 
 // $pusher = new Pusher\Pusher("1f8d9c19abfb2a61a064"."d143b896c5f8715af3c0"."457719". array('cluster' => 'us2'));
 
 
 class API extends Controller
 {
-
   //<!--[Get All Services]-->//
   function services(Request $req){
 
@@ -142,16 +141,24 @@ class API extends Controller
   function createOrder(Request $req){
     $data = $req->all();
 
-    Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
+    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
-    // $order = DB::table('Order')->insert([
-    //   'last_name' => $data['last_name'],
-    //   'fireID' => $data['fireID'],
-    //   'email' => $data['email'],
-    //   'name' => $data['name'],
-    // ]);
+    //Register unasigned Order.
+    $order = DB::table('Order')->insertGetId([
+      'status' => $data['status'],
+      'lat' => $data['lat'],
+      'lng' => $data['lng'],
+      'ammount' => $data['ammount'],
+      'car_plate' => $data['car_plate'],
+      'user_id' => $data['user_id'],
+      'service_name' => $data['service_name'],
+      'details' => $data['details'],
+      'service_date' => $data['date'],
+      'category_id' => $data['category_id']
+    ]);
 
-    return response()->json(['status' => '200']);
+
+    return response()->json(['status' => '200', 'data' => $order]);
   }
 
   //<!--[Terminate Order]-->//
