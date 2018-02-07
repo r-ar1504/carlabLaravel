@@ -150,7 +150,7 @@ class API extends Controller
       'lng' => $data['lng'],
       'ammount' => $data['ammount'],
       'car_plate' => $data['car_plate'],
-      'user_id' => $data['user_id'],
+      'user_id' => $data['user'],
       'service_name' => $data['service_name'],
       'details' => $data['details'],
       'service_date' => $data['date'],
