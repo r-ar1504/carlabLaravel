@@ -144,7 +144,7 @@ class API extends Controller
     // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
     //Register unasigned Order.
-    $order = DB::table('Order')->insertGetId([
+    $order_id = DB::table('Order')->insertGetId([
       'status' => $data['status'],
       'latitude' => $data['lat'],
       'longitude' => $data['lng'],
@@ -158,7 +158,7 @@ class API extends Controller
     ]);
 
 
-    return response()->json(['status' => '200', 'data' => $order]);
+    return response()->json(['status' => '200', 'order_id' => $order_id]);
   }
 
   //<!--[Terminate Order]-->//
