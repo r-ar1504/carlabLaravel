@@ -211,6 +211,23 @@ class API extends Controller
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data->service_name)->get();
 
     return $worker_list;
+
+    if ($worker_list != null) {
+
+      foreach ($worker_list as $worker) {
+
+        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+
+      }
+
+      return $worker_list;
+
+    }else{
+
+      return $worker_list;
+    }
+
+
   }
 
   //<!--[Fetch SubCategory By Category ID]-->//
