@@ -91,7 +91,7 @@ class API extends Controller
    if ($worker->status != '0') {
      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
    }else {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
+     DB::table('Worker')->where('fireID', $fireID)->(['status' => '1']);
    }
 
     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
@@ -164,6 +164,28 @@ class API extends Controller
     return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
   }
 
+  //<!--[Challenge Order]-->//
+  function challengeOrder(Request $req, $order_id, $fireID){
+    $data = $req->all();
+
+    $order = DB::table('Order')->where('id', $order_id)->first();
+    $worker = DB:table('Worker')->where('fireID', $fireID)->first();
+    if ($order->status != 0) {
+      return response()->json(['code' => '2');
+    }elseif ($order->status == 0) {
+      DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+      'status' => 1]);
+
+      Pusher::trigger('order-'.$order-id, 'got-worker', ['worker' => $worker]);
+      
+        return response()->json(['code' => '1');
+    }
+    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
+
+
+
+  }
+
   //<!--[Terminate Order]-->//
   function endOrder(Request $req){
     $data = $req->all();
@@ -180,12 +202,6 @@ class API extends Controller
     return response()->json(['orders' => $orders, 'code' => "200"]);
   }
 
-  function testPusher(Request $req){
-
-    Pusher::trigger('test-channel', 'test-message', [ 'test_data' => "such testing  much probes "]);
-
-    return response()->json(['code' => "200"]);
-  }
 
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
