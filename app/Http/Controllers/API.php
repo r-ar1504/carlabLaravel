@@ -251,7 +251,7 @@ class API extends Controller
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
-  function starWash(Request $req, $order_id, $now){
+  function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
