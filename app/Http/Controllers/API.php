@@ -241,13 +241,18 @@ class API extends Controller
   }
 
   function terminateOrder(Request $req, $order_id, $now){
-    DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'end_date' => $now]);
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
     Pusher::trigger('order-'.$order_id, 'order-done');
   }
 
   function startOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "2", 'starting_date' => $now]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
+  }
+
+  function starWash(Request $req, $order_id, $now){
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
