@@ -234,7 +234,7 @@ class API extends Controller
   // #<!-- Fetch Workers By Status -->
   function findWorker($order_data){
 
-    $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data['service_name'])->get();
+    $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data)->get();
 
     if ($worker_list != null) {
 
