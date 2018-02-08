@@ -50,4 +50,4 @@ Route::post('end_order', "API@endOrder");
 Route::post('get_orders/{fireID}', 'API@getOrders');
 
 //<!--[Try To Reach Order]-->//
-Route::post('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
+Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
