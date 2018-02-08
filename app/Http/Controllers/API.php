@@ -140,7 +140,8 @@ class API extends Controller
   //<!--[Create Order]-->//
   function createOrder(Request $req){
     $data = $req->all();
-    $worker = $this->findWorker($order);
+
+    $worker = $this->findWorker($data['service_name']);
 
     // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
     if ($worker->isEmpty()) {
@@ -209,7 +210,9 @@ class API extends Controller
     return response()->json(['orders' => $orders, 'code' => "200"]);
   }
 
+  function terminateOrder(Request $req, $order_id){
 
+  };
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
