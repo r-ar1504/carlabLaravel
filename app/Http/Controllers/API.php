@@ -144,7 +144,7 @@ class API extends Controller
 
     // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
     if ($worker->isEmpty()) {
-      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => "no_workers"]);
+      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
 
     }else {
       //Register unasigned Order.
@@ -240,11 +240,9 @@ class API extends Controller
         Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
 
       }
-
       return $worker_list;
 
     }else{
-
       return $worker_list;
     }
 
