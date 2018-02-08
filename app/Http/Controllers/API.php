@@ -208,7 +208,7 @@ class API extends Controller
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
 
-    $orders = DB::table('Order')->where('worker', $worker_id)->where('status',1)->where('service', $worker_role)->get();
+    $orders = DB::table('Order')->where('worker_id', $worker_id)->where('status',1)->where('service', $worker_role)->get();
 
     return $orders;
   }
