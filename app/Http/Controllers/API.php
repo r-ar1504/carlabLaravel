@@ -178,7 +178,7 @@ class API extends Controller
 
       Pusher::trigger('order-'.$order-id, 'got-worker', ['worker' => $worker]);
 
-        return response()->json(['code' => '1');
+        return response()->json(['code' => '1']);
     }
     // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
 
