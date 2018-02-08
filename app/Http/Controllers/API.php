@@ -66,7 +66,7 @@ class API extends Controller
     $worker_id = $worker->fireID;
     $worker_role = $worker->role;
 
-    // $orders = getWorkerOrders($worker_id, $worker_role);
+    $orders = getWorkerOrders($worker_id, $worker_role);
 
     return response()->json(['worker' => $worker, 'orders' => "null"]);
 
