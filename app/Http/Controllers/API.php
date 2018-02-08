@@ -176,7 +176,7 @@ class API extends Controller
     }
 
 
-    // 
+    //
     //
     // // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
     // if ($worker->isEmpty()) {
@@ -201,10 +201,6 @@ class API extends Controller
 
 
     }
-
-
-
-  }
 
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
