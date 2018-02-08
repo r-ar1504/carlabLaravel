@@ -167,7 +167,7 @@ class API extends Controller
 
       }
 
-      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list]);
 
     }else{
 
