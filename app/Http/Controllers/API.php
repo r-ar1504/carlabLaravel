@@ -212,7 +212,7 @@ class API extends Controller
 
   function terminateOrder(Request $req, $order_id){
 
-  };
+  }
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
