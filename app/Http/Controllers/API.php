@@ -141,13 +141,10 @@ class API extends Controller
   function createOrder(Request $req){
     $data = $req->all();
 
-    $worker = $this->findWorker($data['service_name']);
+    $worker_list = $this->findWorker($data['service_name']);
 
-    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
-    if ($worker->isEmpty()) {
-      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
+    if ($worker_list != null) {
 
-    }else {
       //Register unasigned Order.
       $order_id = DB::table('Order')->insertGetId([
         'status' => $data['status'],
@@ -162,9 +159,46 @@ class API extends Controller
         'category_id' => $data['category_id']
       ]);
 
-      $order = $this->getOrderDetails($order_id);
+      $order_data = $this->getOrderDetails($order_id);
+
+      foreach ($worker_list as $worker) {
+
+        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+
+      }
 
       return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
+
+    }else{
+
+      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
+
+    }
+
+
+    // 
+    //
+    // // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
+    // if ($worker->isEmpty()) {
+
+
+    // }else {
+    //   //Register unasigned Order.
+    //   $order_id = DB::table('Order')->insertGetId([
+    //     'status' => $data['status'],
+    //     'latitude' => $data['lat'],
+    //     'longitude' => $data['lng'],
+    //     'ammount' => $data['ammount'],
+    //     'car_plate' => $data['car_plate'],
+    //     'user_id' => $data['user'],
+    //     'service_name' => $data['service_name'],
+    //     'details' => $data['details'],
+    //     'service_date' => $data['date'],
+    //     'category_id' => $data['category_id']
+    //   ]);
+    //
+    //   $order = $this->getOrderDetails($order_id);
+
 
     }
 
@@ -213,6 +247,10 @@ class API extends Controller
   function terminateOrder(Request $req, $order_id){
 
   }
+
+  function startOrder(Request $req, $order_id){
+
+  }
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
@@ -235,20 +273,7 @@ class API extends Controller
   function findWorker($order_data){
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data)->get();
-
-    if ($worker_list != null) {
-
-      foreach ($worker_list as $worker) {
-
-        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
-
-      }
-      return $worker_list;
-
-    }else{
-      return $worker_list;
-    }
-
+  return $worker_list;
 
   }
 
