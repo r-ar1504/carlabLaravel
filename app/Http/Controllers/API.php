@@ -68,7 +68,7 @@ class API extends Controller
 
     $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['worker' => $worker, 'orders' => "null"]);
+    return response()->json(['worker' => $worker, 'orders' => $orders]);
 
   }
 
