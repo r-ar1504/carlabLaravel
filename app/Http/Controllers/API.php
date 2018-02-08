@@ -171,7 +171,7 @@ class API extends Controller
     $order = DB::table('Order')->where('id', $order_id)->first();
     $worker = DB::table('Worker')->where('fireID', $fireID)->first();
     if ($order->status != 0) {
-      return response()->json(['code' => '2');
+      return response()->json(['code' => '2']);
     }elseif ($order->status == 0) {
       DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
       'status' => 1]);
