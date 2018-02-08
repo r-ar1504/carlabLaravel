@@ -240,14 +240,14 @@ class API extends Controller
     return response()->json(['orders' => $orders, 'code' => "200"]);
   }
 
-  function terminateOrder(Request $req, $order_id){
-    DB::table('Order')->where('id', $order_id)->update(['status'=> "3"]);
+  function terminateOrder(Request $req, $order_id, $now){
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'end_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
     Pusher::trigger('order-'.$order_id, 'order-done');
   }
 
-  function startOrder(Request $req, $order_id){
-    DB::table('Order')->where('id', $order_id)->update(['status'=> "2"]);
+  function startOrder(Request $req, $order_id, $now){
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "2", 'starting_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
@@ -255,7 +255,7 @@ class API extends Controller
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
 
-    $orders = DB::table('Order')->where('worker_id', $worker_id)->where('status',1)->where('service_name', $worker_role)->get();
+    $orders = DB::table('Order')->where('worker_id', $worker_id)->where('service_name', $worker_role)->get();
 
     return $orders;
   }
