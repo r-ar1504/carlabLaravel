@@ -140,28 +140,35 @@ class API extends Controller
   //<!--[Create Order]-->//
   function createOrder(Request $req){
     $data = $req->all();
-
-    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
-
-    //Register unasigned Order.
-    $order_id = DB::table('Order')->insertGetId([
-      'status' => $data['status'],
-      'latitude' => $data['lat'],
-      'longitude' => $data['lng'],
-      'ammount' => $data['ammount'],
-      'car_plate' => $data['car_plate'],
-      'user_id' => $data['user'],
-      'service_name' => $data['service_name'],
-      'details' => $data['details'],
-      'service_date' => $data['date'],
-      'category_id' => $data['category_id']
-    ]);
-
-    $order = $this->getOrderDetails($order_id);
-
     $worker = $this->findWorker($order);
 
-    return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
+    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
+    if ($worker->isEmpty()) {
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => "no_workers"]);
+
+    }else {
+      //Register unasigned Order.
+      $order_id = DB::table('Order')->insertGetId([
+        'status' => $data['status'],
+        'latitude' => $data['lat'],
+        'longitude' => $data['lng'],
+        'ammount' => $data['ammount'],
+        'car_plate' => $data['car_plate'],
+        'user_id' => $data['user'],
+        'service_name' => $data['service_name'],
+        'details' => $data['details'],
+        'service_date' => $data['date'],
+        'category_id' => $data['category_id']
+      ]);
+
+      $order = $this->getOrderDetails($order_id);
+
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker]);
+
+    }
+
+
+
   }
 
   //<!--[Challenge Order]-->//
