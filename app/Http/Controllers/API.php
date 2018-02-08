@@ -176,7 +176,7 @@ class API extends Controller
       DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
       'status' => 1]);
 
-      Pusher::trigger('order-'.$order-id, 'got-worker', ['worker' => $worker]);
+      Pusher::trigger('order-'.$order->id, 'got-worker', ['worker' => $worker]);
 
         return response()->json(['code' => '1']);
     }
