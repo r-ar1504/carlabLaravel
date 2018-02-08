@@ -143,7 +143,7 @@ class API extends Controller
 
     $worker_list = $this->findWorker($data['service_name']);
 
-    if ($worker_list != null) {
+    if ( count($worker_list)>0) {
 
       //Register unasigned Order.
       $order_id = DB::table('Order')->insertGetId([
@@ -167,7 +167,7 @@ class API extends Controller
 
       }
 
-      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list]);
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => $worker_list]);
 
     }else{
 
