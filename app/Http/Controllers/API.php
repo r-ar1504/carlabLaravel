@@ -169,7 +169,7 @@ class API extends Controller
     $data = $req->all();
 
     $order = DB::table('Order')->where('id', $order_id)->first();
-    $worker = DB:table('Worker')->where('fireID', $fireID)->first();
+    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
     if ($order->status != 0) {
       return response()->json(['code' => '2');
     }elseif ($order->status == 0) {
