@@ -241,11 +241,14 @@ class API extends Controller
   }
 
   function terminateOrder(Request $req, $order_id){
-
+    DB::table('Order')->where('id', $order_id)->update(['status'-> 3]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
+    Pusher::trigger('order-'.$order_id, 'order-done');
   }
 
   function startOrder(Request $req, $order_id){
-
+    DB::table('Order')->where('id', $order_id)->update(['status'-> 2]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
   }
   #Custom Reusable Functions<------------------------------------------------------------------------>
 

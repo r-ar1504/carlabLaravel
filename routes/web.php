@@ -44,7 +44,9 @@ Route::post('update_user/{fireID}', 'API@updateUser');
 Route::post('create_order', 'API@createOrder');
 
 //<!--[Terminate]-->//
-Route::post('end_order', "API@endOrder");
+Route::get('end_service/{order_id}', "API@terminateOrder");
+
+Route::get('start_service/{order_id}', "API@startOrder");
 
 //<!--[Fetch Orders By User]-->//
 Route::post('get_orders/{fireID}', 'API@getOrders');
