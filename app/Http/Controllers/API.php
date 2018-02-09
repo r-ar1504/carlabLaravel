@@ -95,11 +95,23 @@ class API extends Controller
    }
 
     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-
-
    return response()->json(['data' => $nworker->status]);
   }
 
+  //<!--[Change Worker (LogOut)]-->//
+  function workerLogOut(Request $req, $fireID){
+   $worker = DB::table('Worker')->where('fireID', $fireID)->first();
+
+   if ($worker->status != '0') {
+     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
+     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+    return response()->json(['data' => $nworker->status]);
+  }else {
+     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+     return response()->json(['data' => $nworker->status]);
+   }
+
+  }
   //<!--[Create New User]-->//
   function createUser(Request $req){
     $data = $req->all();
@@ -250,6 +262,7 @@ class API extends Controller
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
+
   #Custom Reusable Functions<------------------------------------------------------------------------>
 
   // #<!-- Fetch Orders By Worker ID -->
@@ -272,8 +285,7 @@ class API extends Controller
   function findWorker($order_data){
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data)->get();
-  return $worker_list;
-
+    return $worker_list;
   }
 
   //<!--[Fetch SubCategory By Category ID]-->//
