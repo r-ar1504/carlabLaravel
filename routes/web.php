@@ -56,7 +56,7 @@ Route::get('wash_service/{order_id}/{now}', "API@startWash");
 Route::get('start_service/{order_id}/{now}', "API@startOrder");
 
 //<!--[Fetch Orders By User]-->//
-Route::post('get_orders/{fireID}', 'API@getOrders');
+Route::get('get_orders/{fireID}', 'API@getOrders');
 
 //<!--[Try To Reach Order]-->//
 Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
