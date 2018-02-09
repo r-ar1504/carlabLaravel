@@ -235,7 +235,7 @@ class API extends Controller
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
 
-    Pusher::trigger('order-'.$order->id, 'order-done');
+    Pusher::trigger('order-'.$order_id, 'order-done');
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
