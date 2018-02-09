@@ -46,9 +46,10 @@ Route::post('create_order', 'API@createOrder');
 //<!--[Terminate]-->//
 Route::get('end_service/{order_id}/{now}', "API@terminateOrder");
 
-//<!--[Terminate]-->//
+//<!--[Start Washing]-->//
 Route::get('wash_service/{order_id}/{now}', "API@startWash");
 
+//<!--[Start Route]-->//
 Route::get('start_service/{order_id}/{now}', "API@startOrder");
 
 //<!--[Fetch Orders By User]-->//

@@ -224,15 +224,6 @@ class API extends Controller
 
   }
 
-  //<!--[Terminate Order]-->//
-  function endOrder(Request $req){
-    $data = $req->all();
-
-    Pusher::trigger('orders', 'end-order',  ['order_object' => $data]);
-
-    return response()->json(['status' => '200']);
-  }
-
   //<!--[Fetch Orders]-->//
   function getOrders(Request $req, $fireID){
     $orders = DB::table('Order')->where('user_id', $fireID);
@@ -240,17 +231,20 @@ class API extends Controller
     return response()->json(['orders' => $orders, 'code' => "200"]);
   }
 
+  //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
     Pusher::trigger('order-'.$order_id, 'order-done');
   }
 
+  //<!--[Start Order]-->//
   function startOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "2", 'starting_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
+  //<!--[Wash Order]-->//
   function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
