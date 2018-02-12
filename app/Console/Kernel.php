@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
         }else {
           echo "No Pending Orders";
         }
-      })->hourly();
+      })->everyMinute();	
     }
 
     /**
