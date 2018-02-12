@@ -34,7 +34,6 @@ class Kernel extends ConsoleKernel
           foreach ($orders as $order) {
             $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order->service_name)->get();
             // DB::table('Order')->where('id', '=', $order->id)->update(['status'=> "2"]);
-
             if (count($worker_list)>0) {
               foreach ($worker_list as $worker) {
                 Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order]);
