@@ -227,14 +227,10 @@ class API extends Controller
       DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
       'status' => 1]);
 
-      Pusher::trigger('order-'.$order->id, 'got-worker', ['worker' => $worker]);
+      Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
         return response()->json(['code' => '1']);
     }
-    // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
-
-
-
   }
 
   //<!--[Fetch Orders]-->//
