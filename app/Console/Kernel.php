@@ -26,12 +26,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-    }
-
-    protected function pushUnassignedOrders(Schedule $schedule)
-    {
       $schedule->call(function(){
         $orders = DB::table('Order')->where('status', '=', 0)->get();
 
@@ -53,6 +47,11 @@ class Kernel extends ConsoleKernel
           echo "No Pending Orders";
         }
       })->everyMinute();
+    }
+
+    protected function pushUnassignedOrders(Schedule $schedule)
+    {
+
     }
 
     /**
