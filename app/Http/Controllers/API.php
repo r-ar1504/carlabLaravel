@@ -5,9 +5,6 @@ use Illuminate\Support\Facades\DB;
 use App\Service;
 use Pusher\Laravel\Facades\Pusher;
 
-// $pusher = new Pusher\Pusher("1f8d9c19abfb2a61a064"."d143b896c5f8715af3c0"."457719". array('cluster' => 'us2'));
-
-
 class API extends Controller
 {
   //<!--[Get All Services]-->//
@@ -255,15 +252,22 @@ class API extends Controller
   function startOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "2", 'starting_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
+
+    Pusher::trigger('order-'.$order_id, 'route-started', ['message' => "Operador en camino"]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
   //<!--[Wash Order]-->//
   function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
     return response()->json(['result' => "ok", 'code' => "200"]);
+
+    Pusher::trigger('order-'.$order_id, 'wash-started', ['message' => "Lavado iniciado"]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
-  #Custom Reusable Functions<------------------------------------------------------------------------>
+
+  #Custom Reusable Functions<------------------------------------------------------->
 
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
