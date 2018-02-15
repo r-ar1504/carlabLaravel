@@ -243,7 +243,6 @@ class API extends Controller
   //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
-
     Pusher::trigger('order-'.$order_id, 'order-done', ['message' => "Order Done"]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
@@ -251,8 +250,6 @@ class API extends Controller
   //<!--[Start Order]-->//
   function startOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "2", 'starting_date' => $now]);
-    return response()->json(['result' => "ok", 'code' => "200"]);
-
     Pusher::trigger('order-'.$order_id, 'route-started', ['message' => "Operador en camino"]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
@@ -260,8 +257,6 @@ class API extends Controller
   //<!--[Wash Order]-->//
   function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
-    return response()->json(['result' => "ok", 'code' => "200"]);
-
     Pusher::trigger('order-'.$order_id, 'wash-started', ['message' => "Lavado iniciado"]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
