@@ -20,10 +20,11 @@ class API extends Controller
     // return $service_id;
     $subcategories = [];
 
-    $categories = DB::table('Category')->where('service_id', $service_id)->get();
+    $categories = json_encode(DB::table('Category')->where('service_id', $service_id)->get(), true);
 
     foreach ($categories as $category) {
       if ($category->sub_cat != 0) {
+
         $category->sub_category = $this->getSubCategories($category->id);
       }
     }
