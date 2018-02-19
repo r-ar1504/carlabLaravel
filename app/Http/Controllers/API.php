@@ -23,7 +23,7 @@ class API extends Controller
     $categories = json_encode(DB::table('Category')->where('service_id', $service_id)->get(), true);
 
 
-    return response()->json(['categories' => $categories]);
+    return response(['categories' => $categories]);
 
   }
 
