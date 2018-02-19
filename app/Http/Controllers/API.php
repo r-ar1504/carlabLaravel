@@ -24,11 +24,11 @@ class API extends Controller
 
     foreach ($categories as $category) {
       if ($category->sub_cat != 0) {
-        $category['sub_category'] = $this->getSubCategories($category->id);
+        $category->sub_category = $this->getSubCategories($category->id);
       }
     }
 
-    return response()->json(['categories' => $categories, 'sub-categories' => $subcategories]);
+    return response()->json(['categories' => $categories]);
 
   }
 
