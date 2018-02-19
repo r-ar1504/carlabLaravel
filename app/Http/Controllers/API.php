@@ -24,7 +24,7 @@ class API extends Controller
 
     foreach ($categories as $category) {
       if ($category->sub_cat != 0) {
-        $category->sub_category = "???";
+        $category->sub_category = $this->getSubCategories($category->id);
       }
     }
 
