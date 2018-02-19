@@ -11,7 +11,14 @@ class API extends Controller
   function services(Request $req){
 
     $services = DB::select('select * from Service');
-    return response()->json(['services' => $services]);
+    foreach ($services as $service) {
+      if ($service->sub_cat!=0) {
+        $service['sub_category'] = $this->getSubCategories($service->id);
+      }else {
+
+      }
+      return response()->json(['services' => $services]);
+    }
   }
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
