@@ -290,7 +290,7 @@ class API extends Controller
 
     $sub_cat = DB::table('SubCategory')->where('category_id', $category_id)->first();
 
-    return json_encode($sub_cat, true);
+    return $sub_cat;
   }
 
   #<!------------------------------------------------------------------------------>
