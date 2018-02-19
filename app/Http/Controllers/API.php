@@ -22,12 +22,12 @@ class API extends Controller
 
     $categories = json_encode(DB::table('Category')->where('service_id', $service_id)->get(), true);
 
-    foreach ($categories as $category) {
-      if ($category->sub_cat != 0) {
-
-        $category->sub_category = $this->getSubCategories($category->id);
-      }
-    }
+    // foreach ($categories as $category) {
+    //   if ($category->sub_cat != 0) {
+    //
+    //     $category->sub_category = $this->getSubCategories($category->id);
+    //   }
+    // }
 
     return response()->json(['categories' => $categories]);
 
