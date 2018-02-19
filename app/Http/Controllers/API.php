@@ -24,10 +24,7 @@ class API extends Controller
 
     foreach ($categories as $category) {
       if ($category->sub_cat != 0) {
-
-        $subc = $this->getSubCategories($category->id);
-        array_push($subcategories, $subc);
-
+        $category['sub_category'] = $this->getSubCategories($category->id)
       }
     }
 
