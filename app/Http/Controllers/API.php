@@ -295,4 +295,7 @@ class API extends Controller
 
   #<!------------------------------------------------------------------------------>
 
+  function getTerms(){
+    return view('terms');
+  }
 }

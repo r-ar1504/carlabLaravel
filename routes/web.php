@@ -60,3 +60,6 @@ Route::get('get_orders/{fireID}', 'API@getOrders');
 
 //<!--[Try To Reach Order]-->//
 Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
+
+//<!--[Get Terms And Conditions]-->//
+Route::get('terms','API@getTerms');
