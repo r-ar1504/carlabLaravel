@@ -261,6 +261,7 @@ class API extends Controller
 
       $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
 
+      // Create Customer Conekta
       try {
         $customer = \Conekta\Customer::create(
           array(
@@ -289,13 +290,94 @@ class API extends Controller
               return response()->json(['code' => '2']);
       }
 
-
-
       if ($order->has_sub != "true") {
+        $subcategory = DB::table('SubCategory')->where('id', '=', $order->subcat_id)->first();
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+
+        try{
+          $order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => $category->price,
+                  "quantity" => 1
+                ),
+                array(
+                  "name" => $subcategory->name,
+                  "unit_price" => $category->price,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer
+              ), //customer_info
+              "charges" => array(
+                  array(
+                      "payment_method" => array(
+                              "type" => "default"
+                  ) //first charge
+              ) //charges
+            )//order
+          );
+        } catch (\Conekta\ProcessingError $error){
+          echo $error->getMesage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ParameterValidationError $error){
+          echo $error->getMessage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\Handler $error){
+          echo $error->getMessage()
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        }
+
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
 
       }else {
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+
+        try{
+          $conekta_order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => $category->price,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer
+              ), //customer_info
+              "charges" => array(
+                  array(
+                      "payment_method" => array(
+                              "type" => "default"
+                  ) //first charge
+              ) //charges
+            )//order
+          );
+        } catch (\Conekta\ProcessingError $error){
+          echo $error->getMesage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ParameterValidationError $error){
+          echo $error->getMessage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\Handler $error){
+          echo $error->getMessage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
+          return response()->json(['code' => '2']);
+        }
+
+
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
       }
@@ -304,6 +386,7 @@ class API extends Controller
 
         return response()->json(['code' => '1']);
     }
+
   }
 
   //<!--[Fetch Orders]-->//
