@@ -314,10 +314,10 @@ class API extends Controller
                 "customer_id" => $customer
               ), //customer_info
               "charges" => array(
-                  array(
+                  array(                    
+                    "amount" => ($order->amount)*100,
                     "payment_method" => array(
                             "type" => "card",
-                            "amount" => ($order->amount)*100,
                             "token_id" => $order->token
                   ) //first charge
               ) //charges
@@ -360,9 +360,9 @@ class API extends Controller
               ), //customer_info
               "charges" => array(
                   array(
+                      "amount"=> ($order->amount)*100,
                       "payment_method" => array(
                               "type" => "card",
-                              "amount"=> ($order->amount)*100,
                               "token_id" => $order->token
                   ) //first charge
               ) //charges
