@@ -17,6 +17,11 @@ class API extends Controller
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
+    require_once(app_path()."/vendor/conekta/conekta-php/lib/Conekta.php");
+    \Conekta\Conekta::setApiKey("key_ZuD84FNriznv8HHDPzCCoQ");
+    \Conekta\Conekta::setApiVersion("2.0.0");
+
+    $api_key =   \Conekta\Conekta::setApiKey();
     // return $service_id;
     $subcategories = [];
 
@@ -28,7 +33,7 @@ class API extends Controller
       }
     }
 
-    return response()->json(['categories' => $categories]);
+    return response()->json(['categories' => $categories, 'api' => $api_key]);
 
   }
 
