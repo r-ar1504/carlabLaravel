@@ -17,7 +17,7 @@ class API extends Controller
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
-    require_once(app_path()."/conekta-php/lib/Conekta.php");
+    require_once(app_path()."/conekta-php/Conekta.php");
     \Conekta\Conekta::setApiKey("key_ZuD84FNriznv8HHDPzCCoQ");
     \Conekta\Conekta::setApiVersion("2.0.0");
 
@@ -217,7 +217,7 @@ class API extends Controller
 
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
-    require_once(app_path()."/conekta-php/lib/Conekta.php");
+    require_once(app_path()."/conekta-php/Conekta.php");
     \Conekta\Conekta::setApiKey("key_ZuD84FNriznv8HHDPzCCoQ");
     \Conekta\Conekta::setApiVersion("2.0.0");
     $data = $req->all();
