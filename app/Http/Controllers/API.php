@@ -315,8 +315,9 @@ class API extends Controller
               ), //customer_info
               "charges" => array(
                   array(
-                      "payment_method" => array(
-                              "type" => "default"
+                    "payment_method" => array(
+                            "type" => "card",
+                            "token_id" => $order->token
                   ) //first charge
               ) //charges
             )//order
@@ -359,7 +360,8 @@ class API extends Controller
               "charges" => array(
                   array(
                       "payment_method" => array(
-                              "type" => "default"
+                              "type" => "card",
+                              "token_id" => $order->token
                   ) //first charge
               ) //charges
             )//order
