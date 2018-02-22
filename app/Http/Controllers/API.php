@@ -317,6 +317,7 @@ class API extends Controller
                   array(
                     "payment_method" => array(
                             "type" => "card",
+                            "amount" => ($order->amount)*100,
                             "token_id" => $order->token
                   ) //first charge
               ) //charges
@@ -361,6 +362,7 @@ class API extends Controller
                   array(
                       "payment_method" => array(
                               "type" => "card",
+                              "amount"=> ($order->amount)*100,
                               "token_id" => $order->token
                   ) //first charge
               ) //charges
