@@ -62,10 +62,7 @@ try {
   echo $e->getMessage();
 
   return response()->json(['categories' => $categories, 'api' => $e]);
-} finally (\Conekta\Handler $e){
-  echo $e->getMessage();
-
-  return response()->json(['categories' => $categories, 'api' => $e]);
+}
 }
 
     $api_key =   \Conekta\Conekta::setApiKey();
