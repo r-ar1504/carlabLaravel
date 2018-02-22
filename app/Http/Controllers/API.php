@@ -17,44 +17,7 @@ class API extends Controller
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
-    require_once(app_path()."/conekta-php/lib/Conekta.php");
-    \Conekta\Conekta::setApiKey("key_ZuD84FNriznv8HHDPzCCoQ");
-    \Conekta\Conekta::setApiVersion("2.0.0");
-
-    $valid_order =
-    array(
-        'line_items'=> array(
-            array(
-                'name'        => 'Box of Cohiba S1s',
-                'description' => 'Imported From Mex.',
-                'unit_price'  => 20000,
-                'quantity'    => 1,
-                'sku'         => 'cohb_s1',
-                'category'    => 'food',
-                'tags'        => array('food', 'mexican food')
-                )
-           ),
-          'currency'    => 'mxn',
-          'metadata'    => array('test' => 'extra info'),
-          'charges'     => array(
-              array(
-                  'payment_source' => array(
-                      'type'       => 'oxxo_cash',
-                      'expires_at' => strtotime(date("Y-m-d H:i:s")) + "36000"
-                   ),
-                   'amount' => 20000
-                )
-            ),
-            'currency'      => 'mxn',
-            'customer_info' => array(
-                'name'  => 'John Constantine',
-                'phone' => '+5213353319758',
-                'email' => 'hola@hola.com'
-            )
-        );
-
-  $order = \Conekta\Order::create($valid_order);
-
+    
     // return $service_id;
     $subcategories = [];
 
@@ -66,7 +29,7 @@ class API extends Controller
       }
     }
 
-    return response()->json(['categories' => $categories, 'api' => $order]);
+    return response()->json(['categories' => $categories]);
 
   }
 
