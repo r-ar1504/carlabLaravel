@@ -331,7 +331,7 @@ class API extends Controller
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\Handler $error){
-          echo $error->getMessage()
+          echo $error->getMessage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
           return response()->json(['code' => '2']);
         }
