@@ -60,9 +60,8 @@ try {
   return response()->json(['categories' => $categories, 'api' => $e]);
 } catch (\Conekta\ParameterValidationError $e){
   echo $e->getMessage();
-
   return response()->json(['categories' => $categories, 'api' => $e]);
-}
+  }
 }
 
     $api_key =   \Conekta\Conekta::setApiKey();
