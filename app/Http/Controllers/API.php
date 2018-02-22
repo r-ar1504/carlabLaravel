@@ -359,7 +359,6 @@ class API extends Controller
               ), //customer_info
               "charges" => array(
                   array(
-                      "amount"=> ($order->amount)*100,
                       "payment_method" => array(
                               "type" => "card",
                               "token_id" => $order->token
