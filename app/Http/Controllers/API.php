@@ -260,7 +260,8 @@ class API extends Controller
     }elseif ($order->status == 0) {
 
       $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
-      //Attempt payment.
+
+      try {
         $customer = \Conekta\Customer::create(
           array(
             "name" => $user->name." ".$user->last_name,
@@ -274,6 +275,19 @@ class API extends Controller
             )//Card Data
           )//Customer Array
         );//Conekta Customer
+      } catch (\Conekta\ProccessingError $error){
+        echo $error->getMesage();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => error]);
+              return response()->json(['code' => '2']);
+      } catch (\Conekta\ParameterValidationError $error){
+        echo $error->getMessage();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => error]);
+              return response()->json(['code' => '2']);
+      } catch (\Conekta\Handler $error){
+        echo $error->getMessage();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => error]);
+              return response()->json(['code' => '2']);
+      }
 
 
 
