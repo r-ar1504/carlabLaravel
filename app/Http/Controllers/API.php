@@ -320,7 +320,8 @@ class API extends Controller
                   ) //first charge
               ) //charges
             )//order
-          );
+          )
+        );
         } catch (\Conekta\ProcessingError $error){
           echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
@@ -362,7 +363,8 @@ class API extends Controller
                   ) //first charge
               ) //charges
             )//order
-          );
+          )
+        );
         } catch (\Conekta\ProcessingError $error){
           echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => error]);
