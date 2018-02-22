@@ -53,18 +53,8 @@ class API extends Controller
             )
         );
 
-try {
   $order = \Conekta\Order::create($valid_order);
-} catch (\Conekta\ProcessingError $e){
-  echo $e->getMessage();
-  return response()->json(['categories' => $categories, 'api' => $e]);
-} catch (\Conekta\ParameterValidationError $e){
-  echo $e->getMessage();
-  return response()->json(['categories' => $categories, 'api' => $e]);
-  }
-}
 
-    $api_key =   \Conekta\Conekta::setApiKey();
     // return $service_id;
     $subcategories = [];
 
@@ -76,7 +66,7 @@ try {
       }
     }
 
-    return response()->json(['categories' => $categories, 'api' => $api_key]);
+    return response()->json(['categories' => $categories, 'api' => $order]);
 
   }
 
