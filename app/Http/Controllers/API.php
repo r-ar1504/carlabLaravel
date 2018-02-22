@@ -212,6 +212,9 @@ class API extends Controller
 
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
+    require_once(app_path()."/vendor/conekta/conekta-php/lib/Conekta.php");
+    \Conekta\Conekta::setApiKey("key_ZuD84FNriznv8HHDPzCCoQ");
+    \Conekta\Conekta::setApiVersion("2.0.0");
     $data = $req->all();
 
     $order = DB::table('Order')->where('id', $order_id)->first();
