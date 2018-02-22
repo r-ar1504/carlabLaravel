@@ -258,8 +258,46 @@ class API extends Controller
     if ($order->status != 0) {
       return response()->json(['code' => '2']);
     }elseif ($order->status == 0) {
-      DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-      'status' => 1]);
+
+      $user = DB::table('User')->where('id', '=', $order->user_id)->first();
+      //Attempt payment.
+      try {
+        $customer = \Conekta\Customer::create(
+          array(
+            "name" => $user->name." ".$user->last_name,
+            "email"=> $user->email,
+            "phone"=> $user->phone,
+            "payment_sources"=> array(
+              array(
+                "type" => "card",
+                "token_id" => $order->token
+              )//Payment Sources
+            )//Card Data
+          )//Customer Array
+        );//Conekta Customer
+      } catch (\Conekta\ProccessingError $error){
+        echo $error->getMesage();
+        Pusher::trigger('order-'.$order->id, 'card-issues', ['error' => $error]);
+        return response()->json(['code' => '2']);
+      } catch (\Conekta\ParameterValidationError $error){
+        echo $error->getMesage();
+        Pusher::trigger('order-'.$order->id, 'card-issues', ['error' => $error]);
+        return response()->json(['code' => '2']);
+      } catch (\Conekta\Handler $error){
+        echo $error->getMesage();
+        Pusher::trigger('order-'.$order->id, 'card-issues', ['error' => $error]);
+        return response()->json(['code' => '2']);
+      }
+
+      
+      if ($order->has_sub != "true") {
+        DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+        'status' => 1]);
+
+      }else {
+        DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+        'status' => 1]);
+      }
 
       Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
