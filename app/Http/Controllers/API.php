@@ -311,7 +311,7 @@ class API extends Controller
               ), //line_items
               "currency" => "MXN",
               "customer_info" => array(
-                "customer_id" => $customer
+                "customer_id" => $customer->id
               ), //customer_info
               "charges" => array(
                   array(
@@ -355,7 +355,7 @@ class API extends Controller
               ), //line_items
               "currency" => "MXN",
               "customer_info" => array(
-                "customer_id" => $customer
+                "customer_id" => $customer->id
               ), //customer_info
               "charges" => array(
                   array(
