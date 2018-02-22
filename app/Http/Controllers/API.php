@@ -259,7 +259,7 @@ class API extends Controller
       return response()->json(['code' => '2']);
     }elseif ($order->status == 0) {
 
-      $user = DB::table('User')->where('id', '=', $order->user_id)->first();
+      $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
       //Attempt payment.
       try {
         $customer = \Conekta\Customer::create(
@@ -289,7 +289,7 @@ class API extends Controller
         return response()->json(['code' => '2']);
       }
 
-      
+
       if ($order->has_sub != "true") {
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
