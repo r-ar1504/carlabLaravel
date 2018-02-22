@@ -300,12 +300,12 @@ class API extends Controller
               "line_items" => array(
                 array(
                   "name" => $order->service_name." ".$category->name,
-                  "unit_price" => ($category->price)*100,
+                  "unit_price" => 10000,
                   "quantity" => 1
                 ),
                 array(
                   "name" => $subcategory->name,
-                  "unit_price" => ($subcategory->price*100),
+                  "unit_price" => (7500),
                   "quantity" => 1
                 )
               ), //line_items
@@ -314,8 +314,7 @@ class API extends Controller
                 "customer_id" => $customer
               ), //customer_info
               "charges" => array(
-                  array(                    
-                    "amount" => ($order->amount)*100,
+                  array(
                     "payment_method" => array(
                             "type" => "card",
                             "token_id" => $order->token
