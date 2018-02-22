@@ -17,7 +17,7 @@ class API extends Controller
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
-    
+
     // return $service_id;
     $subcategories = [];
 
@@ -154,19 +154,54 @@ class API extends Controller
 
     if ( count($worker_list)>0) {
 
+      if($data['has_sub']!= true){
+        //Register unasigned Order.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'token' => $data['token']
+        ]);
+      }else{
+        //Register unasigned Order + SubCat.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'has_sub' => $data['has_sub'],
+          'subcat_name' => $data['subcat_name'],
+          'subcat_id' => $data['subcat_id'],
+          'token' => $data['token']
+        ]);
+      }
       //Register unasigned Order.
-      $order_id = DB::table('Order')->insertGetId([
-        'status' => $data['status'],
-        'latitude' => $data['lat'],
-        'longitude' => $data['lng'],
-        'ammount' => $data['ammount'],
-        'car_plate' => $data['car_plate'],
-        'user_id' => $data['user'],
-        'service_name' => $data['service_name'],
-        'details' => $data['details'],
-        'service_date' => $data['date'],
-        'category_id' => $data['category_id']
-      ]);
+      // $order_id = DB::table('Order')->insertGetId([
+      //   'status' => $data['status'],
+      //   'latitude' => $data['lat'],
+      //   'longitude' => $data['lng'],
+      //   'ammount' => $data['ammount'],
+      //   'car_plate' => $data['car_plate'],
+      //   'user_id' => $data['user'],
+      //   'service_name' => $data['service_name'],
+      //   'details' => $data['details'],
+      //   'service_date' => $data['date'],
+      //   'category_id' => $data['category_id'],
+      //   'token' => $data['token']
+      // ]);
 
       $order_data = $this->getOrderDetails($order_id);
 
