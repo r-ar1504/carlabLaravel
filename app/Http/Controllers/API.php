@@ -323,12 +323,12 @@ class API extends Controller
         //       )//order
         //     )
         //   );
-        //     DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-        //     'status' => 1]);
-        //
-        //     Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-        //     return response()->json(['code' => '1']);
-        //
+            DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+            'status' => 1]);
+
+            Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+            return response()->json(['code' => '1']);
+
         }catch (\Conekta\ProcessingError $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           DB::table('Order')->where('id', $order_id)->delete();
