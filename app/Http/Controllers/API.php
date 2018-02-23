@@ -12,7 +12,7 @@ class API extends Controller
 
     $services = DB::select('select * from Service');
 
-      return response()->json(['services' => $services]);
+    return response()->json(['services' => $services]);
   }
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
@@ -50,7 +50,7 @@ class API extends Controller
 
     ]);
 
-      return response()->json(['status' => '200']);
+    return response()->json(['status' => '200']);
 
   }
 
@@ -82,30 +82,30 @@ class API extends Controller
 
   //<!--[Change Worker Status]-->//
   function workerStatus(Request $req, $fireID){
-   $worker = DB::table('Worker')->where('fireID', $fireID)->first();
+    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
-   if ($worker->status != '0') {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
-   }else {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
-   }
+    if ($worker->status != '0') {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
+    }else {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
+    }
 
     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-   return response()->json(['data' => $nworker->status]);
+    return response()->json(['data' => $nworker->status]);
   }
 
   //<!--[Change Worker (LogOut)]-->//
   function workerLogOut(Request $req, $fireID){
-   $worker = DB::table('Worker')->where('fireID', $fireID)->first();
+    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
-   if ($worker->status != '0') {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
-     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-    return response()->json(['data' => $nworker->status]);
-  }else {
-     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-     return response()->json(['data' => $nworker->status]);
-   }
+    if ($worker->status != '0') {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
+      $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+      return response()->json(['data' => $nworker->status]);
+    }else {
+      $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+      return response()->json(['data' => $nworker->status]);
+    }
 
   }
 
@@ -120,7 +120,7 @@ class API extends Controller
       'name' => $data['name'],
     ]);
 
-      return response()->json(['data' => "OK", 'status' => "200"]);
+    return response()->json(['data' => "OK", 'status' => "200"]);
 
   }
 
@@ -244,7 +244,7 @@ class API extends Controller
     //   $order = $this->getOrderDetails($order_id);
 
 
-    }
+  }
 
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
@@ -279,15 +279,15 @@ class API extends Controller
       } catch (\Conekta\ProccessingError $error){
         echo $error->getMesage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-              return response()->json(['code' => '2']);
+        return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
         echo $error->getMessage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-              return response()->json(['code' => '2']);
+        return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
         echo $error->getMessage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-              return response()->json(['code' => '2']);
+        return response()->json(['code' => '2']);
       }
 
       if ($order->has_sub != "true") {
@@ -300,12 +300,12 @@ class API extends Controller
               "line_items" => array(
                 array(
                   "name" => $order->service_name." ".$category->name,
-                  "unit_price" => 10000,
+                  "unit_price" => intval($category->price)*100,
                   "quantity" => 1
                 ),
                 array(
                   "name" => $subcategory->name,
-                  "unit_price" => (7500),
+                  "unit_price" => intval($subcategory->price)*100,
                   "quantity" => 1
                 )
               ), //line_items
@@ -314,15 +314,15 @@ class API extends Controller
                 "customer_id" => $customer['id']
               ), //customer_info
               "charges" => array(
-                  array(
-                    "payment_method" => array(
-                            "type" => "card",
-                            "token_id" => $order->token
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
                   ) //first charge
-              ) //charges
-            )//order
-          )
-        );
+                ) //charges
+              )//order
+            )
+          );
         } catch (\Conekta\ProcessingError $error){
           echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
@@ -339,6 +339,8 @@ class API extends Controller
 
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
+        Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+        return response()->json(['code' => '1']);
 
       }else {
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
@@ -349,7 +351,7 @@ class API extends Controller
               "line_items" => array(
                 array(
                   "name" => $order->service_name." ".$category->name,
-                  "unit_price" => ($category->price*100),
+                  "unit_price" => intval($category->price)*100,
                   "quantity" => 1
                 )
               ), //line_items
@@ -358,37 +360,41 @@ class API extends Controller
                 "customer_id" => $customer['id']
               ), //customer_info
               "charges" => array(
-                  array(
-                      "payment_method" => array(
-                              "type" => "card",
-                              "token_id" => $order->token
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
                   ) //first charge
-              ) //charges
-            )//order
-          )
-        );
-      } catch (\Conekta\ProcessingError $error){
-        echo $error->getMesage();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
-      } catch (\Conekta\ParameterValidationError $error){
-        echo $error->getMessage();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
-      } catch (\Conekta\Handler $error){
-        echo $error->getMessage();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
-      }
+                ) //charges
+              )//order
+            )
+          );
+        } catch (\Conekta\ProcessingError $error){
+          echo $error->getMesage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ParameterValidationError $error){
+          echo $error->getMessage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\Handler $error){
+          echo $error->getMessage();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        }
 
 
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
+
+        Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+        return response()->json(['code' => '1']);
+
       }
 
       Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
-        return response()->json(['code' => '1']);
+      return response()->json(['code' => '1']);
     }
 
   }
