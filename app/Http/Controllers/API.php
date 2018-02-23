@@ -323,6 +323,12 @@ class API extends Controller
               )//order
             )
           );
+
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+          'status' => 1]);
+          Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+          return response()->json(['code' => '1']);
+
         } catch (\Conekta\ProcessingError $error){
           echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
@@ -336,11 +342,6 @@ class API extends Controller
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         }
-
-        DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-        'status' => 1]);
-        Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-        return response()->json(['code' => '1']);
 
       }else {
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
@@ -369,6 +370,14 @@ class API extends Controller
               )//order
             )
           );
+
+
+            DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+            'status' => 1]);
+
+            Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+            return response()->json(['code' => '1']);
+
         } catch (\Conekta\ProcessingError $error){
           echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
@@ -382,13 +391,6 @@ class API extends Controller
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         }
-
-
-        DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-        'status' => 1]);
-
-        Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-        return response()->json(['code' => '1']);
 
       }
 
