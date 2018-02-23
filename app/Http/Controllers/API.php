@@ -277,15 +277,12 @@ class API extends Controller
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
-        echo $error->getMesage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        echo $error->getMessage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
-        echo $error->getMessage();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       }
@@ -373,15 +370,12 @@ class API extends Controller
             return response()->json(['code' => '1']);
 
         } catch (\Conekta\ProcessingError $error){
-          echo $error->getMesage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\ParameterValidationError $error){
-          echo $error->getMessage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\Handler $error){
-          echo $error->getMessage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         }
