@@ -188,20 +188,7 @@ class API extends Controller
           'token' => $data['token']
         ]);
       }
-      //Register unasigned Order.
-      // $order_id = DB::table('Order')->insertGetId([
-      //   'status' => $data['status'],
-      //   'latitude' => $data['lat'],
-      //   'longitude' => $data['lng'],
-      //   'ammount' => $data['ammount'],
-      //   'car_plate' => $data['car_plate'],
-      //   'user_id' => $data['user'],
-      //   'service_name' => $data['service_name'],
-      //   'details' => $data['details'],
-      //   'service_date' => $data['date'],
-      //   'category_id' => $data['category_id'],
-      //   'token' => $data['token']
-      // ]);
+
 
       $order_data = $this->getOrderDetails($order_id);
 
@@ -218,32 +205,6 @@ class API extends Controller
       return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
 
     }
-
-
-    //
-    //
-    // // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
-    // if ($worker->isEmpty()) {
-
-
-    // }else {
-    //   //Register unasigned Order.
-    //   $order_id = DB::table('Order')->insertGetId([
-    //     'status' => $data['status'],
-    //     'latitude' => $data['lat'],
-    //     'longitude' => $data['lng'],
-    //     'ammount' => $data['ammount'],
-    //     'car_plate' => $data['car_plate'],
-    //     'user_id' => $data['user'],
-    //     'service_name' => $data['service_name'],
-    //     'details' => $data['details'],
-    //     'service_date' => $data['date'],
-    //     'category_id' => $data['category_id']
-    //   ]);
-    //
-    //   $order = $this->getOrderDetails($order_id);
-
-
   }
 
   //<!--[Challenge Order]-->//
@@ -271,13 +232,14 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "token_id" => $order->token
+                "payment_source_id" => $order->token
               )//Payment Sources
             )//Card Data
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
+        DB::table('Order')->where('id', '=', $order->id)->first();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
@@ -314,25 +276,23 @@ class API extends Controller
                 array(
                   "payment_method" => array(
                     "type" => "card",
-                    "token_id" => $order->token
+                    "payment_source_id" => $order->token
                   ) //first charge
                 ) //charges
               )//order
             )
           );
 
-          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-          'status' => 1]);
           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
           return response()->json(['code' => '1']);
 
         } catch (\Conekta\ParameterValidationError $error){
-          echo $error->getMessage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
         } catch (\Conekta\Handler $error){
-          echo $error->getMessage();
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
         }
 
@@ -357,7 +317,7 @@ class API extends Controller
                 array(
                   "payment_method" => array(
                     "type" => "card",
-                    "token_id" => $order->token
+                    "payment_source_id" => $order->token
                   ) //first charge
                 ) //charges
               )//order
@@ -371,12 +331,15 @@ class API extends Controller
 
         } catch (\Conekta\ProcessingError $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
         } catch (\Conekta\ParameterValidationError $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
         } catch (\Conekta\Handler $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
         }
 
