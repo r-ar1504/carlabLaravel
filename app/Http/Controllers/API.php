@@ -232,7 +232,7 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "payment_source_id" => $order->token
+                "token_id" => $order->token
               )//Payment Sources
             )//Card Data
           )//Customer Array
@@ -276,7 +276,7 @@ class API extends Controller
                 array(
                   "payment_method" => array(
                     "type" => "card",
-                    "payment_source_id" => $order->token
+                    "token_id" => $order->token
                   ) //first charge
                 ) //charges
               )//order
@@ -317,7 +317,7 @@ class API extends Controller
                 array(
                   "payment_method" => array(
                     "type" => "card",
-                    "payment_source_id" => $order->token
+                    "token_id" => $order->token
                   ) //first charge
                 ) //charges
               )//order
