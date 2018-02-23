@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () { return view('welcome'); });
+Route::get('/', function () { return view('home'); });
 
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
