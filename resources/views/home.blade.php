@@ -225,7 +225,7 @@
         </div>
       </div>
     </section>
-    
+
     <section id="contact">
       <div class="container">
         <div class="row">
@@ -277,7 +277,7 @@
             </ul>
           </div>
           <div class="col-md-2">
-            <ul class="list-inline quicklinks">             
+            <ul class="list-inline quicklinks">
               <li class="list-inline-item">
                 <a href="/terms">Términos Y Condiciones</a>
               </li>
