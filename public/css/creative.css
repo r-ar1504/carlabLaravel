@@ -211,6 +211,10 @@ header.masthead {
     .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-name {
       font-size: 22px; } }
 
+.gallery {
+  width: 700px;
+  height: 420px; }
+
 .text-primary {
   color: #beec2d !important; }
 
