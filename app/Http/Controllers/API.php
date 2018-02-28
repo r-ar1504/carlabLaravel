@@ -205,6 +205,7 @@ class API extends Controller
       return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
 
     }
+
   }
 
   //<!--[Challenge Order]-->//
@@ -407,6 +408,7 @@ class API extends Controller
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data)->get();
     return $worker_list;
+
   }
 
   //<!--[Fetch SubCategory By Category ID]-->//
