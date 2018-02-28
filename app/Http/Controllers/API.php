@@ -68,7 +68,6 @@ class API extends Controller
     return response()->json(['worker' => $worker, 'orders' => $orders]);
   }else{
 
-    $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
     return response()->json(['status'=> '0']);
 
