@@ -58,20 +58,20 @@ class API extends Controller
   function getWorker(Request $req){
 
     $worker = DB::table('Worker')->where('fireID', $req->fireID)->first();
-
-    if(count($worker)>0){
+    //
+    // if(count($worker)>0){
     $worker_id = $worker->fireID;
     $worker_role = $worker->role;
 
     $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
     return response()->json(['worker' => $worker, 'orders' => $orders]);
-  }else{
-
-
-    return response()->json(['status'=> '0']);
-
-  }
+  // }else{
+  //
+  //
+  //   return response()->json(['status'=> '0']);
+  //
+  // }
 
   }
 
