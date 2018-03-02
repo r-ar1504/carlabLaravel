@@ -379,10 +379,13 @@ class API extends Controller
   /**te and end order**/
   function evaluateOrder(Request $req, $order_id){
     $data = $req->all();
-
+    $order = DB::table('Order')->where('id', $order_id)->first();
     if ($data['rating'] >= 5) {
-      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => 5.0]);
-      DB::table('Order')->where('id', $order_id)->increment('stars');
+      $order->update(['comments'=> $data['comments'], 'rating' => 5.0]);
+
+      DB::table('Worker')->where('fireID', $order->worker_id)->increment('stars');
+      DB::table('Worker')->where('fireID', $order->worker_id)->increment('on_time');
+
     }else{
       DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
     }
