@@ -66,13 +66,12 @@ class API extends Controller
     $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
     return response()->json(['worker' => $worker, 'orders' => $orders]);
-  }else{
+    }else{
 
 
-    return response()->json(['status'=> '0']);
+      return response()->json(['status'=> '0']);
 
-  }
-
+    }
   }
 
   //<!--[Get User]-->//
@@ -373,7 +372,19 @@ class API extends Controller
   //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
-    Pusher::trigger('order-'.$order_id, 'order-done', ['message' => "Order Done"]);
+    Pusher::trigger('order-'.$order_id, 'order-done', ['message' => $order_id]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
+  }
+
+  /**Evaluate and end order**/
+  function evaluateOrder(Request $req, $order_id){
+    $data = $req->all();
+    DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
+    $order = DB::table('Order')->where('id', $order_id)->first();
+
+    $this->evaluateWorker($order->worker_id);
+    $this->waterSaver($order->user_id);
+
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
@@ -426,6 +437,18 @@ class API extends Controller
     return $sub_cat;
   }
 
+  /*Evaluate and modify worker rating*/
+  function evaluateWorker($worker_id){
+    $new_average = DB::table('Order')->where('worker_id', $worker_id)->avg('rating');
+    DB::table('Worker')->where('fireID', $worker_id)->update(['rating' => $new_average]);
+    return "Ok";
+  }
+
+  /*Sum carwash service*/
+  function waterSaver($user_id){
+    DB::table('User')->where('fireID', '=', $user_id)->increment('services');
+    return "OK";
+  }
   #<!------------------------------------------------------------------------------>
 
   function getTerms(){
