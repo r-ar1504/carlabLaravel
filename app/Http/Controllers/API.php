@@ -381,7 +381,7 @@ class API extends Controller
     $data = $req->all();
     $order = DB::table('Order')->where('id', $order_id)->first();
     if ($data['rating'] >= 5) {
-      $order->update(['comments'=> $data['comments'], 'rating' => 5.0]);
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => 5.0]);
 
       DB::table('Worker')->where('fireID', $order->worker_id)->increment('stars');
       DB::table('Worker')->where('fireID', $order->worker_id)->increment('on_time');
@@ -389,8 +389,6 @@ class API extends Controller
     }else{
       DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
     }
-
-    $order = DB::table('Order')->where('id', $order_id)->first();
 
     $this->evaluateWorker($order->worker_id);
     $this->waterSaver($order->user_id);
