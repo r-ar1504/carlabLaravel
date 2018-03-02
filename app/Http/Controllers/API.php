@@ -387,7 +387,7 @@ class API extends Controller
       DB::table('Worker')->where('fireID', $order->worker_id)->increment('on_time');
 
     }else{
-      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => floatval($data['rating'])]);
     }
 
     $avg = $this->evaluateWorker($order->worker_id);
