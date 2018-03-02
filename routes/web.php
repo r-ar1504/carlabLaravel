@@ -17,7 +17,7 @@ Route::get('/', function () { return view('home'); });
 Route::get('get_services', "API@services");
 
 /*Evaluate ending order*/
-Route::post('send_eval/{$order_id}', "API@evaluateOrder");
+Route::post('send_eval/{order_id}', "API@evaluateOrder");
 
 //<!--[Get Service ==> Categories]-->//
 Route::get('get_categories/{service_id}', 'API@get_categories');
