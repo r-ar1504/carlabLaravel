@@ -390,10 +390,10 @@ class API extends Controller
       DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
     }
 
-    $this->evaluateWorker($order->worker_id);
+    $avg = $this->evaluateWorker($order->worker_id);
     $this->waterSaver($order->user_id);
 
-    return response()->json(['result' => "ok", 'code' => "200"]);
+    return response()->json(['result' => "ok", 'code' => "200", 'avg' => $avg]);
   }
 
   //<!--[Start Order]-->//
@@ -450,7 +450,7 @@ class API extends Controller
     $new_average = DB::table('Order')->where('worker_id', $worker_id)->avg('rating');
 
     DB::table('Worker')->where('fireID', $worker_id)->update(['rating' => $new_average]);
-    return "Ok";
+    return $new_average;
   }
 
   /*Sum carwash service*/
