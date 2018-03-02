@@ -376,10 +376,17 @@ class API extends Controller
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
-  /**Evaluate and end order**/
+  /**te and end order**/
   function evaluateOrder(Request $req, $order_id){
     $data = $req->all();
-    DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
+
+    if ($data['rating'] >= 5) {
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => 5.0]);
+      DB::table('Order')->where('id', $order_id)->increment('stars');
+    }else{
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => $data['rating']]);
+    }
+
     $order = DB::table('Order')->where('id', $order_id)->first();
 
     $this->evaluateWorker($order->worker_id);
@@ -440,6 +447,7 @@ class API extends Controller
   /*Evaluate and modify worker rating*/
   function evaluateWorker($worker_id){
     $new_average = DB::table('Order')->where('worker_id', $worker_id)->avg('rating');
+
     DB::table('Worker')->where('fireID', $worker_id)->update(['rating' => $new_average]);
     return "Ok";
   }
