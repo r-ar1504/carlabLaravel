@@ -56,16 +56,26 @@ h6 {
   background-image: url('../assets/img/icons/android.png')!important;
   background-size: cover; 
   background-position: center; 
-  width: 45%; 
-  height: 32%
+  width: 40%; 
+  height: 48%;
+  float:left;
+}
+
+.ios {
+  background-image: url('../assets/img/icons/ios.png')!important;
+  background-size: cover; 
+  background-position: center; 
+  width: 40%; 
+  height: 48%;
+  float:right;
 }
 
 section {
-  padding: 8rem 0;
+  padding: 8rem 0;      
 }
 
 .section-heading {
-  margin-top: 0;
+  margin-top: 0;  
 }
 
 ::-moz-selection {

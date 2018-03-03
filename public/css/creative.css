@@ -46,8 +46,17 @@ h6 {
   background-image: url("../assets/img/icons/android.png") !important;
   background-size: cover;
   background-position: center;
-  width: 45%;
-  height: 32%; }
+  width: 40%;
+  height: 48%;
+  float: left; }
+
+.ios {
+  background-image: url("../assets/img/icons/ios.png") !important;
+  background-size: cover;
+  background-position: center;
+  width: 40%;
+  height: 48%;
+  float: right; }
 
 section {
   padding: 8rem 0; }
@@ -136,14 +145,13 @@ img::-moz-selection {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 56px);
-  background-image: url("../assets/img/header/ban.png");
   background-position: center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; }
   header.masthead hr {
-    margin-top: 30px;
+    margin-top: -5%;
     margin-bottom: 30px; }
   header.masthead h1 {
     font-size: 2rem; }
@@ -213,7 +221,7 @@ header.masthead {
 
 .gallery {
   width: 700px;
-  height: 420px; }
+  height: 320px; }
 
 .text-primary {
   color: #beec2d !important; }
@@ -222,7 +230,7 @@ header.masthead {
   font-weight: 700;
   text-transform: uppercase;
   border: none;
-  border-radius: 300px;
+  border-radius: 1rem;
   font-family: 'Gotham Thin', 'Gotham Thin', Arial, sans-serif; }
 
 .btn-xl {
@@ -245,7 +253,7 @@ footer span.copyright {
   font-size: 90%;
   line-height: 40px;
   text-transform: none;
-  font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', 'Gotham', 'Gotham', Arial, sans-serif;
   color: #beec2d; }
 
 footer ul.quicklinks {
@@ -253,7 +261,7 @@ footer ul.quicklinks {
   line-height: 40px;
   margin-bottom: 0;
   text-transform: none;
-  font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+  font-family: 'Montserrat', 'Gotham', 'Gotham', Arial, sans-serif; }
 
 ul.social-buttons {
   margin-bottom: 0; }
@@ -274,5 +282,39 @@ ul.social-buttons li a {
 
 ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
   background-color: #beec2d; }
+
+.team-content {
+  padding: 0px 15px 15px 15px; }
+
+.border-team {
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 10px; }
+
+.team-img:hover {
+  background: #f5f5f5; }
+
+/* Social Icons */
+.social-icons {
+  margin: 0;
+  padding: 0;
+  font-size: 10px; }
+
+.social {
+  margin: 7px 7px 7px 0px;
+  color: #232323; }
+
+/* Site Heading */
+.site-heading h3 {
+  font-size: 40px;
+  margin-bottom: 15px;
+  font-weight: 600; }
+
+.border {
+  background: #e1e1e1;
+  height: 1px;
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 45px; }
 
 /*# sourceMappingURL=creative.css.map */
