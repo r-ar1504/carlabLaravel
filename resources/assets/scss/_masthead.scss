@@ -2,11 +2,11 @@
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 56px);
-  background-image: url('../assets/img/header/ban.png');
+  
   background-position: center center;
   @include background-cover;
   hr {
-    margin-top: 30px;
+    margin-top: -5%;
     margin-bottom: 30px;
   }
   h1 {
