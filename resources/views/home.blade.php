@@ -41,13 +41,13 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#services">Servicios</a>
-            </li>                       
+            </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#portfolio">Galería</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#about">Equipo</a>
-            </li> 
+            </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#contact">Contacto</a>
             </li>
@@ -116,9 +116,9 @@
           </div>
         </div>
       </div>
-    </section>        
+    </section>
 
-    <section class="p-0" id="portfolio">     
+    <section class="p-0" id="portfolio">
       <div class="container-fluid p-0">
         <div class="row no-gutters popup-gallery">
           <div class="col-lg-4 col-sm-6">
@@ -136,7 +136,7 @@
               </div>
             </a>
           </div>
-          <div class="col-lg-4 col-sm-6">            
+          <div class="col-lg-4 col-sm-6">
             <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/(2).jpg')}}">
               <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/(2).jpg')}}" alt="">
               <div class="portfolio-box-caption">
@@ -215,46 +215,43 @@
       </div>
     </section>
 
-<<<<<<< HEAD
-=======
-    <section id="about" class="bg-dark">    
-      <div class="container">                  
+    <section id="about" class="bg-dark">
+      <div class="container">
           <div class="row">
             <div class="col-md-4 team-box">
               <div class="team-img">
                 <img src="https://images.pexels.com/photos/462680/pexels-photo-462680.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="img-thumbnail">
-                <div class="team-content text-muted">    
+                <div class="team-content text-muted">
                     <h3>Philip Freeman</h3>
                     <div class="border-team"></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>                    
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>
                 </div>
               </div>
             </div>
             <div class="col-md-4 team-box">
               <div class="team-img">
                 <img src="https://images.pexels.com/photos/567459/pexels-photo-567459.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="img-thumbnail">
-                <div class="team-content text-muted">    
+                <div class="team-content text-muted">
                     <h3>David Smith</h3>
                     <div class="border-team"></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>                    
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>
                 </div>
               </div>
             </div>
             <div class="col-md-4 team-box">
               <div class="team-img">
                 <img src="https://images.pexels.com/photos/325682/pexels-photo-325682.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" class="img-thumbnail">
-                <div class="team-content text-muted">    
+                <div class="team-content text-muted">
                     <h3>Robert D'costa</h3>
                     <div class="border-team"></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>                   
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis egestas rhoncus. Donec facilisis fermentum sem, ac viverra ante luctus vel. Donec vel mauris quam.</p>
                 </div>
               </div>
-            </div>      
-          </div>        
+            </div>
+          </div>
       </div>
     </section>
-    
->>>>>>> 4a188eed52eaca0d012425d83245426ac18e0101
+
     <section id="contact">
       <div class="container">
         <div class="row">
@@ -273,7 +270,7 @@
             <i class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
             <p>
               <a>feedback@startbootstrap.com</a>
-            </p>
+            </p>git
           </div>
         </div>
       </div>
@@ -305,13 +302,10 @@
               </li>
             </ul>
           </div>
-<<<<<<< HEAD
           <div class="col-md-2">
             <ul class="list-inline quicklinks">
-=======
           <div class="col-md-3">
-            <ul class="list-inline quicklinks">             
->>>>>>> 4a188eed52eaca0d012425d83245426ac18e0101
+            <ul class="list-inline quicklinks">
               <li class="list-inline-item">
                 <a href="/terms">Términos Y Condiciones</a>
               </li>
