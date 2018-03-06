@@ -55,6 +55,9 @@ Route::get('end_service/{order_id}/{now}', "API@terminateOrder");
 //<!--[Start Washing]-->//
 Route::get('wash_service/{order_id}/{now}', "API@startWash");
 
+//<!--[Start Washing]-->//
+Route::get('sub_service/{order_id}/{now}', "API@subcat_order");
+
 //<!--[Start Route]-->//
 Route::get('start_service/{order_id}/{now}', "API@startOrder");
 
