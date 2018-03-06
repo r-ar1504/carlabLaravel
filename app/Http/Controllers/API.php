@@ -403,6 +403,14 @@ class API extends Controller
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
+
+  function subcat_order(Request $req, $order_id, $now){
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "6", 'subcat_date' => $now]);
+    Pusher::trigger('order-'.$order_id, 'subcat-started', ['message' => "Servicio Iniciado"]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
+  }
+
+
   //<!--[Wash Order]-->//
   function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
