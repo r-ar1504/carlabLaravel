@@ -369,6 +369,16 @@ class API extends Controller
     }
   }
 
+  //<!--[Fetch Orders]-->//
+  function getActives(Request $req, $fireID){
+    $orders = DB::table('Order')->where('user_id', $fireID)->where('status','!=', 4)->get();
+    if (count($orders)>0) {
+      return response()->json(['orders' => $orders, 'code' => "200"]);
+    }else{
+      return response()->json(['orders' => $orders, 'code' => "0"]);
+    }
+  }
+
   //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);

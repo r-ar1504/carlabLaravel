@@ -64,6 +64,9 @@ Route::get('start_service/{order_id}/{now}', "API@startOrder");
 //<!--[Fetch Orders By User]-->//
 Route::get('get_orders/{fireID}', 'API@getOrders');
 
+//<!--[Fetch Orders By User]-->//
+Route::get('get_actives/{fireID}', 'API@getActives');
+
 //<!--[Try To Reach Order]-->//
 Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
 
