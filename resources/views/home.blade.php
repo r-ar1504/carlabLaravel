@@ -17,8 +17,6 @@
 
     <!-- Custom fonts for this template -->
     <link href="{{asset ('css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
     <!-- Plugin CSS -->
     <link href="{{asset ('css/magnific-popup.css')}}" rel="stylesheet">
@@ -27,13 +25,12 @@
     <link href="{{elixir ('css/creative.css')}}" rel="stylesheet">
 
   </head>
-  @yield('css')
   <body id="page-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top"><bold class="text-dark">Car</bold><bold class="text-primary">Lab</bold></a>
+        <a class="navbar-brand js-scroll-trigger" href="#page-top"><bold class="text-white">Car</bold><bold class="text-primary">Lab</bold></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,28 +54,30 @@
     </nav>
     @yield('navigation')
 
-    <header class="masthead text-center text-white d-flex" data-parallax="scroll" data-image-src="{{asset ('assets/img/header/header.jpg')}}">
+    <header class="masthead text-center text-white d-flex" data-parallax="scroll" data-image-src="{{asset ('assets/img/header/fondo.jpg')}}">
       <div class="container my-auto">
         <div class="row">
           <div class="col-lg-10 mx-auto">
             <h1 class="text-uppercase">
-              <img src="{{asset ('assets/img/icons/logo.png')}}" class="img-fluid logo">
+              <img src="{{asset ('assets/img/icons/logo_blanco.png')}}" class="img-fluid logo">
             </h1>
             <hr>
+            <img src="{{asset ('assets/img/icons/slogan.png')}}" class="img-fluid">
           </div>
           <div class="col-lg-8 mx-auto">
-            <p class="text-faded mb-5" style="font-weight: bold;">Start Bootstrap can help you build better websites using the Bootstrap CSS framework! Just download your template and start going, no strings attached!</p>
+              <br>  
+              <br>                
             <a class="android btn btn-light btn-xl js-scroll-trigger" href="#"></a>
-            <a class="ios btn btn-light btn-xl js-scroll-trigger" href="#"></a>
+            <a class="ios btn btn-light btn-xl js-scroll-trigger" href="#"></a>                      
           </div>
         </div>
       </div>
     </header>
 
-    <section id="services" class="bg-dark">
+    <section id="services" class="bg-white">
       <div class="container">
         <div class="row">
-          <div class="col-lg-12 text-center text-muted">
+          <div class="col-lg-12 text-center text-dark">
             <h2 class="section-heading">Servicios</h2>
             <hr class="my-4">
           </div>
@@ -89,29 +88,29 @@
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <i class="fa fa-4x fa-car text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3">Lavado</h3>
-              <p class="text-muted mb-0">Our templates are updated regularly so they don't break.</p>
+              <h3 class="mb-3 text-primary">Lavado</h3>
+              <p class="text-dark mb-0">Our templates are updated regularly so they don't break.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <i class="fa fa-4x fa-check text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3">Encerado</h3>
-              <p class="text-muted mb-0">You can use this theme as is, or you can make changes!</p>
+              <h3 class="mb-3 text-primary">Encerado</h3>
+              <p class="text-dark mb-0">You can use this theme as is, or you can make changes!</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <i class="fa fa-4x fa-cogs text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3">Vulka</h3>
-              <p class="text-muted mb-0">We update dependencies to keep things fresh.</p>
+              <h3 class="mb-3 text-primary">Vulka</h3>
+              <p class="text-dark mb-0">We update dependencies to keep things fresh.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <i class="fa fa-4x fa-truck text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3">Grúa</h3>
-              <p class="text-muted mb-0">You have to make your websites with love these days!</p>
+              <h3 class="mb-3 text-primary">Grúa</h3>
+              <p class="text-dark mb-0">You have to make your websites with love these days!</p>
             </div>
           </div>
         </div>
@@ -251,33 +250,47 @@
           </div>
       </div>
     </section>
+<<<<<<< HEAD
 
     <section id="contact">
+=======
+    
+    <section>
+>>>>>>> 5e7b10567a65cdd7d3bc4200c0877fa726a4cee0
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading">Encuéntranos en:</h2>
             <hr class="my-4">
-            <p class="mb-5">Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+            <p class="mb-5">Av. Central #1899 - A Col. Torreón Jardín</p>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-4 ml-auto text-center">
+            <i class="fa fa-mobile fa-3x mb-3 sr-contact"></i>
+            <p class="text-primary">87-14-66-52-02</p>            
+          </div>
+          <div class="col-lg-4 ml-auto text-center">
             <i class="fa fa-phone fa-3x mb-3 sr-contact"></i>
-            <p>123-456-6789</p>
+            <p class="text-primary">2-09-09-54</p>
           </div>
           <div class="col-lg-4 mr-auto text-center">
             <i class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
             <p>
+<<<<<<< HEAD
               <a>feedback@startbootstrap.com</a>
             </p>git
+=======
+              <a class="text-primary">feedback@startbootstrap.com</a>
+            </p>
+>>>>>>> 5e7b10567a65cdd7d3bc4200c0877fa726a4cee0
           </div>
         </div>
       </div>
     </section>
 
      <!-- Footer -->
-    <footer class="bg-dark text-white">
+    <footer class="bg-dark text-white" id="contact">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -313,8 +326,7 @@
           </div>
         </div>
       </div>
-    </footer>
-    @yield('body')
+    </footer>   
     <!-- Bootstrap core JavaScript -->
     <script src="{{asset ('js/jquery.min.js')}}"></script>
     <script src="{{asset ('js/bootstrap.bundle.min.js')}}"></script>
@@ -327,8 +339,7 @@
     <!-- Custom scripts for this template -->
     <script src="{{asset ('js/creative.min.js')}}"></script>
     <!-- Parallax -->
-    <script src="{{asset ('js/parallax.min.js')}}"></script>
-    @yield('js')
+    <script src="{{asset ('js/parallax.min.js')}}"></script>    
   </body>
 
 </html>

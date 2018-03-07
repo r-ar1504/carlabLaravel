@@ -11,8 +11,11 @@
   background-size: cover;
 }
 @mixin serif-font() {
-  font-family: 'Gotham Thin', 'Gotham Thin', Arial, sans-serif;
+  font-family: 'MyriadPro-Bold', 'MyriadPro-Bold', Verdana;
 }
 @mixin sans-serif-font() {
-  font-family: 'Gotham Thin', 'Gotham Thin', Arial, sans-serif;
+  font-family: 'MyriadPro-Bold', 'MyriadPro-Bold', Verdana;
+}
+@font-face {
+	font-family: "MyriadPro-Bold"
 }
