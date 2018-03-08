@@ -77,12 +77,13 @@ class API extends Controller
   //<!--[Get User]-->//
   function getUser(Request $req, $fireID){
     $user = DB::table('User')->where('fireID', $req->fireID)->first();
-
+    $card = DB::table('UserBilling')->where('user_id', $req->fireID)->first();
+    $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
     $user_id = $user->fireID;
 
     // $orders = getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['user' => $user]);
+    return response()->json(['user' => $user, 'car' => $car, 'card' => $card]);
 
   }
 
