@@ -135,9 +135,28 @@ class API extends Controller
   function updateUser(Request $req, $fireID){
 
     $data = $req->all();
-
     $user = DB::table('User')->where('fireID',$fireID)->update(['email'=> $data['email'],
     'phone' => $data['phone']]);
+    $card = DB::table('UserBilling')->where('user_id', $req->fireID)->first();
+    $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
+
+    if (count($card)>0) {
+      DB::table('UserBilling')->where('user_id',$fireID)->update(['card_number'=> $data['card']]);
+    }else{
+      DB::table('UserBilling')->insert([
+        'user_id' => $fireID,
+        'card_number'=> $data['card']
+      ]);
+    }
+
+    if (count($car)>0) {
+      DB::table('Cars')->where('user_id',$fireID)->update(['car_model'=> $data['car']]);
+    }else{
+      DB::table('Cars')->insert([
+        'user_id' => $fireID,
+        'car_model'=> $data['car']
+      ]);
+    }
 
     return response()->json(['status' => '200']);
   }
