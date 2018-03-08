@@ -141,7 +141,7 @@ class API extends Controller
     $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
 
     if (count($card)>0) {
-      DB::table('UserBilling')->where('user_id',$fireID)->update(['card_number'=> $data['card']]);
+      DB::table('UserBilling')->where('user_id',$fireID)->update(['card_number' => $data['card']]);
     }else{
       DB::table('UserBilling')->insert([
         'user_id' => $fireID,
@@ -150,7 +150,7 @@ class API extends Controller
     }
 
     if (count($car)>0) {
-      DB::table('Cars')->where('user_id',$fireID)->update(['car_model'=> $data['car']]);
+      DB::table('Cars')->where('user_id',$fireID)->update(['car_model' => $data['car']]);
     }else{
       DB::table('Cars')->insert([
         'user_id' => $fireID,
@@ -251,19 +251,19 @@ class API extends Controller
 
       //Create Customer Conekta
       try {
-      //   $customer = \Conekta\Customer::create(
-      //     array(
-      //       "name" => $user->name." ".$user->last_name,
-      //       "email"=> $user->email,
-      //       "phone"=> $user->phone,
-      //       "payment_sources"=> array(
-      //         array(
-      //           "type" => "card",
-      //           "token_id" => $order->token
-      //         )//Payment Sources
-      //       )//Card Data
-      //     )//Customer Array
-      //   );//Conekta Customer
+        $customer = \Conekta\Customer::create(
+          array(
+            "name" => $user->name." ".$user->last_name,
+            "email"=> $user->email,
+            "phone"=> $user->phone,
+            "payment_sources"=> array(
+              array(
+                "type" => "card",
+                "token_id" => $order->token
+              )//Payment Sources
+            )//Card Data
+          )//Customer Array
+        );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         DB::table('Order')->where('id', '=', $order->id)->first();
@@ -281,34 +281,34 @@ class API extends Controller
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
         try{
-          // $order = \Conekta\Order::create(
-          //   array(
-          //     "line_items" => array(
-          //       array(
-          //         "name" => $order->service_name." ".$category->name,
-          //         "unit_price" => intval($category->price)*100,
-          //         "quantity" => 1
-          //       ),
-          //       array(
-          //         "name" => $subcategory->name,
-          //         "unit_price" => intval($subcategory->price)*100,
-          //         "quantity" => 1
-          //       )
-          //     ), //line_items
-          //     "currency" => "MXN",
-          //     "customer_info" => array(
-          //       "customer_id" => $customer['id']
-          //     ), //customer_info
-          //     "charges" => array(
-          //       array(
-          //         "payment_method" => array(
-          //           "type" => "card",
-          //           "token_id" => $order->token
-          //         ) //first charge
-          //       ) //charges
-          //     )//order
-          //   )
-          // );
+          $order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                ),
+                array(
+                  "name" => $subcategory->name,
+                  "unit_price" => intval($subcategory->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+              "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+              )//order
+            )
+          );
 
           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
           return response()->json(['code' => '1']);
@@ -327,29 +327,29 @@ class API extends Controller
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
         try{
-        //   $conekta_order = \Conekta\Order::create(
-        //     array(
-        //       "line_items" => array(
-        //         array(
-        //           "name" => $order->service_name." ".$category->name,
-        //           "unit_price" => intval($category->price)*100,
-        //           "quantity" => 1
-        //         )
-        //       ), //line_items
-        //       "currency" => "MXN",
-        //       "customer_info" => array(
-        //         "customer_id" => $customer['id']
-        //       ), //customer_info
-        //       "charges" => array(
-        //         array(
-        //           "payment_method" => array(
-        //             "type" => "card",
-        //             "token_id" => $order->token
-        //           ) //first charge
-        //         ) //charges
-        //       )//order
-        //     )
-        //   );
+          $conekta_order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+              "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+              )//order
+            )
+          );
             DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
             'status' => 1]);
 
