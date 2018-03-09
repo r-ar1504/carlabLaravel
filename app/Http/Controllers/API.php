@@ -177,8 +177,6 @@ class API extends Controller
     $request = $req->all();
     $data = $request['order'];
     $token = $request['token_object'];
-    return response()->json(['request' => $request]);
-
     if ( count($worker_list)>0) {
 
       if($data['has_sub']!= "true"){
