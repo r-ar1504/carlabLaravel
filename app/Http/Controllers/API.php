@@ -60,12 +60,12 @@ class API extends Controller
     $worker = DB::table('Worker')->where('fireID', $req->fireID)->first();
 
     if(count($worker)>0){
-    $worker_id = $worker->fireID;
-    $worker_role = $worker->role;
+      $worker_id = $worker->fireID;
+      $worker_role = $worker->role;
 
-    $orders = $this->getWorkerOrders($worker_id, $worker_role);
+      $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['worker' => $worker, 'orders' => $orders]);
+      return response()->json(['worker' => $worker, 'orders' => $orders]);
     }else{
 
 
@@ -213,7 +213,7 @@ class API extends Controller
           'subcat_id' => $data['subcat_id'],
           'token' => $data['token']
         ]);
-    }
+      }
 
 
       $order_data = $this->getOrderDetails($order_id);
@@ -313,7 +313,7 @@ class API extends Controller
             )
           );
           DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-                      'status' => 1]);
+          'status' => 1]);
           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
           return response()->json(['code' => '1']);
 
@@ -331,35 +331,35 @@ class API extends Controller
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
         try{
-           $conekta_order = \Conekta\Order::create(
-             array(
-               "line_items" => array(
-                 array(
-                   "name" => $order->service_name." ".$category->name,
-                   "unit_price" => intval($category->price)*100,
-                   "quantity" => 1
-                 )
-               ), //line_items
-               "currency" => "MXN",
-               "customer_info" => array(
+          $conekta_order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
                 "customer_id" => $customer['id']
               ), //customer_info
-               "charges" => array(
+              "charges" => array(
                 array(
                   "payment_method" => array(
                     "type" => "card",
                     "token_id" => $order->token
                   ) //first charge
                 ) //charges
-               )//order
-             )
-           );
+              )//order
+            )
+          );
 
-           DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-                       'status' => 1]);
-             Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+          'status' => 1]);
+          Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
-             return response()->json(['code' => '1']);
+          return response()->json(['code' => '1']);
 
         } catch (\Conekta\Handler $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
