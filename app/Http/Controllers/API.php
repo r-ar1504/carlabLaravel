@@ -270,13 +270,16 @@ class API extends Controller
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
+        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         DB::table('Order')->where('id', '=', $order->id)->first();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
+        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
+        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       }
@@ -313,16 +316,16 @@ class API extends Controller
            return response()->json(['code' => '1']);
 
       } catch (\Conekta\Handler $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\ProccessingError $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         return response()->json(['code' => '2']);
       }
 
