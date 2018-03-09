@@ -178,7 +178,6 @@ class API extends Controller
     $data = $request['order'];
     $token = $request['token_object'];
     $worker_list = $this->findWorker($data['service_name']);
-    return response()->json(['request' => $request]);
 
     if ( count($worker_list)>0) {
 
