@@ -174,140 +174,63 @@ class API extends Controller
 
   //<!--[Create Order]-->//
   function createOrder(Request $req){
-
-
     $data = $req->all();
-    $user = DB::table('User')->where('fireID', '=', $data['user'])->first();
 
-    try {
-      $customer = \Conekta\Customer::create(
-        array(
-          "name" => $user->name." ".$user->last_name,
-          "email"=> $user->email,
-          "phone"=> $user->phone,
-          "payment_sources"=> array(
-            array(
-              "type" => "card",
-              "token_id" => $data['token']
-            )//Payment Sources
-          )//Card Data
-        )//Customer Array
-      );//Conekta Customer
-    } catch (\Conekta\ProccessingError $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-      DB::table('Order')->where('id', '=', $order->id)->first();
-      return response()->json(['code' => '2']);
-    } catch (\Conekta\ParameterValidationError $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-      return response()->json(['code' => '2']);
-    } catch (\Conekta\Handler $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
-      return response()->json(['code' => '2']);
+    $worker_list = $this->findWorker($data['service_name']);
+
+    if ( count($worker_list)>0) {
+
+      if($data['has_sub']!= "true"){
+        //Register unasigned Order.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'token' => $data['token']
+        ]);
+      }else{
+        //Register unasigned Order + SubCat.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'has_sub' => $data['has_sub'],
+          'subcat_name' => $data['subcat_name'],
+          'subcat_id' => $data['subcat_id'],
+          'token' => $data['token']
+        ]);
     }
 
-    $category = DB::table('Category')->where('id', '=', $data['category_id'])->first();
 
-    try{
-       $conekta_order = \Conekta\Order::create(
-         array(
-           "line_items" => array(
-             array(
-               "name" => $data['service_name']." ".$category->name,
-               "unit_price" => intval($category->price)*100,
-               "quantity" => 1
-             )
-           ), //line_items
-           "currency" => "MXN",
-           "customer_info" => array(
-            "customer_id" => $customer['id']
-          ), //customer_info
-           "charges" => array(
-            array(
-              "payment_method" => array(
-                "type" => "card",
-                "token_id" => $data['token']
-              ) //first charge
-            ) //charges
-           )//order
-         )
-       );
+      $order_data = $this->getOrderDetails($order_id);
 
-         Pusher::trigger('order-'.$order->id, 'got-worker', ['customer' => $customer]);
+      foreach ($worker_list as $worker) {
 
-         return response()->json(['code' => '1']);
+        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
 
-    } catch (\Conekta\Handler $error){
-      // DB::table('Order')->where('id', $order_id)->delete();
-      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2', 'error' => $error]);
-    } catch (\Conekta\ProccessingError $error){
-      // DB::table('Order')->where('id', $order_id)->delete();
-      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2', 'error' => $error]);
-    } catch (\Conekta\ParameterValidationError $error){
-      // DB::table('Order')->where('id', $order_id)->delete();
-      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2', 'error' => $error]);
+      }
+
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
+
+    }else{
+
+      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
+
     }
-
-    // $worker_list = $this->findWorker($data['service_name']);
-    //
-    // if ( count($worker_list)>0) {
-    //
-    //   if($data['has_sub']!= "true"){
-    //     //Register unasigned Order.
-    //     $order_id = DB::table('Order')->insertGetId([
-    //       'status' => $data['status'],
-    //       'latitude' => $data['lat'],
-    //       'longitude' => $data['lng'],
-    //       'ammount' => $data['ammount'],
-    //       'car_plate' => $data['car_plate'],
-    //       'user_id' => $data['user'],
-    //       'service_name' => $data['service_name'],
-    //       'details' => $data['details'],
-    //       'service_date' => $data['date'],
-    //       'category_id' => $data['category_id'],
-    //       'token' => $data['token']
-    //     ]);
-    //   }else{
-    //     //Register unasigned Order + SubCat.
-    //     $order_id = DB::table('Order')->insertGetId([
-    //       'status' => $data['status'],
-    //       'latitude' => $data['lat'],
-    //       'longitude' => $data['lng'],
-    //       'ammount' => $data['ammount'],
-    //       'car_plate' => $data['car_plate'],
-    //       'user_id' => $data['user'],
-    //       'service_name' => $data['service_name'],
-    //       'details' => $data['details'],
-    //       'service_date' => $data['date'],
-    //       'category_id' => $data['category_id'],
-    //       'has_sub' => $data['has_sub'],
-    //       'subcat_name' => $data['subcat_name'],
-    //       'subcat_id' => $data['subcat_id'],
-    //       'token' => $data['token']
-    //     ]);
-    // }
-    //
-    //
-    //   $order_data = $this->getOrderDetails($order_id);
-    //
-    //   foreach ($worker_list as $worker) {
-    //
-    //     Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
-    //
-    //   }
-    //
-    //   return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
-    //
-    // }else{
-    //
-    //   return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
-    //
-    // }
 
   }
 
@@ -341,165 +264,117 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "token_id" => $order->token
+                "token_id" => 'tok_test_amex_0005'
               )//Payment Sources
             )//Card Data
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
-        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         DB::table('Order')->where('id', '=', $order->id)->first();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
-        DB::table('Order')->where('id', $order_id)->delete();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       }
 
-      $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+      if ($order->has_sub == "true") {
+        $subcategory = DB::table('SubCategory')->where('id', '=', $order->subcat_id)->first();
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
-      try{
-         $conekta_order = \Conekta\Order::create(
-           array(
-             "line_items" => array(
-               array(
-                 "name" => $order->service_name." ".$category->name,
-                 "unit_price" => intval($category->price)*100,
-                 "quantity" => 1
-               )
-             ), //line_items
-             "currency" => "MXN",
-             "customer_info" => array(
-              "customer_id" => $customer['id']
-            ), //customer_info
-             "charges" => array(
-              array(
-                "payment_method" => array(
-                  "type" => "card",
-                  "token_id" => $order->token
-                ) //first charge
-              ) //charges
-             )//order
-           )
-         );
+        try{
+          $order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                ),
+                array(
+                  "name" => $subcategory->name,
+                  "unit_price" => intval($subcategory->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+              "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+              )//order
+            )
+          );
 
-           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+          Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+          return response()->json(['code' => '1']);
 
-           return response()->json(['code' => '1']);
+        } catch (\Conekta\ParameterValidationError $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\Handler $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        }
 
-      } catch (\Conekta\Handler $error){
-        DB::table('Order')->where('id', $order_id)->delete();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
-      } catch (\Conekta\ProccessingError $error){
-        DB::table('Order')->where('id', $order_id)->delete();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
-      } catch (\Conekta\ParameterValidationError $error){
-        DB::table('Order')->where('id', $order_id)->delete();
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-        return response()->json(['code' => '2']);
+      }else {
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+
+        try{
+           $conekta_order = \Conekta\Order::create(
+             array(
+               "line_items" => array(
+                 array(
+                   "name" => $order->service_name." ".$category->name,
+                   "unit_price" => intval($category->price)*100,
+                   "quantity" => 1
+                 )
+               ), //line_items
+               "currency" => "MXN",
+               "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+               "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+               )//order
+             )
+           );
+
+             Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+
+             return response()->json(['code' => '1']);
+
+        } catch (\Conekta\Handler $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ProccessingError $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ParameterValidationError $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        }
+
       }
-
-      // if ($order->has_sub == "true") {
-      //   $subcategory = DB::table('SubCategory')->where('id', '=', $order->subcat_id)->first();
-      //   $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
-      //
-      //   try{
-      //     $order = \Conekta\Order::create(
-      //       array(
-      //         "line_items" => array(
-      //           array(
-      //             "name" => $order->service_name." ".$category->name,
-      //             "unit_price" => intval($category->price)*100,
-      //             "quantity" => 1
-      //           ),
-      //           array(
-      //             "name" => $subcategory->name,
-      //             "unit_price" => intval($subcategory->price)*100,
-      //             "quantity" => 1
-      //           )
-      //         ), //line_items
-      //         "currency" => "MXN",
-      //         "customer_info" => array(
-      //           "customer_id" => $customer['id']
-      //         ), //customer_info
-      //         "charges" => array(
-      //           array(
-      //             "payment_method" => array(
-      //               "type" => "card",
-      //               "token_id" => $order->token
-      //             ) //first charge
-      //           ) //charges
-      //         )//order
-      //       )
-      //     );
-      //
-      //     Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-      //     return response()->json(['code' => '1']);
-      //
-      //   } catch (\Conekta\ParameterValidationError $error){
-      //     Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      //     DB::table('Order')->where('id', $order_id)->delete();
-      //     return response()->json(['code' => '2']);
-      //   } catch (\Conekta\Handler $error){
-      //     Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      //     DB::table('Order')->where('id', $order_id)->delete();
-      //     return response()->json(['code' => '2']);
-      //   }
-      //
-      // }else {
-      //   $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
-      //
-      //   try{
-      //      $conekta_order = \Conekta\Order::create(
-      //        array(
-      //          "line_items" => array(
-      //            array(
-      //              "name" => $order->service_name." ".$category->name,
-      //              "unit_price" => intval($category->price)*100,
-      //              "quantity" => 1
-      //            )
-      //          ), //line_items
-      //          "currency" => "MXN",
-      //          "customer_info" => array(
-      //           "customer_id" => $customer['id']
-      //         ), //customer_info
-      //          "charges" => array(
-      //           array(
-      //             "payment_method" => array(
-      //               "type" => "card",
-      //               "token_id" => $order->token
-      //             ) //first charge
-      //           ) //charges
-      //          )//order
-      //        )
-      //      );
-      //
-      //        Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-      //
-      //        return response()->json(['code' => '1']);
-      //
-      //   } catch (\Conekta\Handler $error){
-      //     Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      //     DB::table('Order')->where('id', $order_id)->delete();
-      //     return response()->json(['code' => '2']);
-      //   } catch (\Conekta\ProccessingError $error){
-      //     Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      //     DB::table('Order')->where('id', $order_id)->delete();
-      //     return response()->json(['code' => '2']);
-      //   } catch (\Conekta\ParameterValidationError $error){
-      //     Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      //     DB::table('Order')->where('id', $order_id)->delete();
-      //     return response()->json(['code' => '2']);
-      //   }
-      //
-      // }
 
 
     }
