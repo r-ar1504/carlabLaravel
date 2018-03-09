@@ -353,6 +353,7 @@ class API extends Controller
                 ) //charges
                )//order
              )
+           );
 
              Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
