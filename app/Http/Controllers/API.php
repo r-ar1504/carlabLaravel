@@ -174,63 +174,65 @@ class API extends Controller
 
   //<!--[Create Order]-->//
   function createOrder(Request $req){
-    $data = $req->all();
-
+    $request = $req->all();
+    $data = $request['order'];
+    $token = $request['token_object'];
     $worker_list = $this->findWorker($data['service_name']);
+    return response()->json(['request' => $request]);
 
-    if ( count($worker_list)>0) {
-
-      if($data['has_sub']!= "true"){
-        //Register unasigned Order.
-        $order_id = DB::table('Order')->insertGetId([
-          'status' => $data['status'],
-          'latitude' => $data['lat'],
-          'longitude' => $data['lng'],
-          'ammount' => $data['ammount'],
-          'car_plate' => $data['car_plate'],
-          'user_id' => $data['user'],
-          'service_name' => $data['service_name'],
-          'details' => $data['details'],
-          'service_date' => $data['date'],
-          'category_id' => $data['category_id'],
-          'token' => $data['token']
-        ]);
-      }else{
-        //Register unasigned Order + SubCat.
-        $order_id = DB::table('Order')->insertGetId([
-          'status' => $data['status'],
-          'latitude' => $data['lat'],
-          'longitude' => $data['lng'],
-          'ammount' => $data['ammount'],
-          'car_plate' => $data['car_plate'],
-          'user_id' => $data['user'],
-          'service_name' => $data['service_name'],
-          'details' => $data['details'],
-          'service_date' => $data['date'],
-          'category_id' => $data['category_id'],
-          'has_sub' => $data['has_sub'],
-          'subcat_name' => $data['subcat_name'],
-          'subcat_id' => $data['subcat_id'],
-          'token' => $data['token']
-        ]);
-      }
-
-
-      $order_data = $this->getOrderDetails($order_id);
-
-      foreach ($worker_list as $worker) {
-
-        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
-
-      }
-
-      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
-
-    }else{
-
-      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
-
-    }
+    // if ( count($worker_list)>0) {
+    //
+    //   if($data['has_sub']!= "true"){
+    //     //Register unasigned Order.
+    //     $order_id = DB::table('Order')->insertGetId([
+    //       'status' => $data['status'],
+    //       'latitude' => $data['lat'],
+    //       'longitude' => $data['lng'],
+    //       'ammount' => $data['ammount'],
+    //       'car_plate' => $data['car_plate'],
+    //       'user_id' => $data['user'],
+    //       'service_name' => $data['service_name'],
+    //       'details' => $data['details'],
+    //       'service_date' => $data['date'],
+    //       'category_id' => $data['category_id'],
+    //       'token' => $data['token']
+    //     ]);
+    //   }else{
+    //     //Register unasigned Order + SubCat.
+    //     $order_id = DB::table('Order')->insertGetId([
+    //       'status' => $data['status'],
+    //       'latitude' => $data['lat'],
+    //       'longitude' => $data['lng'],
+    //       'ammount' => $data['ammount'],
+    //       'car_plate' => $data['car_plate'],
+    //       'user_id' => $data['user'],
+    //       'service_name' => $data['service_name'],
+    //       'details' => $data['details'],
+    //       'service_date' => $data['date'],
+    //       'category_id' => $data['category_id'],
+    //       'has_sub' => $data['has_sub'],
+    //       'subcat_name' => $data['subcat_name'],
+    //       'subcat_id' => $data['subcat_id'],
+    //       'token' => $data['token']
+    //     ]);
+    //   }
+    //
+    //
+    //   $order_data = $this->getOrderDetails($order_id);
+    //
+    //   foreach ($worker_list as $worker) {
+    //
+    //     Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+    //
+    //   }
+    //
+    //   return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
+    //
+    // }else{
+    //
+    //   return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
+    //
+    // }
 
   }
 
@@ -268,14 +270,14 @@ class API extends Controller
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error->getMessage()]);
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         DB::table('Order')->where('id', '=', $order->id)->first();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error->getMessage()]);
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error->getMessage()]);
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
         return response()->json(['code' => '2']);
       }
 
@@ -318,12 +320,12 @@ class API extends Controller
           return response()->json(['code' => '1']);
 
         } catch (\Conekta\ParameterValidationError $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error->getMessage(), 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\Handler $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error->getMessage(), 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         }
 
@@ -362,16 +364,16 @@ class API extends Controller
           return response()->json(['code' => '1']);
 
         } catch (\Conekta\Handler $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error->getMessage(), 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\ProccessingError $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error->getMessage(), 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         } catch (\Conekta\ParameterValidationError $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error->getMessage(), 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           return response()->json(['code' => '2']);
         }
 
