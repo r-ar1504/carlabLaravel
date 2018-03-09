@@ -246,7 +246,9 @@ class API extends Controller
     $order = DB::table('Order')->where('id', $order_id)->first();
     $worker = DB::table('Worker')->where('fireID', $fireID)->first();
     if ($order->status != 0) {
+
       return response()->json(['code' => '2']);
+
     }elseif ($order->status == 0) {
 
       $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
@@ -278,7 +280,7 @@ class API extends Controller
         return response()->json(['code' => '2']);
       }
 
-      if ($order->has_sub != "true") {
+      if ($order->has_sub == "true") {
         $subcategory = DB::table('SubCategory')->where('id', '=', $order->subcat_id)->first();
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
@@ -329,36 +331,38 @@ class API extends Controller
         $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
 
         try{
-        //   $conekta_order = \Conekta\Order::create(
-        //     array(
-        //       "line_items" => array(
-        //         array(
-        //           "name" => $order->service_name." ".$category->name,
-        //           "unit_price" => intval($category->price)*100,
-        //           "quantity" => 1
-        //         )
-        //       ), //line_items
-        //       "currency" => "MXN",
-        //       "customer_info" => array(
-        //         "customer_id" => $customer['id']
-        //       ), //customer_info
-        //       "charges" => array(
-        //         array(
-        //           "payment_method" => array(
-        //             "type" => "card",
-        //             "token_id" => $order->token
-        //           ) //first charge
-        //         ) //charges
-        //       )//order
-        //     )
-        //   );
-            DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-            'status' => 1]);
+           $conekta_order = \Conekta\Order::create(
+             array(
+               "line_items" => array(
+                 array(
+                   "name" => $order->service_name." ".$category->name,
+                   "unit_price" => intval($category->price)*100,
+                   "quantity" => 1
+                 )
+               ), //line_items
+               "currency" => "MXN",
+               "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+               "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+               )//order
+             )
 
-            Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
-            return response()->json(['code' => '1']);
+             Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
-        }catch (\Conekta\ProcessingError $error){
+             return response()->json(['code' => '1']);
+
+        } catch (\Conekta\Handler $error){
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          DB::table('Order')->where('id', $order_id)->delete();
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ProccessingError $error){
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
@@ -366,18 +370,14 @@ class API extends Controller
           Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
           DB::table('Order')->where('id', $order_id)->delete();
           return response()->json(['code' => '2']);
-        } catch (\Conekta\Handler $error){
-          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-          DB::table('Order')->where('id', $order_id)->delete();
-          return response()->json(['code' => '2']);
         }
 
       }
 
-      Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
-      return response()->json(['code' => '1']);
     }
+
+
 
   }
 
