@@ -177,62 +177,61 @@ class API extends Controller
     $request = $req->all();
     $data = $request['order'];
     $token = $request['token_object'];
-    $worker_list = $this->findWorker($data['service_name']);
     return response()->json(['request' => $request]);
 
-    // if ( count($worker_list)>0) {
-    //
-    //   if($data['has_sub']!= "true"){
-    //     //Register unasigned Order.
-    //     $order_id = DB::table('Order')->insertGetId([
-    //       'status' => $data['status'],
-    //       'latitude' => $data['lat'],
-    //       'longitude' => $data['lng'],
-    //       'ammount' => $data['ammount'],
-    //       'car_plate' => $data['car_plate'],
-    //       'user_id' => $data['user'],
-    //       'service_name' => $data['service_name'],
-    //       'details' => $data['details'],
-    //       'service_date' => $data['date'],
-    //       'category_id' => $data['category_id'],
-    //       'token' => $data['token']
-    //     ]);
-    //   }else{
-    //     //Register unasigned Order + SubCat.
-    //     $order_id = DB::table('Order')->insertGetId([
-    //       'status' => $data['status'],
-    //       'latitude' => $data['lat'],
-    //       'longitude' => $data['lng'],
-    //       'ammount' => $data['ammount'],
-    //       'car_plate' => $data['car_plate'],
-    //       'user_id' => $data['user'],
-    //       'service_name' => $data['service_name'],
-    //       'details' => $data['details'],
-    //       'service_date' => $data['date'],
-    //       'category_id' => $data['category_id'],
-    //       'has_sub' => $data['has_sub'],
-    //       'subcat_name' => $data['subcat_name'],
-    //       'subcat_id' => $data['subcat_id'],
-    //       'token' => $data['token']
-    //     ]);
-    //   }
-    //
-    //
-    //   $order_data = $this->getOrderDetails($order_id);
-    //
-    //   foreach ($worker_list as $worker) {
-    //
-    //     Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
-    //
-    //   }
-    //
-    //   return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
-    //
-    // }else{
-    //
-    //   return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
-    //
-    // }
+    if ( count($worker_list)>0) {
+
+      if($data['has_sub']!= "true"){
+        //Register unasigned Order.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'token' => $token['id']
+        ]);
+      }else{
+        //Register unasigned Order + SubCat.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'has_sub' => $data['has_sub'],
+          'subcat_name' => $data['subcat_name'],
+          'subcat_id' => $data['subcat_id'],
+          'token' => $data['token']
+        ]);
+      }
+
+
+      $order_data = $this->getOrderDetails($order_id);
+
+      foreach ($worker_list as $worker) {
+
+        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+
+      }
+
+      return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
+
+    }else{
+
+      return response()->json(['status' => '200', 'order_id' => "0", 'workers' => "no_workers"]);
+
+    }
 
   }
 
