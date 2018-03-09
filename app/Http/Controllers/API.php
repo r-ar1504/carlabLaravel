@@ -242,8 +242,6 @@ class API extends Controller
     \Conekta\Conekta::setApiVersion("2.0.0");
     $data = $req->all();
 
-
-
     $order = DB::table('Order')->where('id', $order_id)->first();
     $worker = DB::table('Worker')->where('fireID', $fireID)->first();
     if ($order->status != 0) {
@@ -314,7 +312,7 @@ class API extends Controller
               )//order
             )
           );
-
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID]);
           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
           return response()->json(['code' => '1']);
 
@@ -356,6 +354,8 @@ class API extends Controller
              )
            );
 
+
+            DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID]);
              Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
              return response()->json(['code' => '1']);
