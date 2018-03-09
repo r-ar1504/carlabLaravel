@@ -208,7 +208,7 @@ class API extends Controller
       return response()->json(['code' => '2']);
     }
 
-    $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+    $category = DB::table('Category')->where('id', '=', $order['category_id'])->first();
 
     try{
        $conekta_order = \Conekta\Order::create(
