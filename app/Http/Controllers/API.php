@@ -183,7 +183,7 @@ class API extends Controller
 
 
 
-    $order = DB::table('Order')->where('id', $data['id')->first();
+    $order = DB::table('Order')->where('id', $data['id'])->first();
     // $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
       $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
