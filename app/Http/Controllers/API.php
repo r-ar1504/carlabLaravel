@@ -313,15 +313,15 @@ class API extends Controller
            return response()->json(['code' => '1']);
 
       } catch (\Conekta\Handler $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer, 'conekta_order' => $conekta_order]);
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ProccessingError $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer, 'conekta_order' => $conekta_order]);
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer, 'conekta_order' => $conekta_order]);
+        Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
         DB::table('Order')->where('id', $order_id)->delete();
         return response()->json(['code' => '2']);
       }
