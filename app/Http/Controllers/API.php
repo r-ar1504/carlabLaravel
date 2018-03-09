@@ -269,14 +269,19 @@ class API extends Controller
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
+
         DB::table('Order')->where('id', '=', $order->id)->first();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
+
+        DB::table('Order')->where('id', '=', $order->id)->first();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
-        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error]);
+
+        DB::table('Order')->where('id', '=', $order->id)->first();
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
         return response()->json(['code' => '2']);
       }
 
