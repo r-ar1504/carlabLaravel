@@ -212,7 +212,7 @@ class API extends Controller
           'has_sub' => $data['has_sub'],
           'subcat_name' => $data['subcat_name'],
           'subcat_id' => $data['subcat_id'],
-          'token' => $data['token']
+          'token' => $token['id']
         ]);
       }
 
