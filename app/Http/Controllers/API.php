@@ -215,7 +215,7 @@ class API extends Controller
          array(
            "line_items" => array(
              array(
-               "name" => $order->service_name." ".$category->name,
+               "name" => $data['service_name']." ".$category->name,
                "unit_price" => intval($category->price)*100,
                "quantity" => 1
              )
@@ -228,7 +228,7 @@ class API extends Controller
             array(
               "payment_method" => array(
                 "type" => "card",
-                "token_id" => $order->token
+                "token_id" => $data['token']
               ) //first charge
             ) //charges
            )//order
