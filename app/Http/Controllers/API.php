@@ -263,7 +263,7 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "token_id" => $order['token']
+                "token_id" => $order->token
               )//Payment Sources
             )//Card Data
           )//Customer Array
