@@ -263,25 +263,25 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "token_id" => '$order->token'
+                "token_id" => '$order['token']'
               )//Payment Sources
             )//Card Data
           )//Customer Array
         );//Conekta Customer
       } catch (\Conekta\ProccessingError $error){
 
-        DB::table('Order')->where('id', '=', $order->id)->first();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
         return response()->json(['code' => '2']);
       } catch (\Conekta\ParameterValidationError $error){
 
-        DB::table('Order')->where('id', '=', $order->id)->first();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
         return response()->json(['code' => '2']);
       } catch (\Conekta\Handler $error){
 
-        DB::table('Order')->where('id', '=', $order->id)->first();
         Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
         return response()->json(['code' => '2']);
       }
 
