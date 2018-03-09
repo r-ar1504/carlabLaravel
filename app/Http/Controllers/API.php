@@ -235,22 +235,22 @@ class API extends Controller
          )
        );
 
-         Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order, 'customer' => $customer]);
+         Pusher::trigger('order-'.$order->id, 'got-worker', ['customer' => $customer]);
 
          return response()->json(['code' => '1']);
 
     } catch (\Conekta\Handler $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2']);
+      // DB::table('Order')->where('id', $order_id)->delete();
+      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+      return response()->json(['code' => '2', 'error' => $error]);
     } catch (\Conekta\ProccessingError $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2']);
+      // DB::table('Order')->where('id', $order_id)->delete();
+      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+      return response()->json(['code' => '2', 'error' => $error]);
     } catch (\Conekta\ParameterValidationError $error){
-      DB::table('Order')->where('id', $order_id)->delete();
-      Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
-      return response()->json(['code' => '2']);
+      // DB::table('Order')->where('id', $order_id)->delete();
+      // Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+      return response()->json(['code' => '2', 'error' => $error]);
     }
 
     // $worker_list = $this->findWorker($data['service_name']);
