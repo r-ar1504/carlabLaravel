@@ -262,7 +262,7 @@ class API extends Controller
             "payment_sources"=> array(
               array(
                 "type" => "card",
-                "token_id" => 'tok_test_amex_0005'
+                "token_id" => '$order->token'
               )//Payment Sources
             )//Card Data
           )//Customer Array
@@ -312,7 +312,8 @@ class API extends Controller
               )//order
             )
           );
-          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID]);
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+                      'status' => 1]);
           Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
           return response()->json(['code' => '1']);
 
@@ -354,8 +355,8 @@ class API extends Controller
              )
            );
 
-
-            DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID]);
+           DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+                       'status' => 1]);
              Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
              return response()->json(['code' => '1']);
@@ -380,7 +381,6 @@ class API extends Controller
     }
 
 
-    return response()->json(['data' => $data]);
 
   }
 
