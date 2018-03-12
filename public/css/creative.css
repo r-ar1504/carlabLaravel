@@ -16,6 +16,10 @@ hr {
 hr.light {
   border-color: #fff; }
 
+section#contact{
+  padding: 0px;
+}
+
 a {
   color: #acc41e;
   -webkit-transition: all 0.2s;
