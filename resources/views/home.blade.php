@@ -65,10 +65,10 @@
             <img src="{{asset ('assets/img/icons/slogan.png')}}" class="img-fluid">
           </div>
           <div class="col-lg-8 mx-auto">
-              <br>  
-              <br>                
+              <br>
+              <br>
             <a class="android btn btn-light btn-xl js-scroll-trigger" href="#"></a>
-            <a class="ios btn btn-light btn-xl js-scroll-trigger" href="#"></a>                      
+            <a class="ios btn btn-light btn-xl js-scroll-trigger" href="#"></a>
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/lavado.png')}}" width="95"></img>
               </span>
-              <h3 class="mb-3 text-dark">Lavado</h3>              
+              <h3 class="mb-3 text-dark">Lavado</h3>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -98,7 +98,7 @@
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/detallado.png')}}" width="95"></img>
               </span>
-              <h3 class="mb-3 text-dark">Detallado</h3>              
+              <h3 class="mb-3 text-dark">Detallado</h3>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -106,7 +106,7 @@
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/vulka.png')}}" width="95"></img>
               </span>
-              <h3 class="mb-3 text-dark">Vulka</h3>              
+              <h3 class="mb-3 text-dark">Vulka</h3>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -114,7 +114,7 @@
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/grua.png')}}" width="85"></img>
               </span>
-              <h3 class="mb-3 text-dark">Grúa</h3>              
+              <h3 class="mb-3 text-dark">Grúa</h3>
             </div>
           </div>
         </div>
@@ -254,13 +254,8 @@
           </div>
       </div>
     </section>
-<<<<<<< HEAD
-
     <section id="contact">
-=======
-    
     <section>
->>>>>>> 5e7b10567a65cdd7d3bc4200c0877fa726a4cee0
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
@@ -272,7 +267,7 @@
         <div class="row">
           <div class="col-lg-4 ml-auto text-center">
             <i class="fa fa-mobile fa-4x mb-3 sr-contact"></i>
-            <p class="text-primary">87-14-66-52-02</p>            
+            <p class="text-primary">87-14-66-52-02</p>
           </div>
           <div class="col-lg-4 ml-auto text-center">
             <i class="fa fa-phone fa-3x mb-3 sr-contact"></i>
@@ -281,13 +276,10 @@
           <div class="col-lg-4 mr-auto text-center">
             <i class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
             <p>
-<<<<<<< HEAD
               <a>feedback@startbootstrap.com</a>
-            </p>git
-=======
+            </p>
               <a class="text-primary">feedback@startbootstrap.com</a>
             </p>
->>>>>>> 5e7b10567a65cdd7d3bc4200c0877fa726a4cee0
           </div>
         </div>
       </div>
@@ -301,7 +293,7 @@
             <span class="copyright">&copy; 2017 Car Lab. Todos los Derechos Reservados | <small>Powered by Supernova Apps</small></span>
           </div>
           <div class="col-md-2">
-            <ul class="list-inline social-buttons">              
+            <ul class="list-inline social-buttons">
               <li class="list-inline-item">
                 <a href="#">
                   <i class="fa fa-facebook"></i>
@@ -319,15 +311,12 @@
               </li>
             </ul>
           </div>
-<<<<<<< HEAD
           <div class="col-md-2">
             <ul class="list-inline quicklinks">
           <div class="col-md-3">
             <ul class="list-inline quicklinks">
-=======
           <div class="col-md-4">
-            <ul class="list-inline quicklinks">             
->>>>>>> 9d59d19489818792d47edb1b05ed599248ea271b
+            <ul class="list-inline quicklinks">
               <li class="list-inline-item">
                 <a href="/terms">Términos Y Condiciones</a>
               </li>
@@ -335,7 +324,7 @@
           </div>
         </div>
       </div>
-    </footer>   
+    </footer>
     <!-- Bootstrap core JavaScript -->
     <script src="{{asset ('js/jquery.min.js')}}"></script>
     <script src="{{asset ('js/bootstrap.bundle.min.js')}}"></script>
@@ -348,7 +337,7 @@
     <!-- Custom scripts for this template -->
     <script src="{{asset ('js/creative.min.js')}}"></script>
     <!-- Parallax -->
-    <script src="{{asset ('js/parallax.min.js')}}"></script>     
+    <script src="{{asset ('js/parallax.min.js')}}"></script>
   </body>
 
 </html>
