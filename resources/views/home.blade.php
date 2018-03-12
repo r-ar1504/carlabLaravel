@@ -87,30 +87,34 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-              <i class="fa fa-4x fa-car text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3 text-primary">Lavado</h3>
-              <p class="text-dark mb-0">Our templates are updated regularly so they don't break.</p>
+              <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/lavado.png')}}" width="95"></img>
+              </span>
+              <h3 class="mb-3 text-dark">Lavado</h3>              
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-              <i class="fa fa-4x fa-check text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3 text-primary">Encerado</h3>
-              <p class="text-dark mb-0">You can use this theme as is, or you can make changes!</p>
+              <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/detallado.png')}}" width="95"></img>
+              </span>
+              <h3 class="mb-3 text-dark">Detallado</h3>              
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-              <i class="fa fa-4x fa-cogs text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3 text-primary">Vulka</h3>
-              <p class="text-dark mb-0">We update dependencies to keep things fresh.</p>
+              <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/vulka.png')}}" width="95"></img>
+              </span>
+              <h3 class="mb-3 text-dark">Vulka</h3>              
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
-              <i class="fa fa-4x fa-truck text-primary mb-3 sr-icons"></i>
-              <h3 class="mb-3 text-primary">Grúa</h3>
-              <p class="text-dark mb-0">You have to make your websites with love these days!</p>
+              <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/grua.png')}}" width="85"></img>
+              </span>
+              <h3 class="mb-3 text-dark">Grúa</h3>              
             </div>
           </div>
         </div>
@@ -262,7 +266,7 @@
         </div>
         <div class="row">
           <div class="col-lg-4 ml-auto text-center">
-            <i class="fa fa-mobile fa-3x mb-3 sr-contact"></i>
+            <i class="fa fa-mobile fa-4x mb-3 sr-contact"></i>
             <p class="text-primary">87-14-66-52-02</p>            
           </div>
           <div class="col-lg-4 ml-auto text-center">
@@ -286,16 +290,16 @@
           <div class="col-md-6">
             <span class="copyright">&copy; 2017 Car Lab. Todos los Derechos Reservados | <small>Powered by Supernova Apps</small></span>
           </div>
-          <div class="col-md-3">
-            <ul class="list-inline social-buttons">
+          <div class="col-md-2">
+            <ul class="list-inline social-buttons">              
               <li class="list-inline-item">
                 <a href="#">
-                  <i class="fa fa-twitter"></i>
+                  <i class="fa fa-facebook"></i>
                 </a>
               </li>
               <li class="list-inline-item">
                 <a href="#">
-                  <i class="fa fa-facebook"></i>
+                  <i class="fa fa-instagram"></i>
                 </a>
               </li>
               <li class="list-inline-item">
@@ -305,7 +309,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <ul class="list-inline quicklinks">             
               <li class="list-inline-item">
                 <a href="/terms">Términos Y Condiciones</a>
@@ -327,7 +331,7 @@
     <!-- Custom scripts for this template -->
     <script src="{{asset ('js/creative.min.js')}}"></script>
     <!-- Parallax -->
-    <script src="{{asset ('js/parallax.min.js')}}"></script>    
+    <script src="{{asset ('js/parallax.min.js')}}"></script>     
   </body>
 
 </html>
