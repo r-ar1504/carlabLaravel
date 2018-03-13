@@ -43,7 +43,7 @@
               <a class="nav-link js-scroll-trigger" href="#portfolio">Galería</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">Equipo</a>
+              <a class="nav-link js-scroll-trigger" href="#about">Nosotros</a>
             </li> 
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#contact">Contacto</a>
@@ -88,7 +88,7 @@
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
-                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/lavado.png')}}" width="95"></img>
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/lavado.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Lavado</h3>              
             </div>
@@ -96,7 +96,7 @@
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
-                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/detallado.png')}}" width="95"></img>
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/detallado.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Detallado</h3>              
             </div>
@@ -104,7 +104,7 @@
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
-                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/vulka.png')}}" width="95"></img>
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/vulka.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Vulka</h3>              
             </div>
@@ -112,7 +112,7 @@
           <div class="col-lg-3 col-md-6 text-center">
             <div class="service-box mt-5 mx-auto">
               <span style="padding-right:3px; padding-top: 3px; display:inline-block;">
-                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/grua.png')}}" width="85"></img>
+                  <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/grua.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Grúa</h3>              
             </div>
@@ -266,18 +266,47 @@
         </div>
         <div class="row">
           <div class="col-lg-4 ml-auto text-center">
-            <i class="fa fa-mobile fa-4x mb-3 sr-contact"></i>
-            <p class="text-primary">87-14-66-52-02</p>            
+            <i class="fa fa-mobile fa-4x mb-3 sr-contact text-primary"></i>
+            <p class="text-dark">87-14-66-52-02</p>            
           </div>
           <div class="col-lg-4 ml-auto text-center">
-            <i class="fa fa-phone fa-3x mb-3 sr-contact"></i>
-            <p class="text-primary">2-09-09-54</p>
+            <i class="fa fa-phone fa-3x mb-3 sr-contact text-primary"></i>
+            <p class="text-dark">2-09-09-54</p>
           </div>
-          <div class="col-lg-4 mr-auto text-center">
-            <i class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
+          <div class="col-lg-4 ml-auto text-center">
+            <i class="fa fa-envelope-o fa-3x mb-3 sr-contact text-primary"></i>
             <p>
-              <a class="text-primary">feedback@startbootstrap.com</a>
+              <a class="text-dark">feedback@startbootstrap.com</a>
             </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 ml-auto text-center">
+            <ul class="list-inline social-buttons">              
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-facebook fa-3x mb-3 sr-contact"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 ml-auto text-center">
+            <ul class="list-inline social-buttons"> 
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-instagram fa-3x mb-3 sr-contact"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 ml-auto text-center">
+            <ul class="list-inline social-buttons"> 
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fa fa-linkedin fa-3x mb-3 sr-contact"></i>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -289,27 +318,8 @@
         <div class="row">
           <div class="col-md-6">
             <span class="copyright">&copy; 2017 Car Lab. Todos los Derechos Reservados | <small>Powered by Supernova Apps</small></span>
-          </div>
-          <div class="col-md-2">
-            <ul class="list-inline social-buttons">              
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="fa fa-facebook"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="fa fa-instagram"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <i class="fa fa-linkedin"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-4">
+          </div>          
+          <div class="col-md-6">
             <ul class="list-inline quicklinks">             
               <li class="list-inline-item">
                 <a href="/terms">Términos Y Condiciones</a>

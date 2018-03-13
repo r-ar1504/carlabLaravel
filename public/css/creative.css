@@ -258,7 +258,7 @@ footer span.copyright {
   font-size: 90%;
   line-height: 40px;
   text-transform: none;
-  font-family: 'Montserrat', 'Gotham', 'Gotham', Arial, sans-serif;
+  font-family: 'Gotham', 'Gotham', 'Gotham', Arial, sans-serif;
   color: #beec2d; }
 
 footer ul.quicklinks {
@@ -266,27 +266,27 @@ footer ul.quicklinks {
   line-height: 40px;
   margin-bottom: 0;
   text-transform: none;
-  font-family: 'Montserrat', 'Gotham', 'Gotham', Arial, sans-serif; }
+  font-family: 'Gotham', 'Gotham', 'Gotham', Arial, sans-serif; }
 
 ul.social-buttons {
   margin-bottom: 0; }
 
-ul.social-buttons li a {
-  font-size: 20px;
-  line-height: 40px;
+ul.social-buttons li {
   display: block;
-  width: 40px;
-  height: 40px;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
-  color: white;
-  border-radius: 100%;
-  outline: none;
-  background-color: #212529; }
+  outline: none; }
 
-ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a:hover {
-  background-color: #beec2d; }
+ul.social-buttons li a {
+  background-color: transparent; }
+
+ul.social-buttons li a i {
+  color: #acc41e; }
+
+ul.social-buttons li a:active, ul.social-buttons li a:focus, ul.social-buttons li a i:hover {
+  background-color: transparent;
+  color: #343a40; }
 
 .team-content {
   padding: 0px 15px 15px 15px; }
