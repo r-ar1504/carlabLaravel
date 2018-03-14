@@ -125,6 +125,7 @@ class API extends Controller
       'fireID' => $data['fireID'],
       'email' => $data['email'],
       'name' => $data['name'],
+      'phone' => $data['name']
     ]);
 
     return response()->json(['data' => "OK", 'status' => "200"]);
