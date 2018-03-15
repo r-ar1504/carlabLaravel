@@ -16,6 +16,9 @@ Route::get('/', function () { return view('home'); });
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
 
+/*Evaluate ending order*/
+Route::post('send_eval/{order_id}', "API@evaluateOrder");
+
 //<!--[Get Service ==> Categories]-->//
 Route::get('get_categories/{service_id}', 'API@get_categories');
 
@@ -52,11 +55,17 @@ Route::get('end_service/{order_id}/{now}', "API@terminateOrder");
 //<!--[Start Washing]-->//
 Route::get('wash_service/{order_id}/{now}', "API@startWash");
 
+//<!--[Start Washing]-->//
+Route::get('sub_service/{order_id}/{now}', "API@subcat_order");
+
 //<!--[Start Route]-->//
 Route::get('start_service/{order_id}/{now}', "API@startOrder");
 
 //<!--[Fetch Orders By User]-->//
 Route::get('get_orders/{fireID}', 'API@getOrders');
+
+//<!--[Fetch Orders By User]-->//
+Route::get('get_actives/{fireID}', 'API@getActives');
 
 //<!--[Try To Reach Order]-->//
 Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');

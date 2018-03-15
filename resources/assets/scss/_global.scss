@@ -15,6 +15,10 @@ hr {
   border-color: $primary;
 }
 
+section#contact{
+  padding: 0px!important;
+}
+
 hr.light {
   border-color: $white;
 }
@@ -54,28 +58,28 @@ h6 {
 
 .android {
   background-image: url('../assets/img/icons/android2.png')!important;
-  background-size: cover; 
-  background-position: center; 
-  width: 14rem; 
+  background-size: cover;
+  background-position: center;
+  width: 14rem;
   height: 5rem;
   float:left;
 }
 
 .ios {
   background-image: url('../assets/img/icons/ios2.png')!important;
-  background-size: cover; 
-  background-position: center; 
-  width: 14rem; 
+  background-size: cover;
+  background-position: center;
+  width: 14rem;
   height: 5rem;
   float:right;
 }
 
 section {
-  padding: 8rem 0;      
+  padding: 8rem 0;
 }
 
 .section-heading {
-  margin-top: 0;  
+  margin-top: 0;
 }
 
 ::-moz-selection {

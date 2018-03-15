@@ -12,11 +12,12 @@ class API extends Controller
 
     $services = DB::select('select * from Service');
 
-      return response()->json(['services' => $services]);
+    return response()->json(['services' => $services]);
   }
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
   function get_categories(Request $req, $service_id){
+
     // return $service_id;
     $subcategories = [];
 
@@ -49,7 +50,7 @@ class API extends Controller
 
     ]);
 
-      return response()->json(['status' => '200']);
+    return response()->json(['status' => '200']);
 
   }
 
@@ -58,53 +59,60 @@ class API extends Controller
 
     $worker = DB::table('Worker')->where('fireID', $req->fireID)->first();
 
-    $worker_id = $worker->fireID;
-    $worker_role = $worker->role;
+    if(count($worker)>0){
+      $worker_id = $worker->fireID;
+      $worker_role = $worker->role;
 
-    $orders = $this->getWorkerOrders($worker_id, $worker_role);
+      $orders = $this->getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['worker' => $worker, 'orders' => $orders]);
+      return response()->json(['worker' => $worker, 'orders' => $orders]);
+    }else{
 
+
+      return response()->json(['status'=> '0']);
+
+    }
   }
 
   //<!--[Get User]-->//
   function getUser(Request $req, $fireID){
     $user = DB::table('User')->where('fireID', $req->fireID)->first();
-
+    $card = DB::table('UserBilling')->where('user_id', $req->fireID)->first();
+    $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
     $user_id = $user->fireID;
 
     // $orders = getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['user' => $user]);
+    return response()->json(['user' => $user, 'car' => $car, 'card' => $card]);
 
   }
 
   //<!--[Change Worker Status]-->//
   function workerStatus(Request $req, $fireID){
-   $worker = DB::table('Worker')->where('fireID', $fireID)->first();
+    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
-   if ($worker->status != '0') {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
-   }else {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
-   }
+    if ($worker->status != '0') {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
+    }else {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '1']);
+    }
 
     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-   return response()->json(['data' => $nworker->status]);
+    return response()->json(['data' => $nworker->status]);
   }
 
   //<!--[Change Worker (LogOut)]-->//
   function workerLogOut(Request $req, $fireID){
-   $worker = DB::table('Worker')->where('fireID', $fireID)->first();
+    $worker = DB::table('Worker')->where('fireID', $fireID)->first();
 
-   if ($worker->status != '0') {
-     DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
-     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-    return response()->json(['data' => $nworker->status]);
-  }else {
-     $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
-     return response()->json(['data' => $nworker->status]);
-   }
+    if ($worker->status != '0') {
+      DB::table('Worker')->where('fireID', $fireID)->update(['status' => '0']);
+      $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+      return response()->json(['data' => $nworker->status]);
+    }else {
+      $nworker = DB::table('Worker')->where('fireID', $fireID)->first();
+      return response()->json(['data' => $nworker->status]);
+    }
 
   }
 
@@ -119,7 +127,7 @@ class API extends Controller
       'name' => $data['name'],
     ]);
 
-      return response()->json(['data' => "OK", 'status' => "200"]);
+    return response()->json(['data' => "OK", 'status' => "200"]);
 
   }
 
@@ -127,9 +135,28 @@ class API extends Controller
   function updateUser(Request $req, $fireID){
 
     $data = $req->all();
-
     $user = DB::table('User')->where('fireID',$fireID)->update(['email'=> $data['email'],
     'phone' => $data['phone']]);
+    $card = DB::table('UserBilling')->where('user_id', $req->fireID)->first();
+    $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
+
+    if (count($card)>0) {
+      DB::table('UserBilling')->where('user_id',$fireID)->update(['card_number' => $data['card']]);
+    }else{
+      DB::table('UserBilling')->insert([
+        'user_id' => $fireID,
+        'card_number'=> $data['card']
+      ]);
+    }
+
+    if (count($car)>0) {
+      DB::table('Cars')->where('user_id',$fireID)->update(['car_model' => $data['car']]);
+    }else{
+      DB::table('Cars')->insert([
+        'user_id' => $fireID,
+        'car_model'=> $data['car']
+      ]);
+    }
 
     return response()->json(['status' => '200']);
   }
@@ -147,25 +174,48 @@ class API extends Controller
 
   //<!--[Create Order]-->//
   function createOrder(Request $req){
-    $data = $req->all();
-
+    $request = $req->all();
+    $data = $request['order'];
+    $token = $request['token_object'];
     $worker_list = $this->findWorker($data['service_name']);
 
     if ( count($worker_list)>0) {
 
-      //Register unasigned Order.
-      $order_id = DB::table('Order')->insertGetId([
-        'status' => $data['status'],
-        'latitude' => $data['lat'],
-        'longitude' => $data['lng'],
-        'ammount' => $data['ammount'],
-        'car_plate' => $data['car_plate'],
-        'user_id' => $data['user'],
-        'service_name' => $data['service_name'],
-        'details' => $data['details'],
-        'service_date' => $data['date'],
-        'category_id' => $data['category_id']
-      ]);
+      if($data['has_sub']!= "true"){
+        //Register unasigned Order.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'token' => $token['id']
+        ]);
+      }else{
+        //Register unasigned Order + SubCat.
+        $order_id = DB::table('Order')->insertGetId([
+          'status' => $data['status'],
+          'latitude' => $data['lat'],
+          'longitude' => $data['lng'],
+          'ammount' => $data['ammount'],
+          'car_plate' => $data['car_plate'],
+          'user_id' => $data['user'],
+          'service_name' => $data['service_name'],
+          'details' => $data['details'],
+          'service_date' => $data['date'],
+          'category_id' => $data['category_id'],
+          'has_sub' => $data['has_sub'],
+          'subcat_name' => $data['subcat_name'],
+          'subcat_id' => $data['subcat_id'],
+          'token' => $token['id']
+        ]);
+      }
+
 
       $order_data = $this->getOrderDetails($order_id);
 
@@ -183,49 +233,160 @@ class API extends Controller
 
     }
 
-
-    //
-    //
-    // // Pusher::trigger('new-orders', 'new-order',  ['order_object' => $data]);
-    // if ($worker->isEmpty()) {
-
-
-    // }else {
-    //   //Register unasigned Order.
-    //   $order_id = DB::table('Order')->insertGetId([
-    //     'status' => $data['status'],
-    //     'latitude' => $data['lat'],
-    //     'longitude' => $data['lng'],
-    //     'ammount' => $data['ammount'],
-    //     'car_plate' => $data['car_plate'],
-    //     'user_id' => $data['user'],
-    //     'service_name' => $data['service_name'],
-    //     'details' => $data['details'],
-    //     'service_date' => $data['date'],
-    //     'category_id' => $data['category_id']
-    //   ]);
-    //
-    //   $order = $this->getOrderDetails($order_id);
-
-
-    }
+  }
 
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
+    require_once(app_path()."/conekta-php/lib/Conekta.php");
+    \Conekta\Conekta::setApiKey("key_7czD6sAx2ooMpfGxBdcpBw");
+    // \Conekta\Conekta::setApiKey("key_nqHcxy7u15yQ7D1mKJXqmw");
+    \Conekta\Conekta::setApiVersion("2.0.0");
     $data = $req->all();
 
     $order = DB::table('Order')->where('id', $order_id)->first();
     $worker = DB::table('Worker')->where('fireID', $fireID)->first();
     if ($order->status != 0) {
+
       return response()->json(['code' => '2']);
+
     }elseif ($order->status == 0) {
-      DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
-      'status' => 1]);
 
-      Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+      $user = DB::table('User')->where('fireID', '=', $order->user_id)->first();
 
-        return response()->json(['code' => '1']);
+      //Create Customer Conekta
+      try {
+        $customer = \Conekta\Customer::create(
+          array(
+            "name" => $user->name." ".$user->last_name,
+            "email"=> $user->email,
+            "phone"=> $user->phone,
+            "payment_sources"=> array(
+              array(
+                "type" => "card",
+                "token_id" => $order->token
+              )//Payment Sources
+            )//Card Data
+          )//Customer Array
+        );//Conekta Customer
+      } catch (\Conekta\ProccessingError $error){
+
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
+        return response()->json(['code' => '2']);
+      } catch (\Conekta\ParameterValidationError $error){
+
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
+        return response()->json(['code' => '2']);
+      } catch (\Conekta\Handler $error){
+
+        Pusher::trigger('order-'.$order->id, 'info-error', ['error' => $error, 'order' => $order] );
+        DB::table('Order')->where('id', '=', $order->id)->delete();
+        return response()->json(['code' => '2']);
+      }
+
+      if ($order->has_sub == "true") {
+        $subcategory = DB::table('SubCategory')->where('id', '=', $order->subcat_id)->first();
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+
+        try{
+          $order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                ),
+                array(
+                  "name" => $subcategory->name,
+                  "unit_price" => intval($subcategory->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+              "charges" => array(
+                array(
+                    'payment_method' => array(
+                    'type' => 'default'
+                  ) //first charge
+                ) //charges
+              )//order
+            )
+          );
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+          'status' => 1]);
+          Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+          return response()->json(['code' => '1']);
+
+        } catch (\Conekta\ParameterValidationError $error){
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\Handler $error){
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        }
+
+      }else {
+        $category = DB::table('Category')->where('id', '=', $order->category_id)->first();
+
+        try{
+          $conekta_order = \Conekta\Order::create(
+            array(
+              "line_items" => array(
+                array(
+                  "name" => $order->service_name." ".$category->name,
+                  "unit_price" => intval($category->price)*100,
+                  "quantity" => 1
+                )
+              ), //line_items
+              "currency" => "MXN",
+              "customer_info" => array(
+                "customer_id" => $customer['id']
+              ), //customer_info
+              "charges" => array(
+                array(
+                  "payment_method" => array(
+                    "type" => "card",
+                    "token_id" => $order->token
+                  ) //first charge
+                ) //charges
+              )//order
+            )
+          );
+
+          DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
+          'status' => 1]);
+          Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
+
+          return response()->json(['code' => '1']);
+
+        } catch (\Conekta\Handler $error){
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ProccessingError $error){
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        } catch (\Conekta\ParameterValidationError $error){
+        DB::table('Order')->where('id', $order_id)->delete();
+          Pusher::trigger('order-'.$order->id, 'payment-error', ['error' => $error, 'customer'=> $customer]);
+          return response()->json(['code' => '2']);
+        }
+
+      }
+
+
     }
+
+
+
   }
 
   //<!--[Fetch Orders]-->//
@@ -238,11 +399,41 @@ class API extends Controller
     }
   }
 
+  //<!--[Fetch Orders]-->//
+  function getActives(Request $req, $fireID){
+    $orders = DB::table('Order')->where('user_id', $fireID)->where('status','!=', 4)->get();
+    if (count($orders)>0) {
+      return response()->json(['orders' => $orders, 'code' => "200"]);
+    }else{
+      return response()->json(['orders' => $orders, 'code' => "0"]);
+    }
+  }
+
   //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
-    Pusher::trigger('order-'.$order_id, 'order-done', ['message' => "Order Done"]);
+    Pusher::trigger('order-'.$order_id, 'order-done', ['order_id' => $order_id]);
     return response()->json(['result' => "ok", 'code' => "200"]);
+  }
+
+  /**te and end order**/
+  function evaluateOrder(Request $req, $order_id){
+    $data = $req->all();
+    $order = DB::table('Order')->where('id', $order_id)->first();
+    if ($data['rating'] >= 5) {
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => 5.0]);
+
+      DB::table('Worker')->where('fireID', $order->worker_id)->increment('stars');
+      DB::table('Worker')->where('fireID', $order->worker_id)->increment('on_time');
+
+    }else{
+      DB::table('Order')->where('id', $order_id)->update(['comments'=> $data['comments'], 'rating' => floatval($data['rating'])]);
+    }
+
+    $avg = $this->evaluateWorker($order->worker_id);
+    $this->waterSaver($order->user_id);
+
+    return response()->json(['result' => "ok", 'code' => "200", 'avg' => $avg]);
   }
 
   //<!--[Start Order]-->//
@@ -252,9 +443,19 @@ class API extends Controller
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 
+
+  function subcat_order(Request $req, $order_id, $now){
+    DB::table('Order')->where('id', $order_id)->update(['status'=> "6", 'subcat_date' => $now]);
+    Pusher::trigger('order-'.$order_id, 'subcat-started', ['message' => "Servicio Iniciado"]);
+    return response()->json(['result' => "ok", 'code' => "200"]);
+  }
+
+
   //<!--[Wash Order]-->//
   function startWash(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "3", 'cleaning_date' => $now]);
+
+
     Pusher::trigger('order-'.$order_id, 'wash-started', ['message' => "Lavado iniciado"]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
@@ -265,7 +466,7 @@ class API extends Controller
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
 
-    $orders = DB::table('Order')->where('worker_id', $worker_id)->where('service_name', $worker_role)->where('status', '<', 4)->get();
+    $orders = DB::table('Order')->where('worker_id', $worker_id)->where('service_name', $worker_role)->where('status', '<', 4)->orWhere('status', '=', 6)->get();
 
     return $orders;
   }
@@ -283,6 +484,7 @@ class API extends Controller
 
     $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order_data)->get();
     return $worker_list;
+
   }
 
   //<!--[Fetch SubCategory By Category ID]-->//
@@ -293,6 +495,19 @@ class API extends Controller
     return $sub_cat;
   }
 
+  /*Evaluate and modify worker rating*/
+  function evaluateWorker($worker_id){
+    $new_average = DB::table('Order')->where('worker_id', $worker_id)->avg('rating');
+
+    DB::table('Worker')->where('fireID', $worker_id)->update(['rating' => $new_average]);
+    return $new_average;
+  }
+
+  /*Sum carwash service*/
+  function waterSaver($user_id){
+    DB::table('User')->where('fireID', '=', $user_id)->increment('services');
+    return "OK";
+  }
   #<!------------------------------------------------------------------------------>
 
   function getTerms(){
