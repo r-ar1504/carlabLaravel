@@ -16,6 +16,9 @@ Route::get('/', function () { return view('home'); });
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
 
+
+Route::post('create_fb', "API@createFB");
+
 /*Evaluate ending order*/
 Route::post('send_eval/{order_id}', "API@evaluateOrder");
 

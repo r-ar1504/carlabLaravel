@@ -117,6 +117,28 @@ class API extends Controller
   }
 
   //<!--[Create New User]-->//
+  function createFB(Request $req){
+    $data = $req->all();
+
+    if (count(DB::table('User')->where('fireID', $data['fireID'])->first())>0) {
+
+    return response()->json(['data' => "OK", 'code' => "0"]);
+  }else {
+      user = DB::table('User')->insert([
+        'last_name' => $data['last_name'],
+        'fireID' => $data['fireID'],
+        'email' => $data['email'],
+        'name' => $data['first_name'],
+      ]);
+
+
+      return response()->json(['data' => "OK", 'code' => "0"]);
+  }
+
+
+  }
+
+  //<!--[Create New User]-->//
   function createUser(Request $req){
     $data = $req->all();
 
@@ -463,7 +485,7 @@ class API extends Controller
 
 
   function checkEmail(Request $req, $fireID){
-    
+
   }
 
 
