@@ -72,3 +72,6 @@ Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
 
 //<!--[Get Terms And Conditions]-->//
 Route::get('terms','API@getTerms');
+
+/* Check if user exists */
+Route::get('check_email', 'API@checkEmail');

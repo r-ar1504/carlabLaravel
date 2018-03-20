@@ -254,7 +254,7 @@ header.masthead {
   max-width: 5rem; }
 
 footer {
-  position: fixed;
+  /*position: fixed;*/
   bottom: 0; }
 
 @media (max-height: 800px) {

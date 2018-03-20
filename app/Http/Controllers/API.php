@@ -462,6 +462,11 @@ class API extends Controller
   }
 
 
+  function checkEmail(Request $req, $fireID){
+    
+  }
+
+
   #Custom Reusable Functions<------------------------------------------------------->
 
   // #<!-- Fetch Orders By Worker ID -->
