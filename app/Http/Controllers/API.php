@@ -122,9 +122,9 @@ class API extends Controller
 
     if (count(DB::table('User')->where('fireID', $data['fireID'])->first())>0) {
 
-    return response()->json(['data' => "OK", 'code' => "0"]);
-  }else {
-      user = DB::table('User')->insert([
+      return response()->json(['data' => "OK", 'code' => "0"]);
+    }else {
+      $user = DB::table('User')->insert([
         'last_name' => $data['last_name'],
         'fireID' => $data['fireID'],
         'email' => $data['email'],
