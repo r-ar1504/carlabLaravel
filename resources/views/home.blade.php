@@ -90,6 +90,7 @@
           </div>
         </div>
       </div>
+    </section>
 
       <!--div class="container-fluid bg-dark">
         <div class="row">
@@ -103,8 +104,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           </div>
         </div>
-      </div-->
-    </section>
+      </div-->    
 
     <section id="services" class="bg-white">
       <div class="container">
@@ -133,7 +133,7 @@
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/detallado.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Detallado</h3>
-              <p class="text-muted mb-0">Brindamos estética automotriz evitándote gastos de traslado y la pérdida de tiempo.</p>
+              <p class="text-muted mb-0">Brindamos estética automotriz detallando interiores y exteriores,evitando gastos de traslado y pérdida de tiempo.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -142,7 +142,7 @@
                   <img class="mb-3 sr-icons" src="{{asset ('assets/img/icons/vulka.png')}}" width="125"></img>
               </span>
               <h3 class="mb-3 text-dark">Vulka</h3>
-              <p class="text-muted mb-0">Te ayudamos solamente a reemplazar la llanta averiada de tu vehículo por tu propia refacción dándote la oportunidad que lleves arreglar tu llanta a donde gustes.</p>
+              <p class="text-muted mb-0">Te ayudamos a reemplazar tu llanta averiada en la comodidad de tu ubicación, con opción de repararla.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -157,8 +157,105 @@
         </div>
       </div>
     </section>
+    
+    <section class="p-0" id="portfolio">
+      <div class="container-fluid p-0">
+        <div class="row no-gutters popup-gallery">
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/1.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/1.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    CUIDA
+                  </div>
+                  <div class="project-name">
+                    Y ahorra 39 lt. de agua.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/2.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/2.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    VALORA
+                  </div>
+                  <div class="project-name">
+                    Tu tiempo.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/3.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/3.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    DESCARGA
+                  </div>
+                  <div class="project-name">
+                    Carlab app para solicitar tu servicio.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/4.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/4.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    DISFRUTA
+                  </div>
+                  <div class="project-name">
+                    Tu tiempo en tus ocupaciones.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/5.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/5.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    AHORRA
+                  </div>
+                  <div class="project-name">
+                    1 lt. de gasolina.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/6.jpg')}}">
+              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/6.jpg')}}" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    CUIDA
+                  </div>
+                  <div class="project-name">
+                    Tu auto con los mejores productos.
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <section id="about" class="bg-dark">
+    <section class="bg-dark">
       <div class="container">
           <div class="row">
             <div class="col-md-4 team-box">
@@ -192,103 +289,6 @@
               </div>
             </div>
           </div>
-      </div>
-    </section>
-    
-    <section class="p-0" id="portfolio">
-      <div class="container-fluid p-0">
-        <div class="row no-gutters popup-gallery">
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/1.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/1.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    CUIDA
-                  </div>
-                  <div class="project-name">
-                    Y ahorra 39 lt. de agua.
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/2.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/2.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    VALORA
-                  </div>
-                  <div class="project-name">
-                    Tu auto.
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/3.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/3.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    APROVECHA
-                  </div>
-                  <div class="project-name">
-                    1 hora de tu tiempo.
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/4.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/4.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    DISFRUTA
-                  </div>
-                  <div class="project-name">
-                    Tu tiempo en tus ocupaciones.
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/5.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/5.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    AHORRA
-                  </div>
-                  <div class="project-name">
-                    1 lt. de gasolina
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{asset ('assets/img/portfolio/fullsize/6.jpg')}}">
-              <img class="img-fluid gallery" src="{{asset ('assets/img/portfolio/thumbnails/6.jpg')}}" alt="">
-              <div class="portfolio-box-caption">
-                <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    CUIDA
-                  </div>
-                  <div class="project-name">
-                    Tu auto con los mejores productos.
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
       </div>
     </section>
     
@@ -364,13 +364,12 @@
           ·         
           <a href="#contact">Contacto</a>          
         </p>
-        <p class="footer-company-name">2017 Car Lab. Todos los Derechos Reservados | <small>Powered by Supernova Apps</small></p>
-        
+        <p class="footer-company-name">2017 Car Lab. Todos los Derechos Reservados | <small>Powered by Supernova Apps</small></p>        
       </div>
       <div class="footer-center">
         <div>
           <i class="fa fa-map-marker"></i>
-          <p><span>Avenida Central 1899b, Torreón Jardín, 27200</span> Torreón, COAH</p>
+          <p><span>Avenida Central 1899, Torreón Jardín</span> Torreón, COAH</p>
         </div>
         <div>
           <i class="fa fa-phone"></i>
@@ -393,6 +392,7 @@
           <a href="https://www.facebook.com/Carlab-App-1542867705826647"><i class="fa fa-facebook"></i></a>
           <a href="https://www.instagram.com/carlabapp/"><i class="fa fa-instagram"></i></a>         
         </div>
+        <a href="/terms">Términos Y Condiciones</a>
       </div>
     <!-- Bootstrap core JavaScript -->
     <script src="{{asset ('js/jquery.min.js')}}"></script>
