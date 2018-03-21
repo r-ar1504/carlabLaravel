@@ -1,13 +1,3 @@
-footer{
-  position: fixed;
-  bottom: 0;
-}
-
-@media (max-height:800px){
-  footer { position: static; }
-  header { padding-top:40px; }
-}
-
 .footer-distributed{
   background-color: #292c2f;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
