@@ -13,14 +13,17 @@ class API extends Controller
     $data = $req->all();
     $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
 
-    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data[latitude], $data[latitude], $earthRadius = 6371000);
+    // $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data[latitude], $data[latitude], $earthRadius = 6371000);
 
-    if ($total_distance < 3000) {
-      Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $order_data]);
-      return "OK;";
-    }
+    // if ($total_distance < 3000) {
+    //   Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $order_data]);
+    // 
+    //   return response()->json(['working' => "yes"]);
+    //
+    // }
 
-    return "OK;";
+    return response()->json(['working' => "not",'data' => $data,'order' => $order]);
+
 
   }
 
