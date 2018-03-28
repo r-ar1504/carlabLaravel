@@ -7,6 +7,23 @@ use Pusher\Laravel\Facades\Pusher;
 
 class API extends Controller
 {
+
+  //<!--[Report Location]-->//
+  function reportLocation(Request $req){
+    $data = $req->all();
+    $order = DB::table('Order')->where('id','=','$data['order_id']')->first();
+
+    $total_distance = this->getServiceDistance($order->latitude, $order->longitude, $data[latitude], $data[latitude], $earthRadius = 6371000)
+
+    if ($total_distance < 3000) {
+      Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $order_data]);
+      return "OK;"
+    }
+
+    return "OK;"
+
+  }
+
   //<!--[Get All Services]-->//
   function services(Request $req){
 
@@ -244,7 +261,8 @@ class API extends Controller
 
       foreach ($worker_list as $worker) {
 
-        Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+        // Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
+        Pusher::trigger("active-workers", "order-call", ['order' => $order_data]);
 
       }
 
@@ -490,6 +508,24 @@ class API extends Controller
 
 
   #Custom Reusable Functions<------------------------------------------------------->
+
+
+  function getServiceDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+  {
+    // convert from degrees to radians
+    $latFrom = deg2rad($latitudeFrom);
+    $lonFrom = deg2rad($longitudeFrom);
+    $latTo = deg2rad($latitudeTo);
+    $lonTo = deg2rad($longitudeTo);
+
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+      cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    return $angle * $earthRadius;
+  }
+
 
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
