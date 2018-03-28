@@ -22,7 +22,7 @@ class API extends Controller
     //
     // }
 
-    return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude']);
+    return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude']]);
 
 
   }
