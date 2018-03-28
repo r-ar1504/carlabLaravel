@@ -22,7 +22,7 @@ class API extends Controller
 
     }
 
-    return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude]);
+    return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'distance' => $total_distance]);
 
 
   }
