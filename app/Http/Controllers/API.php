@@ -11,7 +11,7 @@ class API extends Controller
   //<!--[Report Location]-->//
   function reportLocation(Request $req){
     $data = $req->all();
-    $order = DB::table('Order')->where('id','=','$data['order_id']')->first();
+    $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
 
     $total_distance = this->getServiceDistance($order->latitude, $order->longitude, $data[latitude], $data[latitude], $earthRadius = 6371000)
 
