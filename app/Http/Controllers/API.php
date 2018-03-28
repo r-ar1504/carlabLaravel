@@ -16,7 +16,7 @@ class API extends Controller
     $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
 
     if ($total_distance < 3000) {
-      Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $order_data]);
+      Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $total_distance]);
 
       return response()->json(['working' => "yes"]);
 
