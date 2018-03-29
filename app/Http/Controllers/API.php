@@ -27,7 +27,7 @@ class API extends Controller
           'order_status' => $order->status
         ]);
 
-        // $this->tryAssign($order_id);
+        $this->tryAssign();
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
           return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
@@ -542,7 +542,22 @@ class API extends Controller
   }
   // TO-DO
   function tryAssign(){
+    $orders = DB::table('Order')->where('status', '=', 0)->get();
 
+    if ( count($orders) > 0) {
+
+      foreach ($orders as $order) {
+        $c_o = $order->id;
+        if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
+          $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
+          Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
+          return "OK";
+        }
+      }
+    }else {
+      echo "No Pending Orders";
+      return "OK";
+    }
 
   }
   // #<!-- Fetch Orders By Worker ID -->
