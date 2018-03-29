@@ -15,14 +15,26 @@ class API extends Controller
 
     $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
 
-    if ($total_distance < 3000) {
-      Pusher::trigger("worker-".$data['worker_id'], "debug-loc", ['distance' => $total_distance]);
+    if ($order->service_name != "grua"){
 
-      return response()->json(['working' => "yes"]);
+      if ($total_distance < 3100) {
 
+
+        $candidate = DB::table('OrderCandidate')->insertGetId([
+          'worker_id' => $data['worker_id'],
+          'order_id' => $data['order_id'],
+          'service_distance' => $total_distance,
+          'order_status' => $order->status
+        ]);
+
+        // $this->tryAssign($order_id);
+
+        Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
+      }
+
+      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
     }
 
-    return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
 
   }
 
@@ -509,7 +521,7 @@ class API extends Controller
   }
 
 
-  #Custom Reusable Functions<------------------------------------------------------->
+  /*Custom Reusable Functions<------------------------------------------------------->*/
 
 
   function getServiceDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
@@ -527,8 +539,10 @@ class API extends Controller
       cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
   }
+  // TO-DO
+  function tryAssign(){
 
-
+  }
   // #<!-- Fetch Orders By Worker ID -->
   function getWorkerOrders($worker_id, $worker_role){
 
