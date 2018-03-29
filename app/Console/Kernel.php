@@ -33,10 +33,13 @@ class Kernel extends ConsoleKernel
 
           foreach ($orders as $order) {
             $c_o = $order->id;
-            if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
-              $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
-              Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
-            }
+            // if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
+            //   $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
+            //   // Pusher::trigger('worker-'.$worker_first->worker)
+            // }
+            Pusher::trigger("worker-".$order->worker_id, "new-order", ['order' => $order]);
+
+
           }
         }else {
           echo "No Pending Orders";
