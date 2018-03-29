@@ -37,8 +37,7 @@ class Kernel extends ConsoleKernel
               $min_distance =DB::table('OrderCandidate')->where('order_id','=',$order->id)->min('service_distance');
 
               $closest = DB::table('OrderCandidate')->where('order_id','=',$order->id)->where('service_distance', $min_distance)->first();
-
-              Pusher::trigger("worker-".$closest->worker_id, "new-order", ['order' => $data]);
+              Pusher::trigger("worker-".$order->worker_id, "new-order", ['order' => $order]);
 
             }
           }
