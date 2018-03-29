@@ -27,10 +27,10 @@ class API extends Controller
           'order_status' => $order->status
         ]);
 
-        $this->tryAssign();
+        $closest = $this->tryAssign();
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
-          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
+          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance, 'closest' => $closest]);
       }
 
       return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
@@ -548,11 +548,15 @@ class API extends Controller
 
       foreach ($orders as $order) {
         $c_o = $order->id;
-        if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
-          $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
-          Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
-          return "OK";
-        }
+        // if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
+
+          // $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance')->first();
+          //
+          // Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
+          // return "OK";
+
+          return DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->min('service_distance');
+        // }
       }
     }else {
       echo "No Pending Orders";
