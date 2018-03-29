@@ -290,6 +290,16 @@ class API extends Controller
 
   }
 
+  //<!--[Reject Order]-->//
+  function rejectOrder(Request $req, $order_id, $fireID){
+
+    $candidate = DB::table('OrderCandidate')->where('worker_id', $fireID)->where('order_id',$order_id)->update(['worker_response' => 0])
+    DB::table('Order')->where('id', $order_id)->increment('rejections');
+
+    return response()->json(['status' => '200');
+
+  }
+
   //<!--[Challenge Order]-->//
   function challengeOrder(Request $req, $order_id, $fireID){
     require_once(app_path()."/conekta-php/lib/Conekta.php");

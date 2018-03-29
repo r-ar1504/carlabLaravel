@@ -76,6 +76,9 @@ Route::get('get_actives/{fireID}', 'API@getActives');
 //<!--[Try To Reach Order]-->//
 Route::get('challenge_order/{order_id}/{fireID}', 'API@challengeOrder');
 
+//<!--[Reject Order]-->//
+Route::get('reject_order/{order_id}/{fireID}', 'API@rejectOrder');
+
 //<!--[Get Terms And Conditions]-->//
 Route::get('terms','API@getTerms');
 
