@@ -10,27 +10,27 @@ class API extends Controller
 
   //<!--[Report Location]-->//
   function reportLocation(Request $req){
-    // $data = $req->all();
-    // $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
+    $data = $req->all();
+    $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
     //
-    // $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
-    //
-    // if ($order->service_name != "grua"){
-    //
-    //   if ($total_distance < 3100) {
-    //
-    //
-    //     $candidate = DB::table('OrderCandidate')->insertGetId([
-    //       'worker_id' => $data['worker_id'],
-    //       'order_id' => $data['order_id'],
-    //       'service_distance' => $total_distance,
-    //       'order_status' => $order->status
-    //     ]);
-    //
-    //
-    //     Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
-    //       return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
-    //   }
+    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+
+    if ($order->service_name != "grua"){
+
+      if ($total_distance < 3100) {
+
+
+        $candidate = DB::table('OrderCandidate')->insertGetId([
+          'worker_id' => $data['worker_id'],
+          'order_id' => $data['order_id'],
+          'service_distance' => $total_distance,
+          'order_status' => $order->status
+        ]);
+
+
+        Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
+          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
+      }
     //
     //   return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
     // }
