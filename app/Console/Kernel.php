@@ -39,6 +39,11 @@ class Kernel extends ConsoleKernel
               $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
                 Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
+            }else{
+                $message = "No hay operadores disponibles por el momento";
+                Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
+                 /*Delete order from DB*/
+                DB::table('Order')->where('id', $order->id);
             }
           }
         }else {

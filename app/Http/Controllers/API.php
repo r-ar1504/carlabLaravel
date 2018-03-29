@@ -28,31 +28,11 @@ class API extends Controller
         ]);
 
 
-        Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
+        // Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
           // return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
       }
-    //
-    //   return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
-    // }
-    $orders = DB::table('Order')->where('status', '=', 0)->get();
-
-    if ( count($orders) > 0) {
-
-      foreach ($orders as $order) {
-        $c_o = $order->id;
-        if ($order->rejections < 3) {
-          $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
-
-          $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
-
-            // Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
-        }
-      }
-    }else {
-      echo "No Pending Orders";
-    }
-
-    return response()->json(['orders' => $orders, 'closest' => $closest, 'worker' => $worker]);
+    
+      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
 
   }
 
