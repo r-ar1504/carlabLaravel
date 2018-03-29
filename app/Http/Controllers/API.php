@@ -27,9 +27,10 @@ class API extends Controller
           'order_status' => $order->status
         ]);
 
-        // $this->tryAssign($order_id);
+        $this->tryAssign($order_id);
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
+          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
       }
 
       return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
@@ -541,6 +542,7 @@ class API extends Controller
   }
   // TO-DO
   function tryAssign(){
+
 
   }
   // #<!-- Fetch Orders By Worker ID -->

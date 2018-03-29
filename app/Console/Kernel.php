@@ -32,14 +32,10 @@ class Kernel extends ConsoleKernel
         if ( count($orders) > 0) {
 
           foreach ($orders as $order) {
-            $worker_list = DB::table('Worker')->where('status', 1)->where('role', $order->service_name)->get();
-            // DB::table('Order')->where('id', '=', $order->id)->update(['status'=> "2"]);
-            if (count($worker_list)>0) {
-              foreach ($worker_list as $worker) {
-                Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order]);
-              }
-            }else{
-              echo "No Workers";
+            $c_o = $order->id;
+            if (DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','=',0)->count() < 3) {
+              $worker_first = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
+              Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
             }
           }
         }else {
