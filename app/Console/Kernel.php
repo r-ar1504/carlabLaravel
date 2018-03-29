@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
           foreach ($orders as $order) {
             $c_o = $order->id;
             if ($order->rejections < 3) {
-              $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
+              $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
               $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
