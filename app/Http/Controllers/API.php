@@ -27,7 +27,7 @@ class API extends Controller
           'order_status' => $order->status
         ]);
 
-        $closest = $this->tryAssign();
+        $closest = DB::table('OrderCandidate')->where('order_id','=',$order->id)->first();
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
           return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance, 'closest' => $closest]);
