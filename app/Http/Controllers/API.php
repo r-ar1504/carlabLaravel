@@ -15,7 +15,7 @@ class API extends Controller
     //
     $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
 
-    if ($order->service_name != "grua"){
+
 
       if ($total_distance < 3100) {
 
