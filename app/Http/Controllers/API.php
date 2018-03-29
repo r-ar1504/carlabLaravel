@@ -555,7 +555,7 @@ class API extends Controller
           // Pusher::trigger('worker-'.$worker_first->worker_id, "new-order", ['order'=> $order]);
           // return "OK";
 
-          return DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
+          return DB::table('OrderCandidate')->where('order_id','=',$c_o)->first();
         // }
       }
     }else {
