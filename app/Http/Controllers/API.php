@@ -44,12 +44,12 @@ class API extends Controller
         }else {
           echo "No Pending Orders";
         }
-        
+
 
 
       }
 
-      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
+      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance , 'orders' => $orders]);
     }
 
 
