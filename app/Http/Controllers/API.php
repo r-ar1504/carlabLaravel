@@ -45,14 +45,14 @@ class API extends Controller
 
           $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
-            Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
+            // Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
         }
       }
     }else {
       echo "No Pending Orders";
     }
 
-    return response()->json(['orders' => $orders, 'closest' => $closest]);
+    return response()->json(['orders' => $orders, 'closest' => $closest, 'worker' => $worker]);
 
   }
 
