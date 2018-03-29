@@ -26,7 +26,7 @@ class API extends Controller
           'service_distance' => $total_distance,
           'order_status' => $order->status
         ]);
-        $min_distance =DB::table('OrderCandidate')->where('order_id','=',$order->id)->min('service_distance')
+        $min_distance =DB::table('OrderCandidate')->where('order_id','=',$order->id)->min('service_distance');
         $closest = DB::table('OrderCandidate')->where('order_id','=',$order->id)->where('service_distance', $min_distance)->first();
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
