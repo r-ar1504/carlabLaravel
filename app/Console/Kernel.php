@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
 
               $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
-                Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order'] => $order)
+                Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
             }
           }
         }else {
