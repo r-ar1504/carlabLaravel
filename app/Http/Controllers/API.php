@@ -15,8 +15,6 @@ class API extends Controller
     //
     $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
 
-
-
       if ($total_distance < 3100) {
 
 
@@ -28,10 +26,10 @@ class API extends Controller
         ]);
 
 
-        // Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
-          // return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
+        Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
+          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
       }
-    
+
       return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
 
   }
