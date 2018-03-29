@@ -10,31 +10,49 @@ class API extends Controller
 
   //<!--[Report Location]-->//
   function reportLocation(Request $req){
-    $data = $req->all();
-    $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
+    // $data = $req->all();
+    // $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
+    //
+    // $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+    //
+    // if ($order->service_name != "grua"){
+    //
+    //   if ($total_distance < 3100) {
+    //
+    //
+    //     $candidate = DB::table('OrderCandidate')->insertGetId([
+    //       'worker_id' => $data['worker_id'],
+    //       'order_id' => $data['order_id'],
+    //       'service_distance' => $total_distance,
+    //       'order_status' => $order->status
+    //     ]);
+    //
+    //
+    //     Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
+    //       return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
+    //   }
+    //
+    //   return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
+    // }
+    $orders = DB::table('Order')->where('status', '=', 0)->get();
 
-    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+    if ( count($orders) > 0) {
 
-    if ($order->service_name != "grua"){
+      foreach ($orders as $order) {
+        $c_o = $order->id;
+        if ($order->rejections < 3) {
+          $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('worker_response','!=',0)->min('service_distance');
 
-      if ($total_distance < 3100) {
+          $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
-
-        $candidate = DB::table('OrderCandidate')->insertGetId([
-          'worker_id' => $data['worker_id'],
-          'order_id' => $data['order_id'],
-          'service_distance' => $total_distance,
-          'order_status' => $order->status
-        ]);
-
-
-        Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
-          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance]);
+            Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order'] => $order)
+        }
       }
-
-      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance ]);
+    }else {
+      echo "No Pending Orders";
     }
 
+    return response()->json(['orders' => $orders, 'closest' => $closest]);
 
   }
 
