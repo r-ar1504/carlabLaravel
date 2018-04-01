@@ -18,7 +18,7 @@ class API extends Controller
         if ($order->rejections < 2) {
           $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
-          $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 0)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
+          $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
             Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
         }else{
@@ -356,7 +356,7 @@ class API extends Controller
   //<!--[Reject Order]-->//
   function rejectOrder(Request $req, $order_id, $fireID){
 
-    $candidate = DB::table('OrderCandidate')->where('worker_id', $fireID)->where('order_id',$order_id)->update(['worker_response' => 0]);
+    $candidate = DB::table('OrderCandidate')->where('worker_id', $fireID)->where('order_id',$order_id)->update(['worker_response' => 2]);
     DB::table('Order')->where('id', $order_id)->increment('rejections');
 
     return response()->json(['status' => '200']);
