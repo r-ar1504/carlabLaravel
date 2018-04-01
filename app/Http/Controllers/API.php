@@ -254,7 +254,7 @@ class API extends Controller
 
     if ( count($worker_list)>0) {
 
-      if($token['token'] == 'money_payment'){
+      if($token['token'] == 'money'){
         if($data['has_sub']!= "true"){
           //Register unasigned Order.
           $order_id = DB::table('Order')->insertGetId([
