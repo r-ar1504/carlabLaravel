@@ -41,13 +41,17 @@ class API extends Controller
 
       if ($total_distance < 3100) {
 
+        if(DB::table('OrderCandidate')->where('worker_id', '=', $data['worker_id'])->exists()){
+          return response()->json(['response' => "User Exists"])
+        }else{
+          $candidate = DB::table('OrderCandidate')->insertGetId([
+            'worker_id' => $data['worker_id'],
+            'order_id' => $data['order_id'],
+            'service_distance' => $total_distance,
+            'order_status' => $order->status
+          ]);
+        }
 
-        $candidate = DB::table('OrderCandidate')->insertGetId([
-          'worker_id' => $data['worker_id'],
-          'order_id' => $data['order_id'],
-          'service_distance' => $total_distance,
-          'order_status' => $order->status
-        ]);
 
 
         Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
