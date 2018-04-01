@@ -358,6 +358,8 @@ class API extends Controller
 
     $candidate = DB::table('OrderCandidate')->where('worker_id', $fireID)->where('order_id',$order_id)->update(['worker_response' => 2]);
     DB::table('Order')->where('id', $order_id)->increment('rejections');
+    DB::table('OrderCandidate')->where('worker_id', $fireID)->delete();
+
 
     return response()->json(['status' => '200']);
 
