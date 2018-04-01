@@ -18,7 +18,7 @@ class API extends Controller
         if ($order->rejections < 2) {
           $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
-          $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->where('worker_response', '!=', 0)->first();
+          $worker = DB::table('OrderCandidate')->where('order_id','=',$c_o)->where('service_distance', $closest)->where('worker_response', '!=', '0')->first();
 
             Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
         }else{
