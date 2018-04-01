@@ -42,7 +42,7 @@ class API extends Controller
       if ($total_distance < 3100) {
 
         if(DB::table('OrderCandidate')->where('worker_id', '=', $data['worker_id'])->exists()){
-          return response()->json(['response' => "User Exists"])
+          return response()->json(['response' => "User Exists"]);
         }else{
           $candidate = DB::table('OrderCandidate')->insertGetId([
             'worker_id' => $data['worker_id'],
