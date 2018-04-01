@@ -381,7 +381,7 @@ class API extends Controller
 
       return response()->json(['code' => '2']);
 
-    }elseif ($order->status == 0) {
+    }else{
 
       if($order->token == 'money'){
 
