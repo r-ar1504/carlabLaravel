@@ -7,6 +7,7 @@ use Pusher\Laravel\Facades\Pusher;
 
 class API extends Controller
 {
+
   function testing(){
     $orders = DB::table('Order')->where('status', '=', 0)->get();
 
@@ -375,7 +376,7 @@ class API extends Controller
 
     }elseif ($order->status == 0) {
 
-      if($order->token == 'money_payment'){
+      if($order->token == 'money'){
 
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
