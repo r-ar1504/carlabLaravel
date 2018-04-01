@@ -380,6 +380,8 @@ class API extends Controller
 
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
+        DB::table('OrderCandidate')->where('order_id', $oorder_id)->delete();;
+
         Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
         return response()->json(['code' => '1']);
@@ -455,6 +457,7 @@ class API extends Controller
             );
             DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
             'status' => 1]);
+            DB::table('OrderCandidate')->where('order_id', $oorder_id)->delete();;
             Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
             return response()->json(['code' => '1']);
 
@@ -498,6 +501,8 @@ class API extends Controller
 
             DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
             'status' => 1]);
+            DB::table('OrderCandidate')->where('order_id', $oorder_id)->delete();;
+
             Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
             return response()->json(['code' => '1']);

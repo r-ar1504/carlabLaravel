@@ -16,6 +16,8 @@ Route::get('/', function () { return view('home'); });
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
 
+Route::get('test', "API@testing");
+
 /* Report Location */
 Route::post('report_location', 'API@reportLocation');
 

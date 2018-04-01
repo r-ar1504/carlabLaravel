@@ -44,6 +44,7 @@ class Kernel extends ConsoleKernel
                 Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
                  /*Delete order from DB*/
                 DB::table('Order')->where('id', $order->id);
+                DB::table('OrderCandidate')->where('order_id', $order->id)->delete();;
             }
           }
         }else {
