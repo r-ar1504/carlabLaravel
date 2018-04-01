@@ -228,10 +228,10 @@ class API extends Controller
     $data = $request['order'];
     $token = $request['token_object'];
     $worker_list = $this->findWorker($data['service_name']);
-    return response()->json(['token' => $token]);
+
     if ( count($worker_list)>0) {
 
-      if($token['token_object'] == 'money_payment'){
+      if($token['token'] == 'money_payment'){
         if($data['has_sub']!= "true"){
           //Register unasigned Order.
           $order_id = DB::table('Order')->insertGetId([
