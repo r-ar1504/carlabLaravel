@@ -273,6 +273,7 @@ class API extends Controller
             'user_id' => $data['user'],
             'service_name' => $data['service_name'],
             'details' => $data['details'],
+            'has_sub' => 'false',
             'service_date' => $data['date'],
             'category_id' => $data['category_id'],
             'token' => "money"
@@ -290,7 +291,7 @@ class API extends Controller
             'details' => $data['details'],
             'service_date' => $data['date'],
             'category_id' => $data['category_id'],
-            'has_sub' => false,
+            'has_sub' => 'true',
             'subcat_name' => $data['subcat_name'],
             'subcat_id' => $data['subcat_id'],
             'token' => "money"
@@ -309,6 +310,7 @@ class API extends Controller
             'service_name' => $data['service_name'],
             'details' => $data['details'],
             'service_date' => $data['date'],
+            'has_sub' => 'false',
             'category_id' => $data['category_id'],
             'token' => $token['id']
           ]);
@@ -325,7 +327,7 @@ class API extends Controller
             'details' => $data['details'],
             'service_date' => $data['date'],
             'category_id' => $data['category_id'],
-            'has_sub' => false,
+            'has_sub' => 'true',
             'subcat_name' => $data['subcat_name'],
             'subcat_id' => $data['subcat_id'],
             'token' => $token['id']
