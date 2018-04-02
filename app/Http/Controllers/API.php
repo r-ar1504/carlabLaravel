@@ -261,6 +261,7 @@ class API extends Controller
     if ( count($worker_list)>0) {
 
       if($token['token'] == "money"){
+
         if($data['has_sub']!= "true"){
           //Register unasigned Order.
           $order_id = DB::table('Order')->insertGetId([
@@ -289,7 +290,7 @@ class API extends Controller
             'details' => $data['details'],
             'service_date' => $data['date'],
             'category_id' => $data['category_id'],
-            'has_sub' => $data['has_sub'],
+            'has_sub' => false,
             'subcat_name' => $data['subcat_name'],
             'subcat_id' => $data['subcat_id'],
             'token' => "money"
@@ -324,7 +325,7 @@ class API extends Controller
             'details' => $data['details'],
             'service_date' => $data['date'],
             'category_id' => $data['category_id'],
-            'has_sub' => $data['has_sub'],
+            'has_sub' => false,
             'subcat_name' => $data['subcat_name'],
             'subcat_id' => $data['subcat_id'],
             'token' => $token['id']
@@ -497,9 +498,8 @@ class API extends Controller
                 ), //customer_info
                 "charges" => array(
                   array(
-                    "payment_method" => array(
-                      "type" => "card",
-                      "token_id" => $order->token
+                      'payment_method' => array(
+                      'type' => 'default'
                     ) //first charge
                   ) //charges
                 )//order
