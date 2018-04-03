@@ -33,33 +33,44 @@ class API extends Controller
       echo "No Pending Orders";
     }
   }
+
   //<!--[Report Location]-->//
-  function reportLocation(Request $req){
-    $data = $req->all();
-    $order = DB::table('Order')->where('id','=',$data['order_id'])->first();
-    //
-    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+  function findCandidates($worker_list, $order_id){
 
-      if ($total_distance < 3100) {
+    $order = DB::table('Order')->where('id','=',$order_id)->first();
 
-        if(DB::table('OrderCandidate')->where('worker_id', '=', $data['worker_id'])->exists()){
+    foreach ($worker_list as $worker) {
+      $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $worker->latitude, $worker->longitude, $earthRadius = 6371000);
+
+      if ($total_distance < 1650) {
+
+        if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
           return response()->json(['response' => "User Exists"]);
         }else{
           $candidate = DB::table('OrderCandidate')->insertGetId([
-            'worker_id' => $data['worker_id'],
-            'order_id' => $data['order_id'],
+            'worker_id' => $worker->fireID,
+            'order_id' => $order_id,
             'service_distance' => $total_distance,
             'order_status' => $order->status
           ]);
         }
+        Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
 
-
-
-        Pusher::trigger("worker-".$data['worker_id'], "on-queue", ['ticket' => $candidate]);
-          return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance, 'saved' => 'yes']);
+          return "OK";
       }
 
-      return response()->json(['lat' => $data['latitude'], 'lon' => $data['longitude'], 'orderLat' => $order->latitude, 'orderLon' => $order->longitude , 'distance'  => $total_distance , 'saved' => 'no']);
+    }
+    return "OK";
+  }
+
+  //<!--[Update Location]-->//
+  function updateLocation(Request $req){
+    $data = $req->all();
+    //
+    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+
+      DB::table('Worker')->where('fireID', $data['$worker_id'])->update(['latitude' => $data['latitude'], 'longitude' => $data['longitude']]);
+      return response()->json(['answer' => 'OK']);
 
   }
 
@@ -335,16 +346,8 @@ class API extends Controller
         }
       }
 
+      $this->findCandidates($worker_list, $order_id);
 
-
-      $order_data = $this->getOrderDetails($order_id);
-
-      foreach ($worker_list as $worker) {
-
-        // Pusher::trigger("worker-".$worker->fireID, "new-order", ['order' => $order_data]);
-        Pusher::trigger("active-workers", "order-call", ['order' => $order_data]);
-
-      }
 
       return response()->json(['status' => '200', 'order_id' => $order_id, 'workers' => $worker_list, 'count' => count($worker_list)]);
 
