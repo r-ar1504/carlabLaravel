@@ -22,7 +22,7 @@ Route::get('test', "API@testing");
 // Route::post('report_location', 'API@reportLocation');
 
 /* Report Location */
-Route::post('update_location', 'API@updateLocation');
+Route::post('change_location', 'API@updateLocation');
 
 /* Facebook Login */
 Route::post('create_fb', 'API@createFB');
