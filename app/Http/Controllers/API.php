@@ -66,8 +66,7 @@ class API extends Controller
   //<!--[Update Location]-->//
   function updateLocation(Request $req){
     $data = $req->all();
-    //
-    $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $data['latitude'], $data['longitude'], $earthRadius = 6371000);
+
 
       DB::table('Worker')->where('fireID', $data['$worker_id'])->update(['latitude' => $data['latitude'], 'longitude' => $data['longitude']]);
       return response()->json(['answer' => 'OK']);
