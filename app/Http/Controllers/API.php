@@ -1,4 +1,4 @@
-<?php
+  <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,7 +68,7 @@ class API extends Controller
     $data = $req->all();
 
 
-      DB::table('Worker')->where('fireID', $data['$worker_id'])->update(['latitude' => $data['latitude'], 'longitude' => $data['longitude']]);
+      DB::table('Worker')->where('fireID', $data['worker_id'])->update(['latitude' => $data['latitude'], 'longitude' => $data['longitude']]);
       return response()->json(['answer' => 'OK']);
 
   }
@@ -392,7 +392,7 @@ class API extends Controller
 
         DB::table('Order')->where('id', $order_id)->update(['worker_id'=> $fireID,
         'status' => 1]);
-        DB::table('OrderCandidate')->where('order_id', $oorder_id)->delete();;
+        DB::table('OrderCandidate')->where('order_id', $order_id)->delete();;
 
         Pusher::trigger('order-'.$order->id, 'got-worker', ['order' => $order]);
 
