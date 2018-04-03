@@ -56,7 +56,6 @@ class API extends Controller
         }
         Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
 
-          return "OK";
       }
 
     }
