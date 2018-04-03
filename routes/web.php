@@ -19,7 +19,10 @@ Route::get('get_services', "API@services");
 Route::get('test', "API@testing");
 
 /* Report Location */
-Route::post('report_location', 'API@reportLocation');
+// Route::post('report_location', 'API@reportLocation');
+
+/* Report Location */
+Route::post('update_location', 'API@updateLocation');
 
 /* Facebook Login */
 Route::post('create_fb', 'API@createFB');
