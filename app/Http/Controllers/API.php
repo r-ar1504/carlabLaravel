@@ -51,7 +51,7 @@ class API extends Controller
             $candidate = DB::table('OrderCandidate')->insertGetId([
               'worker_id' => $worker->fireID,
               'order_id' => $order_id,
-              'order_status' => $order->status
+              'order_status' => $order->status,
               'service_distance' => $total_distance,
             ]);
           }
