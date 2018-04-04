@@ -39,27 +39,47 @@ class API extends Controller
 
     $order = DB::table('Order')->where('id','=',$order_id)->first();
 
-    foreach ($worker_list as $worker) {
-      $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $worker->latitude, $worker->longitude, $earthRadius = 6371000);
+    if( $order->service_name != "carwash"){
+      foreach ($worker_list as $worker) {
 
-      if ($total_distance < 1650) {
+          if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
+            return response()->json(['response' => "User Exists"]);
+          }else{
+            $candidate = DB::table('OrderCandidate')->insertGetId([
+              'worker_id' => $worker->fireID,
+              'order_id' => $order_id,
+              'order_status' => $order->status
+            ]);
+          }
 
-        if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
-          return response()->json(['response' => "User Exists"]);
-        }else{
-          $candidate = DB::table('OrderCandidate')->insertGetId([
-            'worker_id' => $worker->fireID,
-            'order_id' => $order_id,
-            'service_distance' => $total_distance,
-            'order_status' => $order->status
-          ]);
-        }
-        Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
+          Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
+
+
 
       }
+    }else{
+      foreach ($worker_list as $worker) {
+        $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $worker->latitude, $worker->longitude, $earthRadius = 6371000);
 
+        if ($total_distance < 1650) {
+
+          if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
+            return response()->json(['response' => "User Exists"]);
+          }else{
+            $candidate = DB::table('OrderCandidate')->insertGetId([
+              'worker_id' => $worker->fireID,
+              'order_id' => $order_id,
+              'service_distance' => $total_distance,
+              'order_status' => $order->status
+            ]);
+          }
+          Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
+
+        }
+      }
+      return "OK";
     }
-    return "OK";
+
   }
 
   //<!--[Update Location]-->//
