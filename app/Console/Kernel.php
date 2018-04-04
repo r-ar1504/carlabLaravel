@@ -48,10 +48,10 @@ class Kernel extends ConsoleKernel
 
                 $candidates = DB::table('OrderCandidate')->where('order_id', $order->id);
 
-                DB::table('Order')->where('id', $order->id)->delete();
                 foreach ($candidates as $candidate) {
                   DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
                 }
+                DB::table('Order')->where('id', $order->id)->delete();
             }
           }
         }else {
