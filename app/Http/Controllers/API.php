@@ -42,13 +42,17 @@ class API extends Controller
     if( $order->service_name != "carwash"){
       foreach ($worker_list as $worker) {
 
+          $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $worker->latitude, $worker->longitude, $earthRadius = 6371000);
+
           if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
             return response()->json(['response' => "User Exists"]);
+
           }else{
             $candidate = DB::table('OrderCandidate')->insertGetId([
               'worker_id' => $worker->fireID,
               'order_id' => $order_id,
               'order_status' => $order->status
+              'service_distance' => $total_distance,
             ]);
           }
 
