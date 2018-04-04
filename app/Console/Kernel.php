@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
 
           foreach ($orders as $order) {
             $c_o = $order->id;
-            if ($order->rejections < 2 || $order->tries > 3) {
+            if ($order->rejections < 2 || $order->tries < 4) {
               $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
               $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
@@ -45,10 +45,10 @@ class Kernel extends ConsoleKernel
                 $message = "No hay operadores disponibles por el momento";
                 Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
                  /*Delete order from DB*/
-                DB::table('Order')->where('id', $order->id)->delete();
 
                 $candidates = DB::table('OrderCandidate')->where('order_id', $order->id);
 
+                DB::table('Order')->where('id', $order->id)->delete();
                 foreach ($candidates as $candidate) {
                   DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
                 }
