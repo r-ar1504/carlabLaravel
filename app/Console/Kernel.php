@@ -76,7 +76,7 @@ class Kernel extends ConsoleKernel
               }else{
                 $candidate = DB::table('OrderCandidate')->insertGetId([
                   'worker_id' => $worker->fireID,
-                  'order_id' => $order_id,
+                  'order_id' => $order->id,
                   'order_status' => $order->status,
                   'service_distance' => $total_distance,
                 ]);
