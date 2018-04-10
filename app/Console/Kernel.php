@@ -58,6 +58,33 @@ class Kernel extends ConsoleKernel
           echo "No Pending Orders";
         }
       })->everyMinute();
+
+      $schedule->call(function(){
+        $orders = DB::table('Order')->where('status', '=', 0)->get();
+
+        if ( count($orders) > 0) {
+
+          foreach ($orders as $order) {
+            $c_o = $order->id;
+            $workers = DB::table('Worker')->where('status', '!=', 0)->where('role', '=', $order->service_name)->get();
+
+            foreach ($workers as $worker) {
+
+              if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
+                return response()->json(['response' => "User Exists"]);
+
+              }else{
+                $candidate = DB::table('OrderCandidate')->insertGetId([
+                  'worker_id' => $worker->fireID,
+                  'order_id' => $order_id,
+                  'order_status' => $order->status,
+                  'service_distance' => $total_distance,
+                ]);
+              }
+            }
+          }
+        }
+      })->everyMinute();
     }
 
     /**

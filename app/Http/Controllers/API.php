@@ -8,29 +8,30 @@ use Pusher\Laravel\Facades\Pusher;
 class API extends Controller
 {
 
-  function testing(){
+  function testing(){    
     $orders = DB::table('Order')->where('status', '=', 0)->get();
 
     if ( count($orders) > 0) {
 
       foreach ($orders as $order) {
         $c_o = $order->id;
-        if ($order->rejections < 2) {
-          $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
+        $workers = DB::table('Worker')->where('status', '!=', 0)->where('role', '=', $order->service_name)->get();
 
-          $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
+        foreach ($workers as $worker) {
 
-            Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
-        }else{
-            $message = "No hay operadores disponibles por el momento";
-            Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
-             /*Delete order from DB*/
-            DB::table('Order')->where('id', $order->id)->delete();
-            DB::table('OrderCandidate')->where('order_id', $order->id)->delete();
+          if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
+            return response()->json(['response' => "User Exists"]);
+
+          }else{
+            $candidate = DB::table('OrderCandidate')->insertGetId([
+              'worker_id' => $worker->fireID,
+              'order_id' => $order_id,
+              'order_status' => $order->status,
+              'service_distance' => $total_distance,
+            ]);
+          }
         }
       }
-    }else {
-      echo "No Pending Orders";
     }
   }
 
