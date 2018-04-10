@@ -68,7 +68,22 @@ class Kernel extends ConsoleKernel
             $c_o = $order->id;
             $workers = DB::table('Worker')->where('status', '!=', 0)->where('role', '=', $order->service_name)->get();
 
+              // TO-DO
             foreach ($workers as $worker) {
+              
+              // convert from degrees to radians
+              $latFrom = deg2rad($order->latitude);
+              $lonFrom = deg2rad($order->longitude);
+              $latTo = deg2rad($worker->latitude);
+              $lonTo = deg2rad($worker->longitude);
+
+              $latDelta = $latTo - $latFrom;
+              $lonDelta = $lonTo - $lonFrom;
+
+              $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+
+              $total_distance =  $angle * 6371000;
 
               if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
                 return response()->json(['response' => "User Exists"]);
@@ -85,7 +100,11 @@ class Kernel extends ConsoleKernel
           }
         }
       })->everyMinute();
+
+
     }
+
+
 
     /**
      * Register the commands for the application.
