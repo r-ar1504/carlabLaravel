@@ -58,7 +58,7 @@ class Kernel extends ConsoleKernel
         }else {
           echo "No Pending Orders";
         }
-      })->everyMinute();
+      })->cron('0 */2 * ? * *	');
 
 
 
