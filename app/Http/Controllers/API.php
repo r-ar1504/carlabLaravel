@@ -9,45 +9,38 @@ class API extends Controller
 {
 
   function testing(){
-    $orders = DB::table('Order')->where('status', '=', 0)->get();
 
-    if ( count($orders) > 0) {
+      $orders = DB::table('Order')->where('status', '=', 0)->get();
 
-      foreach ($orders as $order) {
-        $c_o = $order->id;
-        $workers = DB::table('Worker')->where('status', '!=', 0)->where('role', '=', $order->service_name)->get();
+      if ( count($orders) > 0) {
 
-          // TO-DO
-        foreach ($workers as $worker) {
+        foreach ($orders as $order) {
+          $c_o = $order->id;
+          if ($order->rejections < 5 && $order->tries < 5) {
+            $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
-          // convert from degrees to radians
-          $latFrom = deg2rad($order->latitude);
-          $lonFrom = deg2rad($order->longitude);
-          $latTo = deg2rad($worker->latitude);
-          $lonTo = deg2rad($worker->longitude);
+            $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
 
-          $latDelta = $latTo - $latFrom;
-          $lonDelta = $lonTo - $lonFrom;
+              Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
 
-          $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-
-          $total_distance =  $angle * 6371000;
-
-          if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
-            return response()->json(['response' => "User Exists"]);
+              DB::table('Order')->where('id', $c_o)->increment('tries');
 
           }else{
-            $candidate = DB::table('OrderCandidate')->insertGetId([
-              'worker_id' => $worker->fireID,
-              'order_id' => $order->id,
-              'order_status' => $order->status,
-              'service_distance' => $total_distance,
-            ]);
+              $message = "No hay operadores disponibles por el momento";
+              Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
+               /*Delete order from DB*/
+
+              $candidates = DB::table('OrderCandidate')->where('order_id', $order->id)->get();
+
+              foreach ($candidates as $candidate) {
+                DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
+              }
+              DB::table('Order')->where('id', $order->id)->delete();
           }
         }
+      }else {
+        echo "No Pending Orders";
       }
-    }
   }
 
   //<!--[Report Location]-->//
