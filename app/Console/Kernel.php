@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
       $schedule->call(function(){
+        Pusher::trigger('test2', 'here');
         $orders = DB::table('Order')->where('status', '=', 0)->get();
 
         if ( count($orders) > 0) {
@@ -64,6 +65,8 @@ class Kernel extends ConsoleKernel
 
 
       $schedule->call(function(){
+        Pusher::trigger('test', 'here');
+
         $orders = DB::table('Order')->where('status', '=', 0)->get();
 
           if ( count($orders) > 0) {
