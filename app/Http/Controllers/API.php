@@ -108,7 +108,7 @@ class API extends Controller
   //<!--[Get All Services]-->//
   function services(Request $req){
 
-    $services = DB::select('select * from Service');
+    $services = DB::select('select * from Service')->orderBy('priority');
 
     return response()->json(['services' => $services]);
   }
