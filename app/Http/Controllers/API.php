@@ -108,7 +108,7 @@ class API extends Controller
   //<!--[Get All Services]-->//
   function services(Request $req){
 
-    $services = DB::select('select * from Service');
+    $services = DB::table('Service')->get()->orderBy('priority');
 
     return response()->json(['services' => $services]);
   }
@@ -118,7 +118,10 @@ class API extends Controller
 
     // return $service_id;
     $subcategories = [];
-
+    $message = ['Lo sentimos', 'te encuentras fuera del area de servicio, esperanos proximamente en tu colonia.'];
+    $latitude = 25.526401;
+    $longitude = -103.417338;
+    $limit = 2.22;
     $categories = (DB::table('Category')->where('service_id', $service_id)->get());
 
     foreach ($categories as $category) {
@@ -127,7 +130,7 @@ class API extends Controller
       }
     }
 
-    return response()->json(['categories' => $categories]);
+    return response()->json(['categories' => $categories, 'message' => $message, 'latitude ' =>$latitude, 'longitude' => $longitude, 'limit' => $limit]);
 
   }
 
