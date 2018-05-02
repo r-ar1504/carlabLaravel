@@ -5,42 +5,46 @@ use Illuminate\Support\Facades\DB;
 use App\Service;
 use Pusher\Laravel\Facades\Pusher;
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+
 class API extends Controller
 {
 
-  function testing(){
-
-      $orders = DB::table('Order')->where('status', '=', 0)->get();
-
-      if ( count($orders) > 0) {
-
-        foreach ($orders as $order) {
-          $c_o = $order->id;
-          if ($order->rejections < 5 && $order->tries < 5) {
-            $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
-
-            $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
-
-              Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
-
-              DB::table('Order')->where('id', $c_o)->increment('tries');
-
-          }else{
-              $message = "No hay operadores disponibles por el momento";
-              Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => $message] );
-               /*Delete order from DB*/
-
-              $candidates = DB::table('OrderCandidate')->where('order_id', $order->id)->get();
-
-              foreach ($candidates as $candidate) {
-                DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
-              }
-              DB::table('Order')->where('id', $order->id)->delete();
-          }
-        }
-      }else {
-        echo "No Pending Orders";
+  //<!--[FCM Token]-->//
+  function registerToken(Request $req, $fcm_token, $fireID){
+      if(DB::table('FCMTokens')->where('fireID', '=', $fireID)->exists()){
+        return response()->json(['response' => 1]);
+      }else{
+        $candidate = DB::table('FCMTokens')->insertGetId([
+          'fireID' => $fireID,
+          'token' => $fcm_token,
+        ]);
+        return response()->json(['response' => 1]);
       }
+  }
+
+  //<!--[Debug Function]-->//
+  function testing(){
+    $optionBuilder = new OptionsBuilder();
+    $optionBuilder->setTimeToLive(60*20);
+
+    $notificationBuilder = new PayloadNotificationBuilder('Title');
+    $notificationBuilder->setBody('Message')
+     ->setSound('default');
+
+    $dataBuilder = new PayloadDataBuilder();
+    $dataBuilder->addData(['a_data' => 'my_data']);
+
+    $option = $optionBuilder->build();
+    $notification = $notificationBuilder->build();
+    $data = $dataBuilder->build();
+
+    $token = 'token-value-database';
+
+    return response()->json(['response' => 'Ok']);
   }
 
   //<!--[Report Location]-->//
@@ -67,14 +71,12 @@ class API extends Controller
 
           Pusher::trigger("worker-".$worker->fireID, "on-queue", ['ticket' => $candidate]);
 
-
-
       }
     }else{
       foreach ($worker_list as $worker) {
         $total_distance = $this->getServiceDistance($order->latitude, $order->longitude, $worker->latitude, $worker->longitude, $earthRadius = 6371000);
 
-        if ($total_distance < 1650) {
+        if ($total_distance < 2200) {
 
           if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
             return response()->json(['response' => "User Exists"]);
@@ -92,7 +94,6 @@ class API extends Controller
       }
       return "OK";
     }
-
   }
 
   //<!--[Update Location]-->//
@@ -103,14 +104,19 @@ class API extends Controller
       DB::table('Worker')->where('fireID', $data['worker_id'])->update(['latitude' => $data['latitude'], 'longitude' => $data['longitude']]);
       return response()->json(['answer' => 'OK']);
 
-  }
+   }
 
   //<!--[Get All Services]-->//
   function services(Request $req){
 
-    $services = DB::table('Service')->get()->orderBy('priority');
+    $services = DB::table('Service')->orderBy('priority')->get();
 
     return response()->json(['services' => $services]);
+  }
+
+  function getLimits(Request $req){
+    $message = ['Lo sentimos', 'te encuentras fuera del área de servicio, esperanos próximamente en tu colonia.'];
+    return response()->json(['message' => $message]);
   }
 
   //<!--[Get Service ==> Categories ==> SubCategories]-->//
@@ -121,7 +127,7 @@ class API extends Controller
     $message = ['Lo sentimos', 'te encuentras fuera del area de servicio, esperanos proximamente en tu colonia.'];
     $latitude = 25.526401;
     $longitude = -103.417338;
-    $limit = 2.22;
+    $limit = 2.2;
     $categories = (DB::table('Category')->where('service_id', $service_id)->get());
 
     foreach ($categories as $category) {
@@ -130,7 +136,7 @@ class API extends Controller
       }
     }
 
-    return response()->json(['categories' => $categories, 'message' => $message, 'latitude ' =>$latitude, 'longitude' => $longitude, 'limit' => $limit]);
+    return response()->json(['categories' => $categories, 'message' => $message, 'latitude' =>$latitude, 'longitude' => $longitude, 'limit' => $limit]);
 
   }
 
@@ -180,11 +186,12 @@ class API extends Controller
     $user = DB::table('User')->where('fireID', $req->fireID)->first();
     $card = DB::table('UserBilling')->where('user_id', $req->fireID)->first();
     $car  = DB::table('Cars')->where('user_id', $req->fireID)->first();
+    $time = 25;
     $user_id = $user->fireID;
 
     // $orders = getWorkerOrders($worker_id, $worker_role);
 
-    return response()->json(['user' => $user, 'car' => $car, 'card' => $card]);
+    return response()->json(['user' => $user, 'car' => $car, 'card' => $card,'time' => $time]);
 
   }
 
@@ -600,7 +607,8 @@ class API extends Controller
   //<!--[Terminate Order]-->//
   function terminateOrder(Request $req, $order_id, $now){
     DB::table('Order')->where('id', $order_id)->update(['status'=> "4", 'end_date' => $now]);
-    Pusher::trigger('order-'.$order_id, 'order-done', ['order_id' => $order_id]);
+    $order = DB::table('Order')->where('id', $order_id)->first();
+    Pusher::trigger('order-'.$order_id, 'order-done', ['order_id' => $order_id, 'service_name' => $order->service_name]);
     return response()->json(['result' => "ok", 'code' => "200"]);
   }
 

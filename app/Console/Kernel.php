@@ -26,8 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
+
       $schedule->call(function(){
-        Pusher::trigger('test2', 'here');
+
+
         $orders = DB::table('Order')->where('status', '=', 0)->get();
 
         if ( count($orders) > 0) {
@@ -37,11 +40,21 @@ class Kernel extends ConsoleKernel
             if ($order->rejections < 5 && $order->tries < 5) {
               $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
+
               $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
+              //  Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
+                if(count($worker)< 0){
+                    Pusher::trigger('order-'.$order->id, 'no-workers', ['message' => " ??", 'close' => $closest, 'order' => $order] );
+                    //DB::table('Order')->where('id', $order->id)->delete();
+                    DB::table('Order')->where('id', $order->id)->update(['status' => '10']);
+
+                }else{
 
                 Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
 
                 DB::table('Order')->where('id', $c_o)->increment('tries');
+
+                }
 
             }else{
                 $message = "No hay operadores disponibles por el momento";
@@ -53,23 +66,18 @@ class Kernel extends ConsoleKernel
                 foreach ($candidates as $candidate) {
                   DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
                 }
-                DB::table('Order')->where('id', $order->id)->delete();
+                 DB::table('Order')->where('id', $order->id)->update(['status' => '10']);
             }
           }
         }else {
           echo "No Pending Orders";
         }
-      })->cron('0 */2 * ? * *	');
-
-
-
-
-      $schedule->call(function(){
-        Pusher::trigger('test', 'here');
+      })->everyMinute()
+      ->after(function(){
 
         $orders = DB::table('Order')->where('status', '=', 0)->get();
 
-          if ( count($orders) > 0) {
+          if ( count($orders) >= 1) {
 
             foreach ($orders as $order) {
               $c_o = $order->id;
@@ -92,8 +100,8 @@ class Kernel extends ConsoleKernel
 
                 $total_distance =  $angle * 6371000;
 
-                if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->exists()){
-                  return response()->json(['response' => "User Exists"]);
+                if(DB::table('OrderCandidate')->where('worker_id', '=', $worker->fireID)->where('order_id', '=', $c_o)->exists()){
+
 
                 }else{
                   $candidate = DB::table('OrderCandidate')->insertGetId([
@@ -105,8 +113,8 @@ class Kernel extends ConsoleKernel
                 }
               }
             }
-          })->everyMinute();
-
+          }
+      });
 
     }
 
