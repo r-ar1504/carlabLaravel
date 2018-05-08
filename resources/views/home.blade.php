@@ -48,6 +48,9 @@
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#contact">Contacto</a>
             </li>
+            <li class="nav-item">
+              <a id="Login" class="nav-link js-scroll-trigger">Login</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -394,6 +397,54 @@
         </div>
         <a href="/terms">Términos Y Condiciones</a>
       </div>
+
+
+  <!-- Modal del login-->
+  <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="Modal1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body" style="background-image: url({{asset ('assets/img/header/fondo.jpg')}}); background-size: cover; background-repeat: no-repeat; padding: 0;">
+          <!--Head-->
+          <div class="head" align="center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title tittle" id="exampleModalLabel" align="center">Login</h4>
+          </div>
+          <!---->
+          <div class="form-group row">
+            <div class="col-md-12">
+              <form method="POST">
+                <div class="container">
+                  <div class="col-md-12" align="center">
+                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                    <div class="col-md-12">
+                      <br>
+                      <input type="text" name="email" class="user" placeholder="Correo Electronico" required>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                      <input type="password" name="password" class="user" placeholder="Contraseña" required>
+                    </div>
+                    <div class="col-md-12">
+                      
+                    </div>
+                    <br>
+                    <div class="col-md-12" align="center">
+                      <input type="submit" class="btn btn-success" value="Ingresar">
+                    </div>
+                    <br>
+                  </div>
+                  <div class="col-md-6"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Fin-->
     <!-- Bootstrap core JavaScript -->
     <script src="{{asset ('js/jquery.min.js')}}"></script>
     <script src="{{asset ('js/bootstrap.bundle.min.js')}}"></script>
@@ -407,6 +458,12 @@
     <script src="{{asset ('js/creative.min.js')}}"></script>
     <!-- Parallax -->
     <script src="{{asset ('js/parallax.min.js')}}"></script>
+    <script type="text/javascript">
+      /*Modal del Login*/
+      $('#Login').click(function(){
+        $("#modalLogin").modal('show');
+      });
+    </script>
   </body>
 
 </html>

@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', function () { return view('home'); });
-
 //<!--[Get Services]-->//
 Route::get('get_services', "API@services");
 
@@ -89,3 +87,19 @@ Route::get('terms','API@getTerms');
 
 /* Check if user exists */
 Route::get('check_email', 'API@checkEmail');
+
+/*Rutas del panel*/
+Route::match(['GET', 'POST'], '/', 'PanelController@Login');
+Route::get('/Logout', 'PanelController@LogOut');
+
+Route::group(['middleware' => ['auth']],function(){
+	
+Route::get('/trabajadores', 'PanelController@seeWorkers');
+Route::post('/trabajadores-estatus', 'PanelController@WorkerStatus');
+Route::post('/trabajadores', 'PanelController@updateWorker');
+
+Route::get('/ordenes', 'PanelController@seeOrders');
+Route::post('/ordenes-estatus', 'PanelController@OrderStatus');
+Route::post('/ordenes', 'PanelController@updateOrder');
+
+});
