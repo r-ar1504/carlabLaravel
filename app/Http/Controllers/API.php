@@ -27,9 +27,15 @@ class API extends Controller
 
   //<!--[Debug Function]-->//
   function testing(){
-    $client = \Guzzle::getFacadeRoot();
-
-    return response()->json(['what is ' => $client]);
+    $response = Guzzle::post(
+        'https://httpbin.org/post',
+        [
+            'form_params' => [
+                'id' => 222
+            ]
+        ]
+    );
+    return response()->json(['what is ' => $response]);
   }
 
   //<!--[Report Location]-->//
