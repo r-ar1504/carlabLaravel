@@ -39,9 +39,9 @@ class API extends Controller
         "filters" =>[
           json_encode(array("field" => "fireID", "relation" => "=", "value" => "FIREid"), JSON_FORCE_OBJECT)
         ],
-        "data" => json_encode( array("order" => "order_data"), JSON_FORCE_OBJECT),
-        "contents" => json_encode( array("en" => "Nueva Orden"), JSON_FORCE_OBJECT ),
-        "headings" => json_encode( array("en" => "Pedido Entrante"), JSON_FORCE_OBJECT )
+        "data" => json_encode( array("order" => "order_data")),
+        "contents" => json_encode( array("en" => "Nueva Orden")),
+        "headings" => json_encode( array("en" => "Pedido Entrante"))
       ]
     ])->getResponse();
 
