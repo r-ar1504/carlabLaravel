@@ -8,6 +8,7 @@ use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 use FCM;
+use Kozz\Laravel\Facades\Guzzle;
 
 class API extends Controller
 {
@@ -24,19 +25,29 @@ class API extends Controller
         return response()->json(['response' => 1]);
       }
   }
-
   //<!--[Debug Function]-->//
   function testing(){
-    $response = Guzzle::post(
-        'https://httpbin.org/post',
-        [
-            'form_params' => [
-                'id' => 222
-            ]
-        ]
-    );
-    return response()->json(['what is ' => $response]);
+    $client = new \GuzzleHttp\Client();
+
+    $result = $client->post('https:/onesignal.com/api/v1/notifications', [
+      "headers" => [
+        "Content-Type: application/json; charset=utf-8",
+        "Authorization: Basic ZjVmODBlZGYtNTdkOC00N2ZmLThkMjEtNzBjM2ZlN2FjNDlh"
+      ],
+      "json" =>[
+        "app_id" => "643b522d-743e-4c85-aa8f-ff6fcc5a08b1",
+        "filters" =>[
+          json_encode(array("field" => "fireID", "relation" => "=", "value" => "FIREid"), JSON_FORCE_OBJECT)
+        ],
+        "data" => json_encode( array("order" => "order_data"), JSON_FORCE_OBJECT),
+        "contents" => json_encode( array("en" => "Nueva Orden"), JSON_FORCE_OBJECT ),
+        "headings" => json_encode( array("en" => "Pedido Entrante"), JSON_FORCE_OBJECT )
+      ]
+    ])->getResponse();
+
+    return response()->json(['what is ' => $result]);
   }
+
 
   //<!--[Report Location]-->//
   function findCandidates($worker_list, $order_id){
