@@ -74,7 +74,7 @@ class PanelController extends Controller
   public function Login(Request $request){
   	if($request->method() === 'GET'){
   		if(! \Auth::check()){
-				return view('home');  			
+				return view('home');
 				$this->validate($request, $rules, $messages);
   		}
   		return view('panel.list-worker');
@@ -86,7 +86,7 @@ class PanelController extends Controller
   	if (\Auth::attempt($data)){
   		return redirect('/');
   	}
-  	return back()->with('errors', 'Verifica tu usuario y/o contraseña');  	
+  	return back()->with('errors', 'Verifica tu usuario y/o contraseña');
   }
 
   public function Logout(){

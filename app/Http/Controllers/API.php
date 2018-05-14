@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Service;
 use Pusher\Laravel\Facades\Pusher;
-
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
@@ -28,23 +27,9 @@ class API extends Controller
 
   //<!--[Debug Function]-->//
   function testing(){
-    $optionBuilder = new OptionsBuilder();
-    $optionBuilder->setTimeToLive(60*20);
+    $client = \Guzzle::getFacadeRoot();
 
-    $notificationBuilder = new PayloadNotificationBuilder('Title');
-    $notificationBuilder->setBody('Message')
-     ->setSound('default');
-
-    $dataBuilder = new PayloadDataBuilder();
-    $dataBuilder->addData(['a_data' => 'my_data']);
-
-    $option = $optionBuilder->build();
-    $notification = $notificationBuilder->build();
-    $data = $dataBuilder->build();
-
-    $token = 'token-value-database';
-
-    return response()->json(['response' => 'Ok']);
+    return response()->json(['what is ' => $client]);
   }
 
   //<!--[Report Location]-->//
