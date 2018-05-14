@@ -164,6 +164,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Pusher\Laravel\PusherServiceProvider::class,
+        Kozz\Laravel\Providers\Guzzle::class,
+
 
         /*
          * Package Service Providers...
@@ -226,7 +228,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Pusher' => Pusher\Laravel\Facades\Pusher::class
+        'Pusher' => Pusher\Laravel\Facades\Pusher::class,
+        'Guzzle' => Kozz\Laravel\Facades\Guzzle::class,
+
     ],
 
 ];
