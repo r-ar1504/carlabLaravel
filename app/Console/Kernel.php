@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
 use Pusher\Laravel\Facades\Pusher;
-
+use Kozz\Laravel\Facades\Guzzle;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -40,7 +40,6 @@ class Kernel extends ConsoleKernel
             if ($order->rejections < 5 && $order->tries < 5) {
               $closest=DB::table('OrderCandidate')->where('order_id','=',$c_o)->min('service_distance');
 
-
               $worker = DB::table('OrderCandidate')->where('worker_response', '!=', 2)->where('order_id','=',$c_o)->where('service_distance', $closest)->first();
               //  Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
                 if(count($worker)< 0){
@@ -50,7 +49,22 @@ class Kernel extends ConsoleKernel
 
                 }else{
 
-                Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
+                // Pusher::trigger('worker-'.$worker->worker_id, 'new-order', ['order' => $order]);
+                $client = new \GuzzleHttp\Client();
+
+                $result = $client->post('https:/onesignal.com/api/v1/notifications', [
+                  "headers" => [
+                    "Content-Type" => "application/json; charset=utf-8",
+                    "Authorization" => "Basic ZjVmODBlZGYtNTdkOC00N2ZmLThkMjEtNzBjM2ZlN2FjNDlh"
+                  ],
+                  "json" =>[
+                    "app_id" => "643b522d-743e-4c85-aa8f-ff6fcc5a08b1",
+                    "filters" =>  array(array("field" => "tag","key" => "fireID", "relation" => "=", "value" => $worker_id)),
+                    "data" => array("order" => $order),
+                    "contents" => array("en" => "Nueva Orden"),
+                    "headings" => array("en" => "Pedido Entrante")
+                  ]
+                ])->getBody()->getContents();
 
                 DB::table('Order')->where('id', $c_o)->increment('tries');
 
@@ -64,7 +78,7 @@ class Kernel extends ConsoleKernel
                 $candidates = DB::table('OrderCandidate')->where('order_id', $order->id)->get();
 
                 foreach ($candidates as $candidate) {
-                  DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
+                 DB::table('OrderCandidate')->where('id', $candidate->id)->delete();
                 }
                  DB::table('Order')->where('id', $order->id)->update(['status' => '10']);
             }
