@@ -22,7 +22,7 @@
     <link href="{{elixir ('css/creative.css')}}" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-inverse" style="background-color: black;" id="mainNav">
+	<nav class="navbar navbar-expand-lg navbar-inverse n">
 		<div class="container">
 			<a class="navbar-brand js-scroll-trigger" href="#page-top"><bold class="text-white">Car</bold><bold class="text-primary">Lab</bold></a>
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
 	</nav>
 	<br>
 	<br>
-	<form action="/ordenes-estatus" method="POST">
+	<form action="/trabajadores-estatus" method="POST">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4" align="center">

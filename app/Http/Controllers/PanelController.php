@@ -80,9 +80,10 @@ class PanelController extends Controller
   		return view('panel.list-worker');
   	}
   	$data = [
-  		'email'                           => $request['email'],
-  		'password'                        => $request['password']
+  		'email'    => $request['email'],
+  		'password' => $request['password']
   	];
+    
   	if (\Auth::attempt($data)){
   		return redirect('/');
   	}

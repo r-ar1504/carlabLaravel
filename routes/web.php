@@ -92,7 +92,7 @@ Route::get('check_email', 'API@checkEmail');
 Route::match(['GET', 'POST'], '/', 'PanelController@Login');
 Route::get('/Logout', 'PanelController@LogOut');
 
-Route::group(['middleware' => ['auth']],function(){
+//Route::group(['middleware' => ['auth']],function(){
 	
 Route::get('/trabajadores', 'PanelController@seeWorkers');
 Route::post('/trabajadores-estatus', 'PanelController@WorkerStatus');
@@ -102,4 +102,4 @@ Route::get('/ordenes', 'PanelController@seeOrders');
 Route::post('/ordenes-estatus', 'PanelController@OrderStatus');
 Route::post('/ordenes', 'PanelController@updateOrder');
 
-});
+//});
