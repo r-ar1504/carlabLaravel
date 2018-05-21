@@ -40,9 +40,9 @@ class PanelController extends Controller
 
   public function OrderStatus(Request $request){
   	if($request['status'] == 'all'){
-      $order = DB::table('order')->orderBy('order.id','desc')->get();
-      //$order_worker = DB::table('order')->join('worker', 'worker.ID', 'order.worker_id')->get();
-  		return view('panel.list-order')->with('orders', $order);
+      //$order = DB::table('order')->orderBy('order.id','desc')->get();
+      $order_worker = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail")->get();
+  		return view('panel.list-order')->with('orders', $order_worker);
   	}
   	else if($request['status'] == '0'){
   		$order = DB::table('order')->where('status', '=', '0')->orderBy('order.id','desc')->get();

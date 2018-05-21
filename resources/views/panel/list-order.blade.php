@@ -106,8 +106,15 @@
 					  		<td>{{ $order->service_name }}</td>
 					  		<td>{{ $order->service_date }}</td>
 					  		<td>{{ $order->end_date }}</td>
-					  		<td>{{ $order->worker_id }}</td>
-					  		<td>{{ $order->user_id }}</td>
+					  		<td>{{ $order->nameworker }}</td>
+					  		<td>
+					  			{{ $order->name }}
+					  			{{ $order->userlast }}
+					  			<br>
+					  			{{ $order->userphone }}
+					  			<br>
+					  			{{ $order->useremail }}
+					  		</td>
 					  		<td>Aun no</td>
 					  		<td>
 					  			<button type="button" class="btn btn-danger edit" value="{{ $order->id }}">
