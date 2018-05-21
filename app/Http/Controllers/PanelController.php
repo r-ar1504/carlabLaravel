@@ -40,23 +40,24 @@ class PanelController extends Controller
 
   public function OrderStatus(Request $request){
   	if($request['status'] == 'all'){
-  		$order = order::all();
+      $order = DB::table('order')->orderBy('order.id','desc')->get();
+      //$order_worker = DB::table('order')->join('worker', 'worker.ID', 'order.worker_id')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '0'){
-  		$order = order::where('status', '=', '0')->get();
+  		$order = DB::table('order')->where('status', '=', '0')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '1'){
-  		$order = order::where('status', '=', '1')->get();
+  		$order = DB::table('order')->where('status', '=', '1')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '4'){
-  		$order = order::where('status', '=', '4')->get();
+  		$order = DB::table('order')->where('status', '=', '4')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '10'){
-  		$order = order::where('status', '=', '10')->get();
+  		$order = DB::table('order')->where('status', '=', '10')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else{
@@ -83,7 +84,7 @@ class PanelController extends Controller
   		'email'    => $request['email'],
   		'password' => $request['password']
   	];
-    
+
   	if (\Auth::attempt($data)){
   		return redirect('/');
   	}

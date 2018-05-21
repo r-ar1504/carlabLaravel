@@ -91,16 +91,26 @@
 				  	@if(! empty($orders))
 					  	@foreach($orders as $order)
 					  	<tr>
-					  		<td>{{ $order['id'] }}</td>
-					  		<td>{{ $order['status'] }}</td>
-					  		<td>{{ $order['service_name'] }}</td>
-					  		<td>{{ $order['service_date'] }}</td>
-					  		<td>{{ $order['end_date'] }}</td>
-					  		<td>{{ $order['worker_id'] }}</td>
-					  		<td>{{ $order['user_id'] }}</td>
+					  		<td>{{ $order->id }}</td>
+					  		<td>
+					  			@if($order->status == 0)
+					  				No asignado
+					  			@elseif($order->status == 1)
+					  				Asignado
+					  			@elseif($order->status == 4)
+					  				Terminado
+					  			@elseif($order->status == 10)
+					  				No se pudo asignar
+					  			@endif
+					  		</td>
+					  		<td>{{ $order->service_name }}</td>
+					  		<td>{{ $order->service_date }}</td>
+					  		<td>{{ $order->end_date }}</td>
+					  		<td>{{ $order->worker_id }}</td>
+					  		<td>{{ $order->user_id }}</td>
 					  		<td>Aun no</td>
 					  		<td>
-					  			<button type="button" class="btn btn-danger edit" value="{{ $order['id'] }}">
+					  			<button type="button" class="btn btn-danger edit" value="{{ $order->id }}">
 					  				<i class="fa fa-edit"></i>
 					  			</button>
 					  		</td>

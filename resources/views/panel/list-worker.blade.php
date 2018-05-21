@@ -90,7 +90,13 @@
 					  		<td>{{ $worker['last_name'] }}</td>
 					  		<td>{{ $worker['email'] }}</td>
 					  		<td>{{ $worker['phone'] }}</td>
-					  		<td>{{ $worker['status'] }}</td>
+					  		<td>
+					  			@if($worker['status'] == 0)
+					  				Inactivo
+					  			@elseif($worker['status'] == 1)
+					  				Activo
+					  			@endif
+					  		</td>
 					  		<td>
 					  			<button type="button" class="btn btn-danger edit" value="{{ $worker['id'] }}">
 					  				<i class="fa fa-edit"></i>
