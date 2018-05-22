@@ -45,6 +45,30 @@
 	</nav>
 	<br>
 	<br>
+	@if(Session::has('msg'))
+  <!--Actualizaón-->
+  <div class="modal fade" id="msgAcept" tabindex="-1" role="dialog" aria-labelledby="messaggeModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="messaggeModalLabel">Actualización con exito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          @foreach(Session::get('msg') as $mensaje)
+          <p>{{$mensaje}}</p>
+          @endforeach
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-success" data-dismiss="modal">Aceptar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Fin-->
+  @endif
 	<form action="/ordenes-estatus" method="POST">
 		<div class="container">
 			<div class="row">
@@ -91,15 +115,15 @@
 				  	@if(! empty($orders))
 					  	@foreach($orders as $order)
 					  	<tr>
-					  		<td>{{ $order->id }}</td>
+					  		<td>{{ $order->orderid }}</td>
 					  		<td>
-					  			@if($order->status == 0)
+					  			@if($order->orderstatus == 0)
 					  				No asignado
-					  			@elseif($order->status == 1)
+					  			@elseif($order->orderstatus == 1)
 					  				Asignado
-					  			@elseif($order->status == 4)
+					  			@elseif($order->orderstatus == 4)
 					  				Terminado
-					  			@elseif($order->status == 10)
+					  			@elseif($order->orderstatus == 10)
 					  				No se pudo asignar
 					  			@endif
 					  		</td>
@@ -117,7 +141,7 @@
 					  		</td>
 					  		<td>Aun no</td>
 					  		<td>
-					  			<button type="button" class="btn btn-danger edit" value="{{ $order->id }}">
+					  			<button type="button" class="btn btn-danger edit" value="{{ $order->orderid }}">
 					  				<i class="fa fa-edit"></i>
 					  			</button>
 					  		</td>
@@ -185,6 +209,10 @@
       $("#modalEdit").modal('show');
       $('#id').val($(this).val());
     });
+
+    $(document).ready(function(){
+	    $("#msgAcept").modal('show');
+	  });
 	</script>
 </body>
 </html>

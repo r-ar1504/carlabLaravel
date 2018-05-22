@@ -22,7 +22,7 @@
     <link href="{{elixir ('css/creative.css')}}" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-inverse n">
+	<nav  class="navbar navbar-expand-lg navbar-inverse" style="background-color: black;" id="mainNav">
 		<div class="container">
 			<a class="navbar-brand js-scroll-trigger" href="#page-top"><bold class="text-white">Car</bold><bold class="text-primary">Lab</bold></a>
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,30 @@
 	</nav>
 	<br>
 	<br>
+	@if(Session::has('msg'))
+  <!--Actualizaón-->
+  <div class="modal fade" id="msgAcept" tabindex="-1" role="dialog" aria-labelledby="messaggeModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="messaggeModalLabel">Actualización con exito</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          @foreach(Session::get('msg') as $mensaje)
+          <p>{{$mensaje}}</p>
+          @endforeach
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-success" data-dismiss="modal">Aceptar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Fin-->
+  @endif
 	<form action="/trabajadores-estatus" method="POST">
 		<div class="container">
 			<div class="row">
@@ -164,6 +188,10 @@
       $("#modalEdit").modal('show');
       $('#id').val($(this).val());
     });
+
+    $(document).ready(function(){
+	    $("#msgAcept").modal('show');
+	  });
 	</script>
 </body>
 </html>
