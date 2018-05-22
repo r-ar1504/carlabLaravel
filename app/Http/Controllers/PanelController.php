@@ -42,23 +42,23 @@ class PanelController extends Controller
   public function OrderStatus(Request $request){
   	if($request['status'] == 'all'){
       //$order = DB::table('order')->orderBy('order.id','desc')->get();
-      $order_worker = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->orderBy('order.id','desc')->get();
+      $order_worker = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order_worker);
   	}
   	else if($request['status'] == '0'){
-  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->where('order.status', '=', '0')->orderBy('order.id','desc')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '0')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '1'){
-  		$order = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->where('order.status', '=', '1')->orderBy('order.id','desc')->get();
+  		$order = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '1')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '4'){
-  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->where('order.status', '=', '4')->orderBy('order.id','desc')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '4')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '10'){
-  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->where('order.status', '=', '10')->orderBy('order.id','desc')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '10')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else{
