@@ -30,8 +30,9 @@ class PanelController extends Controller
 
   public function updateWorker(Request $request){
   	DB::table('worker')->where('id', $request['id_worker'])->update(['status' => $request['status']]);
-  	$worker = worker::all();
-  	return view('panel.list-worker')->with('workers', $worker);
+  	//$worker = worker::all();
+  	//return view('panel.list-worker')->with('msg', ['msj' => "El trabajador se actualizo con exito"], 'workers', $worker);
+    return redirect('/trabajadores')->with('msg', ['msj' => "El trabajador se a actualizo con exito"]);
   }
 
   public function seeOrders(){
@@ -40,23 +41,24 @@ class PanelController extends Controller
 
   public function OrderStatus(Request $request){
   	if($request['status'] == 'all'){
-  		$order = order::all();
-  		return view('panel.list-order')->with('orders', $order);
+      //$order = DB::table('order')->orderBy('order.id','desc')->get();
+      $order_worker = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->orderBy('order.id','desc')->get();
+  		return view('panel.list-order')->with('orders', $order_worker);
   	}
   	else if($request['status'] == '0'){
-  		$order = order::where('status', '=', '0')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '0')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '1'){
-  		$order = order::where('status', '=', '1')->get();
+  		$order = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '1')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '4'){
-  		$order = order::where('status', '=', '4')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '4')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else if($request['status'] == '10'){
-  		$order = order::where('status', '=', '10')->get();
+  		$order =  DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus", "order.latitude as lat", "order.longitude as lng")->where('order.status', '=', '10')->orderBy('order.id','desc')->get();
   		return view('panel.list-order')->with('orders', $order);
   	}
   	else{
@@ -67,8 +69,10 @@ class PanelController extends Controller
 
   public function updateOrder(Request $request){
   	DB::table('order')->where('id', $request['id_order'])->update(['status' => $request['status']]);
-  	$orders = order::all();
-  	return view('panel.list-order')->with('orders', $orders);
+  	$orders = DB::table('order')->join('worker', 'worker.fireID', 'order.worker_id')->join('user', 'user.fireID', 'order.user_id')->select("order.id as orderid", "order.*", "worker.*", "user.*", "worker.name as nameworker", "user.last_name as userlast", "user.phone as userphone", "user.email as useremail", "order.status as orderstatus")->where('order.status', '=', '10')->orderBy('order.id','desc')->get();
+
+  	//return view('panel.list-order')->with('orders', $orders, 'msg', ['msj' => "La orden se actualizo con exito"]);
+    return redirect('/ordenes')->with('msg', ['msj' => "La orden se actualizo con exito"]);
   }
 
   public function Login(Request $request){
@@ -80,9 +84,10 @@ class PanelController extends Controller
   		return view('panel.list-worker');
   	}
   	$data = [
-  		'email'                           => $request['email'],
-  		'password'                        => $request['password']
+  		'email'    => $request['email'],
+  		'password' => $request['password']
   	];
+
   	if (\Auth::attempt($data)){
   		return redirect('/');
   	}

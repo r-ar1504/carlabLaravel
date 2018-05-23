@@ -103,3 +103,7 @@ Route::post('/ordenes-estatus', 'PanelController@OrderStatus');
 Route::post('/ordenes', 'PanelController@updateOrder');
 
 });
+
+Route::get('/prueba', function(){
+	return view('prueba');
+});
